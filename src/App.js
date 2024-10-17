@@ -9,11 +9,11 @@ function App() {
   const showPanels = () => {
     if (!canUse) return;
     setCanUse(false);
-    document.getElementById("panel-top").style.top = "0";
-    document.getElementById("panel-bottom").style.bottom = "0";
+    document.getElementById("panel-top").style.left = "0";
+    document.getElementById("panel-bottom").style.right = "-50vw";
     setTimeout(() => {
-      document.getElementById("panel-top").style.top = "";
-      document.getElementById("panel-bottom").style.bottom = "";
+      document.getElementById("panel-top").style.left = "";
+      document.getElementById("panel-bottom").style.right = "";
     }, 1000);
     setTimeout(() => {
       setCanUse(true);

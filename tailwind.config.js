@@ -3,9 +3,12 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      colors: {
+        pokered: "#dc0a2d",
+      },
       transitionProperty: {
-        top: "top",
-        bottom: "bottom",
+        left: "left",
+        right: "right",
       },
     },
   },
