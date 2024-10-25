@@ -10,6 +10,7 @@ module.exports = {
         pokegray: "#dbdbdb",
         pokewhite: "#efefef",
         dark: "#383838",
+        gray: "#5e5e5e",
         light: "#e4e4e4",
       },
       transitionProperty: {
@@ -21,7 +22,8 @@ module.exports = {
         tilesBlack: "url('/public/tiles-black.png')",
       },
       dropShadow: {
-        gray: "2px 2px 1px #888888",
+        light: "2px 2px 1px #aaaaaa",
+        dark: "2px 2px 1px #888888",
       },
       boxShadow: {
         window: "inset 0px 0px 4px 1px #444",
