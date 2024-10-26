@@ -22,8 +22,7 @@ module.exports = {
         tilesBlack: "url('/public/tiles-black.png')",
       },
       dropShadow: {
-        light: "2px 2px 1px #aaaaaa",
-        dark: "2px 2px 1px #888888",
+        gray: "1px 1px 1px #a0a0a0",
       },
       boxShadow: {
         window: "inset 0px 0px 4px 1px #444",

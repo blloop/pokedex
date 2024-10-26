@@ -13,7 +13,7 @@ export default function Window({ className, innerClass, children }) {
         <img src={Stripes} className="absolute -right-2 h-3 top-1" alt=""></img>
       </div>
       <div
-        className={`w-full p-1 border-2 border-pokeblack bg-pokewhite shadow-window ${innerClass}`}
+        className={`w-full p-1 text-gray border-2 border-pokeblack bg-pokewhite shadow-window ${innerClass}`}
       >
         {children}
       </div>
