@@ -12,6 +12,7 @@ module.exports = {
         dark: "#383838",
         gray: "#5e5e5e",
         light: "#e4e4e4",
+        lime: "#99e800",
       },
       transitionProperty: {
         left: "left",
@@ -22,10 +23,11 @@ module.exports = {
         tilesBlack: "url('/public/tiles-black.png')",
       },
       dropShadow: {
-        gray: "1px 1px 1px #a0a0a0",
+        gray: "2px 2px 0px #a0a0a0",
+        dark: "2px 2px 0px #707070",
       },
       boxShadow: {
-        window: "inset 0px 0px 4px 1px #444",
+        window: "inset 0px 0px 4px 0px #444",
       },
     },
   },
