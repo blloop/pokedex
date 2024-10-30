@@ -2,7 +2,7 @@ import { useState } from "react";
 import Panel from "./components/panel";
 import Window from "./components/window";
 import Names from "./data/names.json";
-import BigStripes from "./assets/stripes-big.png";
+import Title from "./components/title";
 
 function App() {
   const [canUse, setCanUse] = useState(true);
@@ -150,23 +150,10 @@ function App() {
     <div className="flex flex-col justify-between items-center size-full gap-8 bg-tiles overflow-hidden">
       <Panel />
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
-      <div className="w-full mt-2 border-y-2 border-pokeblack">
-        <div className="flex w-full justify-between py-1 bg-pokeblack border-y-4 border-lime">
-          <img src={BigStripes} alt="" className="h-[28px] w-[46px]"></img>
-          <p className="flex-1 text-4xl mt-1 mx-4 text-light drop-shadow-dark leading-[1.5rem]">
-            {game >= 0
-              ? `${gameList[game].toUpperCase()} ${screenList[1]}`
-              : screenList[0]}
-          </p>
-          <img src={BigStripes} alt="" className="h-[28px] w-[46px]"></img>
-        </div>
-      </div>
+      <Title game={game} gameList={gameList} screenList={screenList} />
       {renderScreen(screen)}
     </div>
   );
 }
-
-// FEFECE light tan
-// E7DFA1 dark tan
 
 export default App;
