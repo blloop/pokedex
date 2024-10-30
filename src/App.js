@@ -52,6 +52,10 @@ function App() {
     }, 500);
   };
 
+  const handleGameChange = (event) => {
+    setGame(event.target.value);
+  };
+
   const renderScreen = (screen) => {
     switch (screen) {
       case 1:
@@ -123,25 +127,31 @@ function App() {
         );
       default:
         return (
-          <div className="flex items-center">
-            <button
-              onClick={() => navigate(0, game)}
-              className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
-            >
-              Refresh
-            </button>
-            <div className="flex flex-col gap-2 z-10">
-              {gameList.map((e, i) => (
-                <button
-                  key={i}
-                  onClick={() => navigate(1, i)}
-                  className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
+          <>
+            <div className="flex items-center text-4xl">
+              <Window innerClass="space-y-2 p-4 align-top">
+                <p>Select Game:</p>
+                <select
+                  value={game}
+                  onChange={handleGameChange}
+                  className="flex flex-col gap-2 z-10 border-2 border-pokeblack"
                 >
-                  {e}
+                  {gameList.map((e, i) => (
+                    <option value={i} key={i}>
+                      {e}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="bg-red-500 text-white rounded-md px-4 md:hover:bg-red-700 transition-colors"
+                  onClick={() => navigate(1, game)}
+                >
+                  Enter
                 </button>
-              ))}
+              </Window>
             </div>
-          </div>
+            <div className="h-20" />
+          </>
         );
     }
   };
@@ -150,7 +160,12 @@ function App() {
     <div className="flex flex-col justify-between items-center size-full gap-8 bg-tiles overflow-hidden">
       <Panel />
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
-      <Title game={game} gameList={gameList} screenList={screenList} />
+      <Title
+        game={game}
+        screen={screen}
+        gameList={gameList}
+        screenList={screenList}
+      />
       {renderScreen(screen)}
     </div>
   );
