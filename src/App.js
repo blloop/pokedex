@@ -5,7 +5,6 @@ import Names from "./data/names.json";
 import Title from "./components/title";
 
 function App() {
-  const [canUse, setCanUse] = useState(true);
   const [game, setGame] = useState(0); // Corresponds to gameList
   const [screen, setScreen] = useState(0); // Corresponds to screenList
 
@@ -34,21 +33,30 @@ function App() {
   const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
 
   const navigate = (screen, game) => {
-    if (!canUse) return;
-    setCanUse(false);
-    document.getElementById("panel-left").style.left = "0";
-    document.getElementById("panel-right").style.right =
-      "calc(-1*(50vw + 50vh))";
+    document.getElementById("fade").style.opacity = "1";
+    document.getElementById("fade").style.pointerEvents = "auto";
     setTimeout(() => {
-      document.getElementById("panel-left").style.left = "";
-      document.getElementById("panel-right").style.right = "";
+      document.getElementById("fade").style.opacity = "0";
+      document.getElementById("fade").style.pointerEvents = "none";
     }, 1000);
-    setTimeout(() => {
-      setCanUse(true);
-    }, 1500);
     setTimeout(() => {
       setScreen(screen);
       setGame(game);
+    }, 500);
+  };
+
+  const togglePanel = (open) => {
+    document.getElementById("panel-button").style.display = "none";
+    document.getElementById("panel-left").style.left = open
+      ? ""
+      : "calc(-1*(50vw + 50vh))";
+    document.getElementById("panel-right").style.right = open
+      ? ""
+      : "calc(-1*(100vw + 100vh))";
+    setTimeout(() => {
+      document.getElementById("panel-button").style.display = open
+        ? "block"
+        : "none";
     }, 500);
   };
 
@@ -61,22 +69,24 @@ function App() {
       case 1:
         return (
           <>
-            <div className="flex items-center justify-center gap-8 w-full z-10 overflow-auto ">
-              <button
-                className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
-                onClick={() => navigate(0, game)}
-              >
-                Change Game
-              </button>
-              <button
-                className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
-                onClick={() => navigate(2, game)}
-              >
-                Pikachu
-              </button>
-              <div className="p-4 bNames-2 bNames-dark bg-light h-full overflow-y-auto z-10">
+            <div className="flex items-center justify-between gap-8 px-8 w-full z-10 overflow-auto ">
+              <div className="w-1/2 text-center">
+                <button
+                  className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
+                  onClick={() => navigate(0, game)}
+                >
+                  Change Game
+                </button>
+                <button
+                  className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
+                  onClick={() => navigate(2, game)}
+                >
+                  Pikachu
+                </button>
+              </div>
+              <div className="w-1/2 p-4 text-shadow-dark bg-light h-full overflow-y-auto z-10">
                 {Names[game].map((e, i) => (
-                  <p className="text-3xl" key={e}>
+                  <p className="text-3xl drop-shadow-gray" key={e}>
                     No{(i + 1).toString().padStart(3, "0")}: {e}
                   </p>
                 ))}
@@ -151,6 +161,12 @@ function App() {
               </Window>
             </div>
             <div className="h-20" />
+            <button
+              onClick={() => togglePanel(true)}
+              className="bg-red-500 text-white rounded-md px-4 md:hover:bg-red-700 transition-colors absolute left-4 bottom-4"
+            >
+              Exit
+            </button>
           </>
         );
     }
@@ -158,8 +174,12 @@ function App() {
 
   return (
     <div className="flex flex-col justify-between items-center size-full gap-8 bg-tiles overflow-hidden">
-      <Panel />
+      <Panel onClick={togglePanel} />
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
+      <div
+        id="fade"
+        className="absolute inset-0 z-20 pointer-events-none bg-[#000] opacity-0 transition-opacity duration-500"
+      ></div>
       <Title
         game={game}
         screen={screen}
