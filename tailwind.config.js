@@ -10,26 +10,33 @@ module.exports = {
         pokegray: "#dbdbdb",
         pokewhite: "#efefef",
         dark: "#383838",
-        gray: "#5e5e5e",
+        gray: "#585050",
         light: "#e4e4e4",
         lime: "#99e800",
       },
       transitionProperty: {
         left: "left",
         right: "right",
+        filter: "filter",
       },
       backgroundImage: {
         tiles: "url('/public/tiles.png')",
         tilesBlack: "url('/public/tiles-black.png')",
       },
-      dropShadow: {
-        gray: "2px 2px 0px #a0a0a0",
-        dark: "2px 2px 0px #707070",
-      },
-      boxShadow: {
-        window: "inset 0px 0px 4px 0px #444",
-      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        ".text-shadow-gray": {
+          textShadow:
+            "1px 0px 0px #a0a0a0, 0px 1px 0px #a0a0a0, 1px 1px 0px #a0a0a0",
+        },
+        ".text-shadow-dark": {
+          textShadow:
+            "1px 0px 0px #808281, 0px 1px 0px #808281, 1px 1px 0px #808281",
+        },
+      });
+    },
+  ],
 };

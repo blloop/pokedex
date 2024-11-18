@@ -3,6 +3,7 @@ import Panel from "./components/panel";
 import Window from "./components/window";
 import Names from "./data/names.json";
 import Title from "./components/title";
+import CloseButton from "./assets/close.png";
 
 function App() {
   const [game, setGame] = useState(0); // Corresponds to gameList
@@ -57,11 +58,25 @@ function App() {
       document.getElementById("panel-button").style.display = open
         ? "block"
         : "none";
-    }, 500);
+    }, 1000);
   };
 
   const handleGameChange = (event) => {
     setGame(event.target.value);
+  };
+
+  const renderPokemon = (name, number) => {
+    return (
+      <button
+        onClick={() => navigate(2, game)}
+        className="text-3xl text-pokewhite text-shadow-dark bg-pokeblack"
+        key={number}
+      >
+        {(number + 1).toString().padStart(3, "0")}
+        {": "}
+        {name}
+      </button>
+    );
   };
 
   const renderScreen = (screen) => {
@@ -70,68 +85,66 @@ function App() {
         return (
           <>
             <div className="flex items-center justify-between gap-8 px-8 w-full z-10 overflow-auto ">
-              <div className="w-1/2 text-center">
-                <button
-                  className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
-                  onClick={() => navigate(0, game)}
-                >
-                  Change Game
-                </button>
-                <button
-                  className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
-                  onClick={() => navigate(2, game)}
-                >
-                  Pikachu
-                </button>
-              </div>
-              <div className="w-1/2 p-4 text-shadow-dark bg-light h-full overflow-y-auto z-10">
-                {Names[game].map((e, i) => (
-                  <p className="text-3xl drop-shadow-gray" key={e}>
-                    No{(i + 1).toString().padStart(3, "0")}: {e}
-                  </p>
-                ))}
+              <div className="w-1/2 text-center"></div>
+              <div className="w-1/2 flex flex-col gap-2 h-full overflow-y-auto z-10">
+                {Names[game].map((e, i) => renderPokemon(e, i))}
               </div>
             </div>
             <div
               id="hexrow"
-              className="flex justify-center gap-2 w-full py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
+              className="flex justify-center gap-2 w-full p-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
             >
-              <div className="w-[60px] h-[36px] p-[2px] bg-white">
-                <div className="w-[56px] h-[32px] pt-0.5 bg-gray">INFO</div>
-              </div>
-              <div className="w-[60px] h-[36px] p-[2px] bg-gray cursor-pointer transition-colors hover:bg-white">
-                <div className="w-[56px] h-[32px] pt-0.5 bg-black transition-colors hover:bg-gray">
-                  INFO
-                </div>
-              </div>
+              <button onClick={() => navigate(0, game)}>
+                <img
+                  src={CloseButton}
+                  alt=""
+                  className="h-[36px] hover:brightness-50 transition-filter"
+                />
+              </button>
             </div>
           </>
         );
       case 2:
         return (
           <>
-            <button
-              className="bg-red-500 text-white rounded-full px-4 py-2 md:hover:bg-red-700 transition-colors"
-              onClick={() => navigate(1, game)}
-            >
-              Back to Pokedex
-            </button>
             <Window className="w-72">
               <div className="w-full flex text-3xl bg-pokegray">
-                <p className="drop-shadow-gray">• 025</p>
-                <p className="flex-grow text-center drop-shadow-gray">
+                <p className="text-shadow-gray">• 025</p>
+                <p className="flex-grow text-center text-shadow-gray">
                   Pikachu
                 </p>
               </div>
-              <p className="text-3xl drop-shadow-gray text-center">
+              <p className="text-3xl text-shadow-gray text-center">
                 Mouse Pokemon
               </p>
             </Window>
-            <div className="w-full p-8 bg-dark font-semibold text-3xl">
-              <p className="text-light drop-shadow-gray">
+            <div className="w-full p-8 bg-dark text-3xl">
+              <p className="text-light text-shadow-gray">
                 It occasionally uses an electric shock to recharge a fellow
                 Pikachu that is in a weakened state.
               </p>
+            </div>
+            <div
+              id="hexrow"
+              className="flex justify-center gap-2 w-full p-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
+            >
+              <div className="w-[60px] h-[36px] p-[2px] bg-white">
+                <div className="w-[56px] h-[32px] pt-0.5 bg-gray text-shadow-dark">
+                  INFO
+                </div>
+              </div>
+              <div className="w-[60px] h-[36px] p-[2px] bg-gray cursor-pointer transition-colors hover:bg-white">
+                <div className="w-[56px] h-[32px] pt-0.5 bg-black text-shadow-dark transition-colors hover:bg-gray">
+                  INFO
+                </div>
+              </div>
+              <button onClick={() => navigate(1, game)}>
+                <img
+                  src={CloseButton}
+                  alt=""
+                  className="h-[36px] hover:brightness-50 transition-filter"
+                />
+              </button>
             </div>
           </>
         );
@@ -139,33 +152,37 @@ function App() {
         return (
           <>
             <div className="flex items-center text-4xl">
-              <Window innerClass="space-y-2 p-4 align-top">
-                <p>Select Game:</p>
-                <select
-                  value={game}
-                  onChange={handleGameChange}
-                  className="flex flex-col gap-2 z-10 border-2 border-pokeblack"
-                >
-                  {gameList.map((e, i) => (
-                    <option value={i} key={i}>
-                      {e}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="bg-red-500 text-white rounded-md px-4 md:hover:bg-red-700 transition-colors"
-                  onClick={() => navigate(1, game)}
-                >
-                  Enter
-                </button>
+              <Window innerClass="align-top">
+                <div className="w-full flex px-4 py-2 bg-pokegray">
+                  <p>Select Game:</p>
+                </div>
+                <div className="space-y-2 px-4 py-2">
+                  <select
+                    value={game}
+                    onChange={handleGameChange}
+                    className="flex flex-col gap-2 z-10 border-2 border-pokeblack"
+                  >
+                    {gameList.map((e, i) => (
+                      <option value={i} key={i}>
+                        {e}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className="bg-red-500 text-white rounded-md px-4 md:hover:bg-red-700 transition-colors"
+                    onClick={() => navigate(1, game)}
+                  >
+                    Enter
+                  </button>
+                </div>
               </Window>
             </div>
             <div className="h-20" />
             <button
               onClick={() => togglePanel(true)}
-              className="bg-red-500 text-white rounded-md px-4 md:hover:bg-red-700 transition-colors absolute left-4 bottom-4"
+              className="bg-red-500 text-white rounded-md text-lg px-4 md:hover:bg-red-700 transition-colors absolute left-4 bottom-4"
             >
-              Exit
+              CLOSE
             </button>
           </>
         );
