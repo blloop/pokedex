@@ -4,6 +4,8 @@ import Window from "./components/window";
 import Names from "./data/names.json";
 import Title from "./components/title";
 import CloseButton from "./assets/close.png";
+import ArrowLeft from "./assets/arrow-left.png";
+import ArrowRight from "./assets/arrow-right.png";
 
 function App() {
   const [game, setGame] = useState(0); // Corresponds to gameList
@@ -65,16 +67,24 @@ function App() {
     setGame(event.target.value);
   };
 
-  const renderPokemon = (name, number) => {
+  const renderListItem = (name, number) => {
     return (
       <button
         onClick={() => navigate(2, game)}
-        className="text-3xl text-pokewhite text-shadow-dark bg-pokeblack"
+        className="relative flex justify-between md:justify-start items-center gap-2 md:gap-4 text-3xl md:text-5xl text-pokegray text-shadow-dark bg-pokeblack overflow-visible"
         key={number}
       >
-        {(number + 1).toString().padStart(3, "0")}
-        {": "}
-        {name}
+        <div className="w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3" />
+        <div className="w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent absolute -right-[15px] md:-right-6" />
+        <div className="flex size-full max-w-36 relative -left-2">
+          <img className="shrink-0" src={ArrowLeft} alt="" />
+          <img className="shrink-0" src={CloseButton} alt="" />
+          <img className="shrink-0" src={ArrowRight} alt="" />
+        </div>
+        <div className="flex">
+          <p>{(number + 1).toString().padStart(3, "0")}</p>
+          <p className="ml-2 min-w-40 md:min-w-48 text-left">{name}</p>
+        </div>
       </button>
     );
   };
@@ -84,10 +94,10 @@ function App() {
       case 1:
         return (
           <>
-            <div className="flex items-center justify-between gap-8 px-8 w-full z-10 overflow-auto ">
-              <div className="w-1/2 text-center"></div>
-              <div className="w-1/2 flex flex-col gap-2 h-full overflow-y-auto z-10">
-                {Names[game].map((e, i) => renderPokemon(e, i))}
+            <div className="flex flex-col sm:flex-row justify-between gap-4 md:gap-8 px-4 md:px-8 w-full z-10 overflow-auto ">
+              <div className="h-full text-center"></div>
+              <div className="size-full sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 overflow-y-auto z-10">
+                {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
             </div>
             <div
@@ -153,7 +163,7 @@ function App() {
           <>
             <div className="flex items-center text-4xl">
               <Window innerClass="align-top">
-                <div className="w-full flex px-4 py-2 bg-pokegray">
+                <div className="w-full flex px-5 py-1 bg-pokegray">
                   <p>Select Game:</p>
                 </div>
                 <div className="space-y-2 px-4 py-2">
@@ -190,7 +200,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col justify-between items-center size-full gap-8 bg-tiles overflow-hidden">
+    <div className="flex flex-col justify-between items-center size-full gap-4 md:gap-8 bg-tiles overflow-hidden">
       <Panel onClick={togglePanel} />
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
       <div
