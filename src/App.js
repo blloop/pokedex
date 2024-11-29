@@ -71,12 +71,12 @@ function App() {
     return (
       <button
         onClick={() => navigate(2, game)}
-        className="relative flex justify-between md:justify-start items-center gap-2 md:gap-4 text-3xl md:text-5xl text-pokegray text-shadow-dark bg-pokeblack overflow-visible"
+        className="group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 text-3xl md:text-5xl md:hover:bg-limeDark md:hover:text-limeLight text-pokegray text-shadow-dark bg-pokeblack overflow-visible"
         key={number}
       >
-        <div className="w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3" />
-        <div className="w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent absolute -right-[15px] md:-right-6" />
-        <div className="flex size-full max-w-36 relative -left-2">
+        <div className="w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack md:group-hover:border-r-limeDark border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3" />
+        <div className="w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent md:group-hover:border-t-limeDark absolute -right-[15px] md:-right-6" />
+        <div className="flex size-full max-w-36 relative -left-2 md:group-hover:brightness-150">
           <img className="shrink-0" src={ArrowLeft} alt="" />
           <img className="shrink-0" src={CloseButton} alt="" />
           <img className="shrink-0" src={ArrowRight} alt="" />
@@ -96,7 +96,7 @@ function App() {
           <>
             <div className="flex flex-col sm:flex-row justify-between gap-4 md:gap-8 px-4 md:px-8 w-full z-10 overflow-auto ">
               <div className="h-full text-center"></div>
-              <div className="size-full sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 overflow-y-auto z-10">
+              <div className="size-full sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10">
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
             </div>
@@ -108,7 +108,7 @@ function App() {
                 <img
                   src={CloseButton}
                   alt=""
-                  className="h-[36px] hover:brightness-50 transition-filter"
+                  className="h-[36px] md:hover:brightness-50 transition-filter"
                 />
               </button>
             </div>
@@ -143,8 +143,8 @@ function App() {
                   INFO
                 </div>
               </div>
-              <div className="w-[60px] h-[36px] p-[2px] bg-gray cursor-pointer transition-colors hover:bg-white">
-                <div className="w-[56px] h-[32px] pt-0.5 bg-black text-shadow-dark transition-colors hover:bg-gray">
+              <div className="w-[60px] h-[36px] p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
+                <div className="w-[56px] h-[32px] pt-0.5 bg-black text-shadow-dark transition-colors md:hover:bg-gray">
                   INFO
                 </div>
               </div>
@@ -152,7 +152,7 @@ function App() {
                 <img
                   src={CloseButton}
                   alt=""
-                  className="h-[36px] hover:brightness-50 transition-filter"
+                  className="h-[36px] md:hover:brightness-50 transition-filter"
                 />
               </button>
             </div>

@@ -20,7 +20,7 @@ export default function Panel({ onClick }) {
       <button
         onClick={() => onClick()}
         id="panel-button"
-        className="cursor-pointer pointer-events-auto absolute top-1/2 right-1/2 -translate-y-[5.5rem] translate-x-[5.5rem] w-36 h-36 rounded-full animate-pulse bg-blue-400 z-40"
+        className="md:cursor-pointer pointer-events-auto absolute top-1/2 right-1/2 -translate-y-[5.5rem] translate-x-[5.5rem] w-36 h-36 rounded-full animate-pulse bg-blue-400 z-40"
       ></button>
     </div>
   );

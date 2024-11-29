@@ -13,6 +13,8 @@ module.exports = {
         gray: "#585050",
         light: "#e4e4e4",
         lime: "#99e800",
+        limeDark: "#315911",
+        limeLight: "#BCF075",
       },
       transitionProperty: {
         left: "left",
