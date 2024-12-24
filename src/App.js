@@ -2,17 +2,19 @@ import { useState } from "react";
 import Panel from "./components/panel";
 import Window from "./components/window";
 import Names from "./data/names.json";
+import Mapping from "./data/mapping.json";
 import Title from "./components/title";
 import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
 import ArrowRight from "./assets/arrow-right.png";
 import Frame from "./assets/frame.png";
 
+// Sprites and icons credit: https://veekun.com/dex/downloads
+
 function App() {
+  const [monster, setMonster] = useState(false);
   const [game, setGame] = useState(0); // Corresponds to gameList
   const [screen, setScreen] = useState(0); // Corresponds to screenList
-
-  // const [currMon, setCurrmon] = useState(false);
   // const [moveData, setMoveData] = useState({});
 
   // useEffect(() => {
@@ -77,10 +79,16 @@ function App() {
       >
         <div className="w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack md:group-hover:border-r-limeDark border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3" />
         <div className="w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent md:group-hover:border-t-limeDark absolute -right-[15px] md:-right-6" />
-        <div className="flex size-full max-w-36 relative -left-2 md:group-hover:brightness-150">
-          <img className="shrink-0" src={ArrowLeft} alt="" />
-          <img className="shrink-0" src={CloseButton} alt="" />
-          <img className="shrink-0" src={ArrowRight} alt="" />
+        <div className="relative -left-2 -top-0 shrink-0 h-8 md:h-12 md:group-hover:brightness-125">
+          <img className="absolute left-0 h-full" src={ArrowLeft} alt="" />
+          <img className="absolute left-12 h-full" src={ArrowRight} alt="" />
+          <div className="w-16 h-full overflow-hidden">
+            <img
+              className="relative -top-3 h-12 md:h-16 object-cover z-10"
+              src={`/icons/${Mapping[game][number]}.png`}
+              alt=""
+            />
+          </div>
         </div>
         <div className="flex">
           <p>{(number + 1).toString().padStart(3, "0")}</p>
@@ -95,11 +103,11 @@ function App() {
       case 1:
         return (
           <>
-            <div className="z-10 relative flex flex-col sm:flex-row justify-between gap-4 md:gap-8 px-4 md:px-8 w-full z-10 overflow-auto ">
-              <div className="size-full text-center">
-                <img src={Frame} className="w-full" alt="" />
+            <div className="z-10 relative flex flex-col sm:flex-row justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-auto">
+              <div className="flex flex-col justify-center items-center w-full h-auto">
+                <img src={Frame} className="w-full max-w-96" alt="" />
               </div>
-              <div className="size-full shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10">
+              <div className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10">
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
             </div>
@@ -195,8 +203,7 @@ function App() {
               id="hexrow"
               className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
             >
-              <button
-                onClick={() => togglePanel(true)}>
+              <button onClick={() => togglePanel(true)}>
                 <img
                   src={CloseButton}
                   alt=""

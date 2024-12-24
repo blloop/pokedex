@@ -1,0 +1,5 @@
+# Data JSON files
+src/data/*
+
+# Public image files
+public/*
