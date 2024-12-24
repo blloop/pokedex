@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Panel from "./components/panel";
 import Window from "./components/window";
 import Names from "./data/names.json";
@@ -8,11 +8,12 @@ import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
 import ArrowRight from "./assets/arrow-right.png";
 import Frame from "./assets/frame.png";
+import { cn } from "./utils";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
 function App() {
-  const [monster, setMonster] = useState(false);
+  const [index, setIndex] = useState(0);
   const [game, setGame] = useState(0); // Corresponds to gameList
   const [screen, setScreen] = useState(0); // Corresponds to screenList
   // const [moveData, setMoveData] = useState({});
@@ -20,6 +21,39 @@ function App() {
   // useEffect(() => {
   //   setMoveData({});
   // }, []);
+
+  const scrollRef = useRef(null);
+  const handleScroll = useCallback(() => {
+    if (!scrollRef.current) return;
+    const children = Array.from(scrollRef.current.children);
+    const rect = scrollRef.current.getBoundingClientRect();
+    const center = rect.top + rect.height / 2;
+    
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+    children.forEach((child, index) => {
+      const r = child.getBoundingClientRect();
+      const middle = r.top + r.height / 2;
+      const distance = Math.abs(middle - center);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+  
+    setIndex((prevIndex) => (prevIndex !== closestIndex ? closestIndex : prevIndex));
+  }, []);
+
+  const setScroll = (create) => {
+    const container = scrollRef.current;
+    if (container) {
+      if (create) {
+        container.addEventListener("scroll", handleScroll);
+      } else {
+        container.removeEventListener("scroll", handleScroll);
+      }
+    }
+  }
 
   const gameList = [
     "Red/Blue",
@@ -39,11 +73,13 @@ function App() {
   const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
 
   const navigate = (screen, game) => {
+    setScroll(false);
     document.getElementById("fade").style.opacity = "1";
     document.getElementById("fade").style.pointerEvents = "auto";
     setTimeout(() => {
       document.getElementById("fade").style.opacity = "0";
       document.getElementById("fade").style.pointerEvents = "none";
+      setScroll(true);
     }, 1000);
     setTimeout(() => {
       setScreen(screen);
@@ -74,12 +110,22 @@ function App() {
     return (
       <button
         onClick={() => navigate(2, game)}
-        className="group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 text-3xl md:text-5xl md:hover:bg-limeDark md:hover:text-limeLight text-pokegray text-shadow-dark bg-pokeblack overflow-visible"
+        className={cn(
+          "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:bg-limeDark md:hover:text-limeLight text-pokegray text-shadow-dark bg-pokeblack overflow-visible",
+          number === index ? "bg-limeDark text-limeLight" : ""
+        )}
         key={number}
       >
-        <div className="w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack md:group-hover:border-r-limeDark border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3" />
-        <div className="w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent md:group-hover:border-t-limeDark absolute -right-[15px] md:-right-6" />
-        <div className="relative -left-2 -top-0 shrink-0 h-8 md:h-12 md:group-hover:brightness-125">
+        <div className={cn("w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack md:group-hover:border-r-limeDark border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3",
+          number === index ? "border-r-limeDark" : ""
+        )} />
+        <div className={cn("w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent md:group-hover:border-t-limeDark absolute -right-[15px] md:-right-6",
+          number === index ? "border-t-limeDark" : ""
+        )} />
+        <div className={cn(
+          "relative -left-2 -top-0 shrink-0 h-8 md:h-12 md:group-hover:brightness-125",
+          number === index ? "brightness-125" : ""
+        )}>
           <img className="absolute left-0 h-full" src={ArrowLeft} alt="" />
           <img className="absolute left-12 h-full" src={ArrowRight} alt="" />
           <div className="w-16 h-full overflow-hidden">
@@ -90,7 +136,7 @@ function App() {
             />
           </div>
         </div>
-        <div className="flex">
+        <div className="flex text-pokegray text-3xl md:text-5xl">
           <p>{(number + 1).toString().padStart(3, "0")}</p>
           <p className="ml-2 min-w-40 md:min-w-48 text-left">{name}</p>
         </div>
@@ -104,10 +150,11 @@ function App() {
         return (
           <>
             <div className="z-10 relative flex flex-col sm:flex-row justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-auto">
-              <div className="flex flex-col justify-center items-center w-full h-auto">
+              <div className="relative flex flex-col justify-center items-center w-full h-auto">
                 <img src={Frame} className="w-full max-w-96" alt="" />
+                <img src={`/sprites/${Mapping[game][index]}.png`} className="absolute top-0 w-full max-w-96"/>
               </div>
-              <div className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10">
+              <div ref={scrollRef} className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10">
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
             </div>
