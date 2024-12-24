@@ -6,6 +6,7 @@ import Title from "./components/title";
 import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
 import ArrowRight from "./assets/arrow-right.png";
+import Frame from "./assets/frame.png";
 
 function App() {
   const [game, setGame] = useState(0); // Corresponds to gameList
@@ -94,15 +95,18 @@ function App() {
       case 1:
         return (
           <>
-            <div className="flex flex-col sm:flex-row justify-between gap-4 md:gap-8 px-4 md:px-8 w-full z-10 overflow-auto ">
-              <div className="h-full text-center"></div>
-              <div className="size-full sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10">
+            <div className="z-10 relative flex flex-col sm:flex-row justify-between gap-4 md:gap-8 px-4 md:px-8 w-full z-10 overflow-auto ">
+              <div className="size-full text-center">
+                <img src={Frame} className="w-full" alt="" />
+              </div>
+              <div className="size-full shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10">
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
             </div>
+            <div className="absolute z-0 h-36 w-full top-[calc(50vh-6rem)] left-0 object-contain bg-stripes bg-repeat-x"></div>
             <div
               id="hexrow"
-              className="flex justify-center gap-2 w-full p-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
+              className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
             >
               <button onClick={() => navigate(0, game)}>
                 <img
@@ -117,7 +121,7 @@ function App() {
       case 2:
         return (
           <>
-            <Window className="w-72">
+            <Window className="z-10 w-72">
               <div className="w-full flex text-3xl bg-pokegray">
                 <p className="text-shadow-gray">• 025</p>
                 <p className="flex-grow text-center text-shadow-gray">
@@ -161,7 +165,7 @@ function App() {
       default:
         return (
           <>
-            <div className="flex items-center text-4xl">
+            <div className="z-10 flex items-center text-4xl">
               <Window innerClass="align-top">
                 <div className="w-full flex px-5 py-1 bg-pokegray">
                   <p>Select Game:</p>
@@ -187,13 +191,19 @@ function App() {
                 </div>
               </Window>
             </div>
-            <div className="h-20" />
-            <button
-              onClick={() => togglePanel(true)}
-              className="bg-red-500 text-white rounded-md text-lg px-4 md:hover:bg-red-700 transition-colors absolute left-4 bottom-4"
+            <div
+              id="hexrow"
+              className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
             >
-              CLOSE
-            </button>
+              <button
+                onClick={() => togglePanel(true)}>
+                <img
+                  src={CloseButton}
+                  alt=""
+                  className="h-[36px] md:hover:brightness-50 transition-filter"
+                />
+              </button>
+            </div>
           </>
         );
     }

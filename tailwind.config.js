@@ -24,6 +24,7 @@ module.exports = {
       backgroundImage: {
         tiles: "url('/public/tiles.png')",
         tilesBlack: "url('/public/tiles-black.png')",
+        stripes: "url('/public/stripe-pattern.png')",
       },
     },
   },
