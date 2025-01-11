@@ -3,7 +3,7 @@ import Stripes from "../assets/stripes.png";
 export default function Window({ className, innerClass, children }) {
   return (
     <div className={className}>
-      <div className="relative w-24 h-4 bg-pokeblack select-none">
+      <div className="relative w-24 h-4 bg-pokeblack">
         <div
           className="absolute -right-4 w-0 h-0 
           border-l-[1rem] border-l-transparent

@@ -15,7 +15,7 @@ export default function Title({ game, screen, gameList, screenList }) {
         <img
           src={BigStripes}
           alt=""
-          className="h-[28px] w-[46px] select-none"
+          className="h-[28px] w-[46px]"
         ></img>
         <p className="flex-1 text-4xl mt-1 mx-4 text-light text-shadow-dark leading-[1.5rem]">
           {renderScreen(screen)}
@@ -23,7 +23,7 @@ export default function Title({ game, screen, gameList, screenList }) {
         <img
           src={BigStripes}
           alt=""
-          className="h-[28px] w-[46px] select-none"
+          className="h-[28px] w-[46px]"
         ></img>
       </div>
     </div>

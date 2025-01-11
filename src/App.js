@@ -37,11 +37,6 @@ function App() {
     // Calculate the proportional target index based on the current scroll position
     const proportionalIndex =
       (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
-    console.log(
-      scrollTop / (scrollHeight - clientHeight),
-      game,
-      Names[game].length,
-    );
     const targetIndex = Math.ceil(proportionalIndex);
     setIndex(targetIndex);
   }, [game]);
@@ -112,7 +107,13 @@ function App() {
   const renderListItem = (name, number) => {
     return (
       <button
-        onClick={() => navigate(2, game)}
+        onClick={() => {
+          if (index === number) {
+            navigate(2, game);
+          } else {
+            setIndex(number);
+          }
+        }}
         className={cn(
           "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:bg-limeDark md:hover:text-limeLight text-pokegray text-shadow-dark bg-pokeblack overflow-visible",
           number === index ? "bg-limeDark text-limeLight" : "",
@@ -155,7 +156,7 @@ function App() {
     );
   };
 
-  const renderScreen = (screen) => {
+  const renderScreen = () => {
     switch (screen) {
       case 1:
         return (
@@ -163,11 +164,16 @@ function App() {
             <div className="z-10 relative flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-auto">
               <div className="relative flex flex-col justify-center items-center w-auto sm:w-full h-96 sm:h-auto">
                 <img src={Frame} className="size-full max-w-96" alt="" />
-                <img
-                  alt={Names[game][index]}
-                  src={`/sprites/${Mapping[game][index]}.png`}
-                  className="absolute w-full max-w-96 scale-x-[-1]"
-                />
+                {Array.from(Array(Mapping[game].length).keys()).map(e => 
+                  <img
+                    key={e}
+                    data-temp={e}
+                    hidden={(e) !== index}
+                    alt={Names[game][e]}
+                    src={`/sprites/${Mapping[game][e]}.png`}
+                    className="absolute w-full max-w-96 scale-x-[-1]"
+                  />
+                )}
               </div>
               <div
                 ref={scrollRef}
@@ -194,23 +200,45 @@ function App() {
       case 2:
         return (
           <>
-            <Window className="z-10 w-72">
-              <div className="w-full flex text-3xl bg-pokegray">
-                <p className="text-shadow-gray">• 025</p>
-                <p className="flex-grow text-center text-shadow-gray">
-                  Pikachu
+            <div className="flex items-center">
+              <img
+                alt={Names[game][index]}
+                src={`/sprites/${Mapping[game][index]}.png`}
+                className="w-72 scale-x-[-1]"
+              />
+              <Window className="z-10 w-72">
+                <div className="w-full flex text-3xl bg-pokegray">
+                  <p className="text-shadow-gray">• {index + 1}</p>
+                  <p className="flex-grow text-center text-shadow-gray">
+                    {Names[game][index]}
+                  </p>
+                </div>
+                <p className="text-3xl text-shadow-gray text-center">
+                  Mouse Pokemon
+                </p>
+                <p className="text-3xl text-shadow-gray text-center">
+                  ELECTR
+                </p>
+                <div className="relative flex justify-between w-full text-3xl text-shadow-gray">
+                  <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
+                  <p className="z-10 pl-8">HT</p>
+                  <p className="z-10">1'04"</p>
+                </div>
+                <div className="relative flex justify-between w-full text-3xl text-shadow-gray">
+                  <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
+                  <p className="z-10 pl-8">WT</p>
+                  <p className="z-10">13.2 lbs.</p>
+                </div>
+              </Window>
+            </div>
+            <Window innerClass="!p-0">
+              <div className="w-full p-8 bg-dark text-3xl">
+                <p className="text-light text-shadow-gray">
+                  It occasionally uses an electric shock to recharge a fellow
+                  Pikachu that is in a weakened state.
                 </p>
               </div>
-              <p className="text-3xl text-shadow-gray text-center">
-                Mouse Pokemon
-              </p>
             </Window>
-            <div className="w-full p-8 bg-dark text-3xl">
-              <p className="text-light text-shadow-gray">
-                It occasionally uses an electric shock to recharge a fellow
-                Pikachu that is in a weakened state.
-              </p>
-            </div>
             <div
               id="hexrow"
               className="flex justify-center gap-2 w-full p-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
@@ -295,7 +323,7 @@ function App() {
         gameList={gameList}
         screenList={screenList}
       />
-      {renderScreen(screen)}
+      {renderScreen()}
     </div>
   );
 }
