@@ -19,6 +19,7 @@ function App() {
   const [index, setIndex] = useState(0);
   const [game, setGame] = useState(0); // Corresponds to gameList
   const [screen, setScreen] = useState(0); // Corresponds to screenList
+  const [position, setPosition] = useState(0);
   // const [moveData, setMoveData] = useState({});
 
   // useEffect(() => {
@@ -45,7 +46,6 @@ function App() {
     const container = scrollRef.current;
     if (container) {
       if (create) {
-        setIndex(0);
         container.addEventListener("scroll", handleScroll);
       } else {
         container.removeEventListener("scroll", handleScroll);
@@ -109,27 +109,34 @@ function App() {
       <button
         onClick={() => {
           if (index === number) {
+            setPosition(scrollRef.current.scrollTop);
             navigate(2, game);
           } else {
             setIndex(number);
           }
         }}
         className={cn(
-          "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:bg-limeDark md:hover:text-limeLight text-pokegray text-shadow-dark bg-pokeblack overflow-visible",
-          number === index ? "bg-limeDark text-limeLight" : "",
+          "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:text-limeLight text-pokegray bg-pokeblack overflow-visible",
+          number === index
+            ? "bg-limeDark text-limeLight text-shadow-dark"
+            : "text-shadow-dark md:hover:bg-limeDarker",
         )}
         key={number}
       >
         <div
           className={cn(
-            "w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack md:group-hover:border-r-limeDark border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3",
-            number === index ? "border-r-limeDark" : "",
+            "w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3",
+            number === index
+              ? "border-r-limeDark"
+              : "md:group-hover:border-r-limeDarker",
           )}
         />
         <div
           className={cn(
-            "w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent md:group-hover:border-t-limeDark absolute -right-[15px] md:-right-6",
-            number === index ? "border-t-limeDark" : "",
+            "w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent absolute -right-[15px] md:-right-6",
+            number === index
+              ? "border-t-limeDark"
+              : "md:group-hover:border-t-limeDarker",
           )}
         />
         <div
@@ -164,16 +171,16 @@ function App() {
             <div className="z-10 relative flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-auto">
               <div className="relative flex flex-col justify-center items-center w-auto sm:w-full h-96 sm:h-auto">
                 <img src={Frame} className="size-full max-w-96" alt="" />
-                {Array.from(Array(Mapping[game].length).keys()).map(e => 
+                {Array.from(Array(Mapping[game].length).keys()).map((e) => (
                   <img
                     key={e}
                     data-temp={e}
-                    hidden={(e) !== index}
+                    hidden={e !== index}
                     alt={Names[game][e]}
                     src={`/sprites/${Mapping[game][e]}.png`}
                     className="absolute w-full max-w-96 scale-x-[-1]"
                   />
-                )}
+                ))}
               </div>
               <div
                 ref={scrollRef}
@@ -182,7 +189,9 @@ function App() {
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
             </div>
-            <div className="absolute z-0 h-64 w-full top-[calc(50vh-8rem)] left-0 object-contain bg-stripes bg-contain bg-repeat-x"></div>
+            <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50vh-8rem)] overflow-visible items-center">
+              <div className="relative h-36 sm:h-[25vw] max-h-64 w-full bg-stripes bg-fill sm:bg-contain bg-repeat-x"></div>
+            </div>
             <div
               id="hexrow"
               className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
@@ -216,18 +225,18 @@ function App() {
                 <p className="text-3xl text-shadow-gray text-center">
                   Mouse Pokemon
                 </p>
-                <p className="text-3xl text-shadow-gray text-center">
-                  ELECTR
-                </p>
-                <div className="relative flex justify-between w-full text-3xl text-shadow-gray">
-                  <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
-                  <p className="z-10 pl-8">HT</p>
-                  <p className="z-10">1'04"</p>
-                </div>
-                <div className="relative flex justify-between w-full text-3xl text-shadow-gray">
-                  <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
-                  <p className="z-10 pl-8">WT</p>
-                  <p className="z-10">13.2 lbs.</p>
+                <p className="text-3xl text-shadow-gray text-center">ELECTR</p>
+                <div className="w-full px-2">
+                  <div className="relative flex justify-between w-full gap-2 text-3xl text-shadow-gray">
+                    <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
+                    <p className="z-10 pl-8">HT</p>
+                    <p className="z-10">1'04"</p>
+                  </div>
+                  <div className="relative flex justify-between w-full gap-2 text-3xl text-shadow-gray">
+                    <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
+                    <p className="z-10 pl-8">WT</p>
+                    <p className="z-10">13.2 lbs.</p>
+                  </div>
                 </div>
               </Window>
             </div>
@@ -253,7 +262,14 @@ function App() {
                   INFO
                 </div>
               </div>
-              <button onClick={() => navigate(1, game)}>
+              <button
+                onClick={() => {
+                  setTimeout(() => {
+                    scrollRef.current.scrollTop = position;
+                  }, 750);
+                  navigate(1, game);
+                }}
+              >
                 <img
                   src={CloseButton}
                   alt=""
@@ -310,7 +326,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col justify-between items-center size-full gap-4 md:gap-8 bg-tiles overflow-hidden">
+    <div className="flex flex-col justify-between items-center size-full gap-4 bg-tiles overflow-hidden">
       <Panel onClick={togglePanel} />
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
       <div

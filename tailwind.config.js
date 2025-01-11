@@ -14,6 +14,7 @@ module.exports = {
         light: "#e4e4e4",
         lime: "#99e800",
         limeDark: "#315911",
+        limeDarker: "#204008",
         limeLight: "#BCF075",
       },
       transitionProperty: {
@@ -32,12 +33,10 @@ module.exports = {
     function ({ addUtilities }) {
       addUtilities({
         ".text-shadow-gray": {
-          textShadow:
-            "1px 0px 0px #a0a0a0, 0px 1px 0px #a0a0a0, 1px 1px 0px #a0a0a0",
+          textShadow: "2px 0px #a0a0a0, 0px 2px #a0a0a0, 2px 2px #a0a0a0",
         },
         ".text-shadow-dark": {
-          textShadow:
-            "1px 0px 0px #808281, 0px 1px 0px #808281, 1px 1px 0px #808281",
+          textShadow: "2px 0px #808281, 0px 2px #808281, 2px 2px #808281",
         },
       });
     },
