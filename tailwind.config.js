@@ -27,6 +27,9 @@ module.exports = {
         tilesBlack: "url('/public/tiles-black.png')",
         stripes: "url('/public/stripe-pattern.png')",
       },
+      boxShadow: {
+        window: "inset 0px 0px 4px rgb(0, 0, 0)",
+      },
     },
   },
   plugins: [

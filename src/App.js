@@ -7,6 +7,8 @@ import Title from "./components/title";
 import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
 import ArrowRight from "./assets/arrow-right.png";
+import ArrowUp from "./assets/arrow-up.png";
+import ArrowDown from "./assets/arrow-down.png";
 import Frame from "./assets/frame.png";
 import { cn } from "./utils";
 
@@ -221,7 +223,9 @@ function App() {
               />
               <Window className="z-10 w-72">
                 <div className="w-full flex text-3xl bg-pokegray">
-                  <p className="text-shadow-gray">• {String(index + 1).padStart(3, '0')}</p>
+                  <p className="text-shadow-gray">
+                    • {String(index + 1).padStart(3, "0")}
+                  </p>
                   <p className="flex-grow text-center text-shadow-gray">
                     {Names[game][index]}
                   </p>
@@ -303,26 +307,44 @@ function App() {
       {renderScreen()}
       <div
         id="hexrow"
-        className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
+        className="flex justify-between gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
       >
-        {screen > 1 &&
-          <>
+        <div
+          className={
+            screen > 1 ? "flex gap-4" : "opacity-0 pointer-events-none"
+          }
+        >
+          <button
+            onClick={() => setIndex(index - 1)}
+            className={`md:hover:brightness-50 transition-filter ${index === 0 ? "opacity-0 pointer-events-none" : ""}`}
+          >
+            <img className="h-10" src={ArrowUp} alt="" />
+          </button>
+          <button
+            onClick={() => setIndex(index + 1)}
+            className={`md:hover:brightness-50 transition-filter ${index + 1 === Names[game].length ? "opacity-0 pointer-events-none" : ""}`}
+          >
+            <img className="h-10" src={ArrowDown} alt="" />
+          </button>
+        </div>
+        {screen > 1 && (
+          <div className="flex gap-4">
             <HexButton isButton={screen !== 2} text={"INFO"} toScreen={2} />
             <HexButton isButton={screen !== 3} text={"MOVES"} toScreen={3} />
             <HexButton isButton={screen !== 4} text={"STATS"} toScreen={4} />
             <HexButton isButton={screen !== 5} text={"DATA"} toScreen={5} />
-          </>
-        }
+          </div>
+        )}
         <button
-          className="md:hover:brightness-50 transition-filter"
+          className="md:hover:brightness-50 transition-filter ml-10"
           onClick={() => {
             if (screen === 0) {
-              togglePanel(true)
+              togglePanel(true);
             } else if (screen === 1) {
               navigate(0);
               setTimeout(() => {
                 setIndex(0);
-              }, 750)
+              }, 750);
             } else {
               setTimeout(() => {
                 scrollRef.current.scrollTop = position;
