@@ -16,7 +16,6 @@ import ArrowUp from "./assets/arrow-up.png";
 import ArrowDown from "./assets/arrow-down.png";
 import Frame from "./assets/frame.png";
 
-
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
 function App() {
@@ -56,6 +55,18 @@ function App() {
       }
     }
   };
+
+  // TODO: Add settings to switch to imperial units
+  // function getImperial(meters) {
+  //   const totalInches = meters * 39.3701;
+  //   const feet = Math.floor(totalInches / 12);
+  //   const inches = Math.round(totalInches % 12).toString().padStart(2, '0');
+  //   return `${feet}'${inches}"`;
+  // }
+  // function getPounds(kg) {
+  //   const pounds = kg * 2.20462;
+  //   return pounds.toFixed(1);
+  // }
 
   const gameList = [
     "Red/Blue",
@@ -121,8 +132,8 @@ function App() {
         className={cn(
           "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:text-limeLight text-pokegray bg-pokeblack overflow-visible",
           number === index
-            ? "bg-limeDark text-limeLight text-shadow-dark"
-            : "text-shadow-dark md:hover:bg-limeDarker",
+            ? "bg-limeDark text-limeLight text-shadow-slate"
+            : "text-shadow-slate md:hover:bg-limeDarker",
         )}
         key={number}
       >
@@ -169,7 +180,7 @@ function App() {
   function HexButton({ isButton, text, toScreen }) {
     return isButton ? (
       <div className="w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
-        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-dark transition-colors md:hover:bg-gray">
+        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:hover:bg-gray">
           <button type="button" onClick={() => navigate(toScreen)}>
             {text}
           </button>
@@ -177,7 +188,7 @@ function App() {
       </div>
     ) : (
       <div className="w-20 h-10 p-[2px] bg-white">
-        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-dark">
+        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
           {text}
         </div>
       </div>
@@ -236,25 +247,58 @@ function App() {
                   </p>
                 </div>
                 <p className="text-3xl text-shadow-gray text-center">
-                  Mouse Pokemon
+                  {Data[Names[game][index].toLowerCase()]["species"]} Pokemon
                 </p>
-                <p className="text-3xl text-shadow-gray text-center">ELECTR</p>
+                <div className="flex justify-center px-12 py-6 gap-2">
+                  <div className="hidden bg-bug bg-dark bg-dragon bg-electr bg-fight bg-fire bg-flying bg-ghost bg-grass bg-ground bg-ice bg-normal bg-poison bg-psychc bg-rock bg-steel bg-water" />
+                  {/* <span className="h-7 w-16 text-2xl text-white bg-fire text-shadow-black text-center border-2 border-gray"> */}
+                  <span
+                    className={cn(
+                      "h-7 w-16 text-2xl text-shadow-black text-center border-2 border-gray",
+                      `bg-${Data[Names[game][index].toLowerCase()]["type1"]}`,
+                    )}
+                  >
+                    <p className="-mt-1 text-white">
+                      {Data[Names[game][index].toLowerCase()][
+                        "type1"
+                      ].toUpperCase()}
+                    </p>
+                  </span>
+                  {Data[Names[game][index].toLowerCase()]["type2"] && (
+                    <span
+                      className={cn(
+                        "h-7 w-16 text-2xl text-shadow-black text-center border-2 border-gray",
+                        `bg-${Data[Names[game][index].toLowerCase()]["type2"]}`,
+                      )}
+                    >
+                      <p className="-mt-1 text-white">
+                        {Data[Names[game][index].toLowerCase()][
+                          "type2"
+                        ].toUpperCase()}
+                      </p>
+                    </span>
+                  )}
+                </div>
                 <div className="w-full px-2">
                   <div className="relative flex justify-between w-full gap-2 text-3xl text-shadow-gray">
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">HT</p>
-                    <p className="z-10">1'04"</p>
+                    <p className="z-10">
+                      {Data[Names[game][index].toLowerCase()]["height"]} m
+                    </p>
                   </div>
                   <div className="relative flex justify-between w-full gap-2 text-3xl text-shadow-gray">
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">WT</p>
-                    <p className="z-10">13.2 lbs.</p>
+                    <p className="z-10">
+                      {Data[Names[game][index].toLowerCase()]["weight"]} kg
+                    </p>
                   </div>
                 </div>
               </Window>
             </div>
             <Window innerClass="!p-0">
-              <div className="w-full p-8 bg-dark text-3xl">
+              <div className="w-full p-8 bg-slate text-3xl">
                 <p className="text-light text-shadow-gray">
                   It occasionally uses an electric shock to recharge a fellow
                   Pikachu that is in a weakened state.
@@ -321,19 +365,26 @@ function App() {
         >
           <button
             onClick={() => setIndex(index - 1)}
-            className={`md:hover:brightness-50 transition-filter ${index === 0 ? "opacity-0 pointer-events-none" : ""}`}
+            className={cn(
+              "md:hover:brightness-50 transition-filter",
+              index === 0 && "opacity-0 pointer-events-none",
+            )}
           >
             <img className="h-10" src={ArrowUp} alt="" />
           </button>
           <button
             onClick={() => setIndex(index + 1)}
-            className={`md:hover:brightness-50 transition-filter ${index + 1 === Names[game].length ? "opacity-0 pointer-events-none" : ""}`}
+            className={cn(
+              "md:hover:brightness-50 transition-filter",
+              index + 1 === Names[game].length &&
+                "opacity-0 pointer-events-none",
+            )}
           >
             <img className="h-10" src={ArrowDown} alt="" />
           </button>
         </div>
         {screen > 1 && (
-          <div className="flex gap-4">
+          <div className="flex gap-2">
             <HexButton isButton={screen !== 2} text={"INFO"} toScreen={2} />
             <HexButton isButton={screen !== 3} text={"MOVES"} toScreen={3} />
             <HexButton isButton={screen !== 4} text={"STATS"} toScreen={4} />
