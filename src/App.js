@@ -10,9 +10,6 @@ import ArrowRight from "./assets/arrow-right.png";
 import Frame from "./assets/frame.png";
 import { cn } from "./utils";
 
-// TODO: Check if index is selected when clicking list item
-// and set index if not equal
-
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
 function App() {
@@ -70,7 +67,7 @@ function App() {
 
   const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
 
-  const navigate = (screen, game) => {
+  const navigate = (screen) => {
     setScroll(false);
     document.getElementById("fade").style.opacity = "1";
     document.getElementById("fade").style.pointerEvents = "auto";
@@ -81,7 +78,6 @@ function App() {
     }, 1000);
     setTimeout(() => {
       setScreen(screen);
-      setGame(game);
     }, 500);
   };
 
@@ -110,7 +106,7 @@ function App() {
         onClick={() => {
           if (index === number) {
             setPosition(scrollRef.current.scrollTop);
-            navigate(2, game);
+            navigate(2);
           } else {
             setIndex(number);
           }
@@ -163,6 +159,23 @@ function App() {
     );
   };
 
+  function HexButton({ isButton, text, toScreen }) {
+    return isButton ? (
+      <div className="w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
+        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-dark transition-colors md:hover:bg-gray">
+          <button type="button" onClick={() => navigate(toScreen)}>
+            {text}
+          </button>
+        </div>
+      </div>
+    ) : (
+      <div className="w-20 h-10 p-[2px] bg-white">
+        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-dark">
+          {text}
+        </div>
+      </div>
+    );
+  }
   const renderScreen = () => {
     switch (screen) {
       case 1:
@@ -184,7 +197,7 @@ function App() {
               </div>
               <div
                 ref={scrollRef}
-                className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto z-10"
+                className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden z-10"
               >
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
@@ -192,24 +205,15 @@ function App() {
             <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50vh-8rem)] overflow-visible items-center">
               <div className="relative h-36 sm:h-[25vw] max-h-64 w-full bg-stripes bg-fill sm:bg-contain bg-repeat-x"></div>
             </div>
-            <div
-              id="hexrow"
-              className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
-            >
-              <button onClick={() => navigate(0, game)}>
-                <img
-                  src={CloseButton}
-                  alt=""
-                  className="h-[36px] md:hover:brightness-50 transition-filter"
-                />
-              </button>
-            </div>
           </>
         );
       case 2:
+      case 3:
+      case 4:
+      case 5:
         return (
-          <>
-            <div className="flex items-center">
+          <div className="flex flex-col items-center gap-8 overflow-y-auto z-10">
+            <div className="flex flex-col md:flex-row items-center">
               <img
                 alt={Names[game][index]}
                 src={`/sprites/${Mapping[game][index]}.png`}
@@ -217,7 +221,7 @@ function App() {
               />
               <Window className="z-10 w-72">
                 <div className="w-full flex text-3xl bg-pokegray">
-                  <p className="text-shadow-gray">• {index + 1}</p>
+                  <p className="text-shadow-gray">• {String(index + 1).padStart(3, '0')}</p>
                   <p className="flex-grow text-center text-shadow-gray">
                     {Names[game][index]}
                   </p>
@@ -248,85 +252,42 @@ function App() {
                 </p>
               </div>
             </Window>
-            <div
-              id="hexrow"
-              className="flex justify-center gap-2 w-full p-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
-            >
-              <div className="w-[60px] h-[36px] p-[2px] bg-white">
-                <div className="w-[56px] h-[32px] pt-0.5 bg-gray text-shadow-dark">
-                  INFO
-                </div>
-              </div>
-              <div className="w-[60px] h-[36px] p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
-                <div className="w-[56px] h-[32px] pt-0.5 bg-black text-shadow-dark transition-colors md:hover:bg-gray">
-                  INFO
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setTimeout(() => {
-                    scrollRef.current.scrollTop = position;
-                  }, 750);
-                  navigate(1, game);
-                }}
-              >
-                <img
-                  src={CloseButton}
-                  alt=""
-                  className="h-[36px] md:hover:brightness-50 transition-filter"
-                />
-              </button>
-            </div>
-          </>
+          </div>
         );
       default:
         return (
-          <>
-            <div className="z-10 flex items-center text-4xl">
-              <Window innerClass="align-top">
-                <div className="w-full flex px-5 py-1 bg-pokegray">
-                  <p>Select Game:</p>
-                </div>
-                <div className="space-y-2 px-4 py-2">
-                  <select
-                    value={game}
-                    onChange={handleGameChange}
-                    className="flex flex-col gap-2 z-10 border-2 border-pokeblack"
-                  >
-                    {gameList.map((e, i) => (
-                      <option value={i} key={i}>
-                        {e}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    className="bg-red-500 text-white rounded-md px-4 md:hover:bg-red-700 transition-colors"
-                    onClick={() => navigate(1, game)}
-                  >
-                    Enter
-                  </button>
-                </div>
-              </Window>
-            </div>
-            <div
-              id="hexrow"
-              className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
-            >
-              <button onClick={() => togglePanel(true)}>
-                <img
-                  src={CloseButton}
-                  alt=""
-                  className="h-[36px] md:hover:brightness-50 transition-filter"
-                />
-              </button>
-            </div>
-          </>
+          <div className="z-10 flex items-center text-4xl">
+            <Window innerClass="align-top">
+              <div className="w-full flex px-5 py-1 bg-pokegray">
+                <p>Select Game:</p>
+              </div>
+              <div className="space-y-2 px-4 py-2">
+                <select
+                  value={game}
+                  onChange={handleGameChange}
+                  className="flex flex-col gap-2 z-10 border-2 border-pokeblack"
+                >
+                  {gameList.map((e, i) => (
+                    <option value={i} key={i}>
+                      {e}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="bg-red-500 text-white rounded-md px-4 md:hover:bg-red-700 transition-colors"
+                  onClick={() => navigate(1)}
+                >
+                  Enter
+                </button>
+              </div>
+            </Window>
+          </div>
         );
     }
   };
 
   return (
-    <div className="flex flex-col justify-between items-center size-full gap-4 bg-tiles overflow-hidden">
+    <div className="flex flex-col justify-between items-center w-full h-dvh gap-4 bg-tiles overflow-hidden">
       <Panel onClick={togglePanel} />
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
       <div
@@ -340,6 +301,39 @@ function App() {
         screenList={screenList}
       />
       {renderScreen()}
+      <div
+        id="hexrow"
+        className="flex justify-end gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
+      >
+        {screen > 1 &&
+          <>
+            <HexButton isButton={screen !== 2} text={"INFO"} toScreen={2} />
+            <HexButton isButton={screen !== 3} text={"MOVES"} toScreen={3} />
+            <HexButton isButton={screen !== 4} text={"STATS"} toScreen={4} />
+            <HexButton isButton={screen !== 5} text={"DATA"} toScreen={5} />
+          </>
+        }
+        <button
+          className="md:hover:brightness-50 transition-filter"
+          onClick={() => {
+            if (screen === 0) {
+              togglePanel(true)
+            } else if (screen === 1) {
+              navigate(0);
+              setTimeout(() => {
+                setIndex(0);
+              }, 750)
+            } else {
+              setTimeout(() => {
+                scrollRef.current.scrollTop = position;
+              }, 750);
+              navigate(1);
+            }
+          }}
+        >
+          <img className="h-10" src={CloseButton} alt="" />
+        </button>
+      </div>
     </div>
   );
 }
