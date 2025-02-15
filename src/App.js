@@ -1,16 +1,21 @@
 import { useCallback, useRef, useState } from "react";
-import Panel from "./components/panel";
-import Window from "./components/window";
+import { cn } from "./utils";
+
 import Names from "./data/names.json";
 import Mapping from "./data/mapping.json";
+import Data from "./data/data.json";
+
+import Panel from "./components/panel";
+import Window from "./components/window";
 import Title from "./components/title";
+
 import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
 import ArrowRight from "./assets/arrow-right.png";
 import ArrowUp from "./assets/arrow-up.png";
 import ArrowDown from "./assets/arrow-down.png";
 import Frame from "./assets/frame.png";
-import { cn } from "./utils";
+
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
