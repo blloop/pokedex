@@ -42,6 +42,9 @@ module.exports = {
       backgroundImage: {
         tiles: "url('/public/tiles.png')",
         tilesBlack: "url('/public/tiles-black.png')",
+        tilesWhite: "url('/public/tiles-white.png')",
+        ruler: "url('/public/ruler.png')",
+        rulerHead: "url('/public/ruler-head.png')",
         stripes: "url('/public/stripe-pattern.png')",
       },
       boxShadow: {

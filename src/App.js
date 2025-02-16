@@ -230,15 +230,17 @@ function App() {
       case 4:
       case 5:
         return (
-          <div className="flex flex-col items-center gap-8 overflow-y-auto z-10">
-            <div className="flex flex-col md:flex-row items-center">
-              <img
+          <div className="flex flex-col items-center w-full gap-8 text-4xl overflow-y-auto overflow-x-hidden z-10">
+            <div className="relative flex flex-col gap-16 md:flex-row w-full justify-center items-center">
+            <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
+            <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
+            <img
                 alt={Names[game][index]}
                 src={`/sprites/${Mapping[game][index]}.png`}
-                className="w-72 scale-x-[-1]"
+                className="w-60 scale-x-[-1]"
               />
               <Window className="z-10 w-72">
-                <div className="w-full flex text-3xl bg-pokegray">
+                <div className="w-full flex bg-pokegray">
                   <p className="text-shadow-gray">
                     • {String(index + 1).padStart(3, "0")}
                   </p>
@@ -246,10 +248,10 @@ function App() {
                     {Names[game][index]}
                   </p>
                 </div>
-                <p className="text-3xl text-shadow-gray text-center">
+                <p className="text-shadow-gray text-center">
                   {Data[Names[game][index].toLowerCase()]["species"]} Pokemon
                 </p>
-                <div className="flex justify-center px-12 py-6 gap-2">
+                <div className="flex justify-center px-12 py-6 gap-2 bg-tilesWhite bg-repeat-x bg-contain">
                   <div className="hidden bg-bug bg-dark bg-dragon bg-electr bg-fight bg-fire bg-flying bg-ghost bg-grass bg-ground bg-ice bg-normal bg-poison bg-psychc bg-rock bg-steel bg-water" />
                   {/* <span className="h-7 w-16 text-2xl text-white bg-fire text-shadow-black text-center border-2 border-gray"> */}
                   <span
@@ -280,14 +282,14 @@ function App() {
                   )}
                 </div>
                 <div className="w-full px-2">
-                  <div className="relative flex justify-between w-full gap-2 text-3xl text-shadow-gray">
+                  <div className="relative flex justify-between w-full gap-2 text-shadow-gray">
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">HT</p>
                     <p className="z-10">
                       {Data[Names[game][index].toLowerCase()]["height"]} m
                     </p>
                   </div>
-                  <div className="relative flex justify-between w-full gap-2 text-3xl text-shadow-gray">
+                  <div className="relative flex justify-between w-full gap-2 text-shadow-gray">
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">WT</p>
                     <p className="z-10">
@@ -298,7 +300,7 @@ function App() {
               </Window>
             </div>
             <Window innerClass="!p-0">
-              <div className="w-full p-8 bg-slate text-3xl">
+              <div className="w-full p-8 bg-slate">
                 <p className="text-light text-shadow-gray">
                   It occasionally uses an electric shock to recharge a fellow
                   Pikachu that is in a weakened state.
@@ -353,6 +355,7 @@ function App() {
         gameList={gameList}
         screenList={screenList}
       />
+      <div className="absolute left-0 right-0 top-32 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
       {renderScreen()}
       <div
         id="hexrow"
