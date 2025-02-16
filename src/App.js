@@ -232,12 +232,22 @@ function App() {
         return (
           <div className="flex flex-col items-center w-full gap-8 text-4xl overflow-y-auto overflow-x-hidden z-10">
             <div className="relative flex flex-col gap-16 md:flex-row w-full justify-center items-center">
-            <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
-            <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
-            <img
+              <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
+              <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
+              <img
+                alt=""
+                src={`/sprites/${Mapping[game][index - 1]}.png`}
+                className="w-72 hidden"
+              />
+              <img
                 alt={Names[game][index]}
                 src={`/sprites/${Mapping[game][index]}.png`}
-                className="w-60 scale-x-[-1]"
+                className="w-72 scale-x-[-1]"
+              />
+              <img
+                alt=""
+                src={`/sprites/${Mapping[game][index + 1]}.png`}
+                className="w-72 hidden"
               />
               <Window className="z-10 w-72">
                 <div className="w-full flex bg-pokegray">
