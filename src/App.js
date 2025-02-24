@@ -4,6 +4,7 @@ import { cn } from "./utils";
 import Names from "./data/names.json";
 import Mapping from "./data/mapping.json";
 import Data from "./data/data.json";
+import Info from "./data/info.json";
 
 import Panel from "./components/panel";
 import Window from "./components/window";
@@ -81,6 +82,10 @@ function App() {
     "Heartgold/Soulsilver",
     "Black/White",
     "Black2/White2",
+  ];
+
+  const gameMap = [
+    0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
   ];
 
   const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
@@ -312,8 +317,11 @@ function App() {
             <Window innerClass="!p-0">
               <div className="w-full p-8 bg-slate">
                 <p className="text-light text-shadow-gray">
-                  It occasionally uses an electric shock to recharge a fellow
-                  Pikachu that is in a weakened state.
+                  {
+                    Info[Names[game][index].toLowerCase()][
+                      gameMap.indexOf(Number(game))
+                    ]
+                  }
                 </p>
               </div>
             </Window>
