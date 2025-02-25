@@ -33,6 +33,12 @@ module.exports = {
         rock: "#B99F39",
         steel: "#B9B8D1",
         water: "#6A8CFF",
+        statRed: "#E9423F",
+        statOrange: "#F67E00",
+        statYellow: "#FBDC4A",
+        statLime: "#A6E500",
+        statGreen: "#49CD58",
+        statAqua: "#40C2B8",
       },
       transitionProperty: {
         left: "left",
@@ -63,6 +69,12 @@ module.exports = {
         },
         ".text-shadow-black": {
           textShadow: "2px 0px #383838, 0px 2px #383838, 2px 2px #383838",
+        },
+        ".text-shadow-mini": {
+          textShadow: "1px 0px #a0a0a0, 0px 1px #a0a0a0, 1px 1px #a0a0a0",
+        },
+        ".text-shadow-none": {
+          textShadow: "none",
         },
       });
     },

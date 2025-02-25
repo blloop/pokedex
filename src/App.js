@@ -16,6 +16,7 @@ import ArrowRight from "./assets/arrow-right.png";
 import ArrowUp from "./assets/arrow-up.png";
 import ArrowDown from "./assets/arrow-down.png";
 import Frame from "./assets/frame.png";
+import StatList from "./components/statList";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
@@ -230,9 +231,41 @@ function App() {
             </div>
           </>
         );
+      case 4:
+        return (
+          <div className="flex flex-col items-center w-full gap-8 text-4xl overflow-y-auto overflow-x-hidden z-10">
+            <div className="relative flex flex-col gap-16 md:flex-row w-full justify-center items-center">
+              <div className="absolute top-16 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
+              <div className="absolute top-16 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
+              <img
+                alt=""
+                src={`/sprites/${Mapping[game][index - 1]}.png`}
+                className="w-72 hidden"
+              />
+              <img
+                alt={Names[game][index]}
+                src={`/sprites/${Mapping[game][index]}.png`}
+                className="w-72 scale-x-[-1]"
+              />
+              <img
+                alt=""
+                src={`/sprites/${Mapping[game][index + 1]}.png`}
+                className="w-72 hidden"
+              />
+              <Window className="z-10 w-fit h-96 overflow-y-auto">
+                <div className="w-full flex bg-pokegray">
+                  <p>• {String(index + 1).padStart(3, "0")}</p>
+                  <p className="flex-grow text-center">{Names[game][index]}</p>
+                </div>
+                <StatList
+                  stats={Data[Names[game][index].toLowerCase()]["stats"]}
+                />
+              </Window>
+            </div>
+          </div>
+        );
       case 2:
       case 3:
-      case 4:
       case 5:
         return (
           <div className="flex flex-col items-center w-full gap-8 text-4xl overflow-y-auto overflow-x-hidden z-10">
@@ -256,14 +289,10 @@ function App() {
               />
               <Window className="z-10 w-72">
                 <div className="w-full flex bg-pokegray">
-                  <p className="text-shadow-gray">
-                    • {String(index + 1).padStart(3, "0")}
-                  </p>
-                  <p className="flex-grow text-center text-shadow-gray">
-                    {Names[game][index]}
-                  </p>
+                  <p>• {String(index + 1).padStart(3, "0")}</p>
+                  <p className="flex-grow text-center">{Names[game][index]}</p>
                 </div>
-                <p className="text-shadow-gray text-center">
+                <p className="text-center">
                   {Data[Names[game][index].toLowerCase()]["species"]} Pokemon
                 </p>
                 <div className="flex justify-center px-12 py-6 gap-2 bg-tilesWhite bg-repeat-x bg-contain">
@@ -297,14 +326,14 @@ function App() {
                   )}
                 </div>
                 <div className="w-full px-2">
-                  <div className="relative flex justify-between w-full gap-2 text-shadow-gray">
+                  <div className="relative flex justify-between w-full gap-2">
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">HT</p>
                     <p className="z-10">
                       {Data[Names[game][index].toLowerCase()]["height"]} m
                     </p>
                   </div>
-                  <div className="relative flex justify-between w-full gap-2 text-shadow-gray">
+                  <div className="relative flex justify-between w-full gap-2">
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">WT</p>
                     <p className="z-10">
@@ -316,7 +345,7 @@ function App() {
             </div>
             <Window innerClass="!p-0">
               <div className="w-full p-8 bg-slate">
-                <p className="text-light text-shadow-gray">
+                <p className="text-light">
                   {
                     Info[Names[game][index].toLowerCase()][
                       gameMap.indexOf(Number(game))
