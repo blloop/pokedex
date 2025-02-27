@@ -9,6 +9,7 @@ import Info from "./data/info.json";
 import Panel from "./components/panel";
 import Window from "./components/window";
 import Title from "./components/title";
+import TypeCell from "./components/typeCell";
 
 import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
@@ -136,10 +137,10 @@ function App() {
           }
         }}
         className={cn(
-          "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:text-limeLight text-pokegray bg-pokeblack overflow-visible",
+          "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:text-lime-300 text-pokegray bg-pokeblack overflow-visible",
           number === index
-            ? "bg-limeDark text-limeLight text-shadow-slate"
-            : "text-shadow-slate md:hover:bg-limeDarker",
+            ? "bg-lime-700 text-lime-300 text-shadow-slate"
+            : "text-shadow-slate md:hover:bg-lime-900",
         )}
         key={number}
       >
@@ -147,16 +148,16 @@ function App() {
           className={cn(
             "w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3",
             number === index
-              ? "border-r-limeDark"
-              : "md:group-hover:border-r-limeDarker",
+              ? "border-r-lime-700"
+              : "md:group-hover:border-r-lime-900",
           )}
         />
         <div
           className={cn(
             "w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent absolute -right-[15px] md:-right-6",
             number === index
-              ? "border-t-limeDark"
-              : "md:group-hover:border-t-limeDarker",
+              ? "border-t-lime-700"
+              : "md:group-hover:border-t-lime-900",
           )}
         />
         <div
@@ -298,32 +299,12 @@ function App() {
                 <div className="flex justify-center px-12 py-6 gap-2 bg-tilesWhite bg-repeat-x bg-contain">
                   <div className="hidden bg-bug bg-dark bg-dragon bg-electr bg-fight bg-fire bg-flying bg-ghost bg-grass bg-ground bg-ice bg-normal bg-poison bg-psychc bg-rock bg-steel bg-water" />
                   {/* <span className="h-7 w-16 text-2xl text-white bg-fire text-shadow-black text-center border-2 border-gray"> */}
-                  <span
-                    className={cn(
-                      "h-7 w-16 text-2xl text-shadow-black text-center border-2 border-gray",
-                      `bg-${Data[Names[game][index].toLowerCase()]["type1"]}`,
-                    )}
-                  >
-                    <p className="-mt-1 text-white">
-                      {Data[Names[game][index].toLowerCase()][
-                        "type1"
-                      ].toUpperCase()}
-                    </p>
-                  </span>
-                  {Data[Names[game][index].toLowerCase()]["type2"] && (
-                    <span
-                      className={cn(
-                        "h-7 w-16 text-2xl text-shadow-black text-center border-2 border-gray",
-                        `bg-${Data[Names[game][index].toLowerCase()]["type2"]}`,
-                      )}
-                    >
-                      <p className="-mt-1 text-white">
-                        {Data[Names[game][index].toLowerCase()][
-                          "type2"
-                        ].toUpperCase()}
-                      </p>
-                    </span>
-                  )}
+                  <TypeCell
+                    type={Data[Names[game][index].toLowerCase()]["type1"]}
+                  />
+                  <TypeCell
+                    type={Data[Names[game][index].toLowerCase()]["type2"]}
+                  />
                 </div>
                 <div className="w-full px-2">
                   <div className="relative flex justify-between w-full gap-2">

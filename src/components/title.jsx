@@ -11,7 +11,7 @@ export default function Title({ game, screen, gameList, screenList }) {
   };
   return (
     <div className="w-full mt-2 border-y-2 border-pokeblack">
-      <div className="flex w-full justify-between py-1 bg-pokeblack border-y-4 border-lime">
+      <div className="flex w-full justify-between py-1 bg-pokeblack border-y-4 border-lime-500">
         <img src={BigStripes} alt="" className="h-[28px] w-[46px]"></img>
         <p className="flex-1 text-4xl mt-1 mx-4 text-light text-shadow-dark leading-[1.5rem]">
           {renderScreen(screen)}
