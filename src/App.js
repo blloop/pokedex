@@ -5,6 +5,18 @@ import Names from "./data/names.json";
 import Mapping from "./data/mapping.json";
 import Data from "./data/data.json";
 import Info from "./data/info.json";
+import Moves0 from "./data/moves-00.json";
+import Moves1 from "./data/moves-01.json";
+import Moves2 from "./data/moves-02.json";
+import Moves3 from "./data/moves-03.json";
+import Moves4 from "./data/moves-04.json";
+import Moves5 from "./data/moves-05.json";
+import Moves6 from "./data/moves-06.json";
+import Moves7 from "./data/moves-07.json";
+import Moves8 from "./data/moves-08.json";
+import Moves9 from "./data/moves-09.json";
+import Moves10 from "./data/moves-10.json";
+import Moves11 from "./data/moves-11.json";
 
 import Panel from "./components/panel";
 import Window from "./components/window";
@@ -17,14 +29,51 @@ import ArrowRight from "./assets/arrow-right.png";
 import ArrowUp from "./assets/arrow-up.png";
 import ArrowDown from "./assets/arrow-down.png";
 import Frame from "./assets/frame.png";
-import StatList from "./components/statList";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
+const MovesList = [
+  Moves0,
+  Moves1,
+  Moves2,
+  Moves3,
+  Moves4,
+  Moves5,
+  Moves6,
+  Moves7,
+  Moves8,
+  Moves9,
+  Moves10,
+  Moves11,
+];
+
+const gameList = [
+  "Red/Blue",
+  "Yellow",
+  "Gold/Silver",
+  "Crystal",
+  "Ruby/Sapphire",
+  "FireRed/LeafGreen",
+  "Emerald",
+  "Diamond/Pearl",
+  "Platinum",
+  "Heartgold/Soulsilver",
+  "Black/White",
+  "Black2/White2",
+];
+
+const gameMap = [
+  0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
+];
+
+const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
+
 function App() {
-  const [index, setIndex] = useState(0);
-  const [game, setGame] = useState(0); // Corresponds to gameList
-  const [screen, setScreen] = useState(0); // Corresponds to screenList
+  const [monster, setMonster] = useState(0);
+  const [game, setGame] = useState(0);
+  const [screen, setScreen] = useState(0);
+  const [move, setMove] = useState(-1);
+  const [moves, setMoves] = useState(MovesList[game]);
   const [position, setPosition] = useState(0);
   // const [moveData, setMoveData] = useState({});
 
@@ -44,8 +93,7 @@ function App() {
     // Calculate the proportional target index based on the current scroll position
     const proportionalIndex =
       (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
-    const targetIndex = Math.ceil(proportionalIndex);
-    setIndex(targetIndex);
+    setMonster(Math.ceil(proportionalIndex));
   }, [game]);
 
   const setScroll = (create) => {
@@ -70,27 +118,6 @@ function App() {
   //   const pounds = kg * 2.20462;
   //   return pounds.toFixed(1);
   // }
-
-  const gameList = [
-    "Red/Blue",
-    "Yellow",
-    "Gold/Silver",
-    "Crystal",
-    "Ruby/Sapphire",
-    "FireRed/LeafGreen",
-    "Emerald",
-    "Diamond/Pearl",
-    "Platinum",
-    "Heartgold/Soulsilver",
-    "Black/White",
-    "Black2/White2",
-  ];
-
-  const gameMap = [
-    0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
-  ];
-
-  const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
 
   const navigate = (screen) => {
     setScroll(false);
@@ -123,22 +150,23 @@ function App() {
 
   const handleGameChange = (event) => {
     setGame(event.target.value);
+    setMoves(MovesList[event.target.value]);
   };
 
   const renderListItem = (name, number) => {
     return (
       <button
         onClick={() => {
-          if (index === number) {
+          if (monster === number) {
             setPosition(scrollRef.current.scrollTop);
             navigate(2);
           } else {
-            setIndex(number);
+            setMonster(number);
           }
         }}
         className={cn(
           "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:text-lime-300 text-pokegray bg-pokeblack overflow-visible",
-          number === index
+          number === monster
             ? "bg-lime-700 text-lime-300 text-shadow-slate"
             : "text-shadow-slate md:hover:bg-lime-900",
         )}
@@ -147,7 +175,7 @@ function App() {
         <div
           className={cn(
             "w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3",
-            number === index
+            number === monster
               ? "border-r-lime-700"
               : "md:group-hover:border-r-lime-900",
           )}
@@ -155,7 +183,7 @@ function App() {
         <div
           className={cn(
             "w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent absolute -right-[15px] md:-right-6",
-            number === index
+            number === monster
               ? "border-t-lime-700"
               : "md:group-hover:border-t-lime-900",
           )}
@@ -163,7 +191,7 @@ function App() {
         <div
           className={cn(
             "relative -left-2 -top-0 shrink-0 h-8 md:h-12 md:group-hover:brightness-125",
-            number === index ? "brightness-125" : "",
+            number === monster ? "brightness-125" : "",
           )}
         >
           <img className="absolute left-0 h-full" src={ArrowLeft} alt="" />
@@ -201,6 +229,7 @@ function App() {
       </div>
     );
   }
+
   const renderScreen = () => {
     switch (screen) {
       case 1:
@@ -213,7 +242,7 @@ function App() {
                   <img
                     key={e}
                     data-temp={e}
-                    hidden={e !== index}
+                    hidden={e !== monster}
                     alt={Names[game][e]}
                     src={`/sprites/${Mapping[game][e]}.png`}
                     className="absolute w-full max-w-96 scale-x-[-1]"
@@ -240,26 +269,26 @@ function App() {
               <div className="absolute top-16 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
               <img
                 alt=""
-                src={`/sprites/${Mapping[game][index - 1]}.png`}
+                src={`/sprites/${Mapping[game][monster - 1]}.png`}
                 className="w-72 hidden"
               />
               <img
-                alt={Names[game][index]}
-                src={`/sprites/${Mapping[game][index]}.png`}
+                alt={Names[game][monster]}
+                src={`/sprites/${Mapping[game][monster]}.png`}
                 className="w-72 scale-x-[-1]"
               />
               <img
                 alt=""
-                src={`/sprites/${Mapping[game][index + 1]}.png`}
+                src={`/sprites/${Mapping[game][monster + 1]}.png`}
                 className="w-72 hidden"
               />
               <Window className="z-10 w-fit h-96 overflow-y-auto">
                 <div className="w-full flex bg-pokegray">
-                  <p>• {String(index + 1).padStart(3, "0")}</p>
-                  <p className="flex-grow text-center">{Names[game][index]}</p>
+                  <p>• {String(monster + 1).padStart(3, "0")}</p>
+                  <p className="flex-grow text-center">{Names[game][monster]}</p>
                 </div>
                 <StatList
-                  stats={Data[Names[game][index].toLowerCase()]["stats"]}
+                  stats={Data[Names[game][monster].toLowerCase()]["stats"]}
                 />
               </Window>
             </div>
@@ -275,35 +304,35 @@ function App() {
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
               <img
                 alt=""
-                src={`/sprites/${Mapping[game][index - 1]}.png`}
+                src={`/sprites/${Mapping[game][monster - 1]}.png`}
                 className="w-72 hidden"
               />
               <img
-                alt={Names[game][index]}
-                src={`/sprites/${Mapping[game][index]}.png`}
+                alt={Names[game][monster]}
+                src={`/sprites/${Mapping[game][monster]}.png`}
                 className="w-72 scale-x-[-1]"
               />
               <img
                 alt=""
-                src={`/sprites/${Mapping[game][index + 1]}.png`}
+                src={`/sprites/${Mapping[game][monster + 1]}.png`}
                 className="w-72 hidden"
               />
               <Window className="z-10 w-72">
                 <div className="w-full flex bg-pokegray">
-                  <p>• {String(index + 1).padStart(3, "0")}</p>
-                  <p className="flex-grow text-center">{Names[game][index]}</p>
+                  <p>• {String(monster + 1).padStart(3, "0")}</p>
+                  <p className="flex-grow text-center">{Names[game][monster]}</p>
                 </div>
                 <p className="text-center">
-                  {Data[Names[game][index].toLowerCase()]["species"]} Pokemon
+                  {Data[Names[game][monster].toLowerCase()]["species"]} Pokemon
                 </p>
                 <div className="flex justify-center px-12 py-6 gap-2 bg-tilesWhite bg-repeat-x bg-contain">
                   <div className="hidden bg-bug bg-dark bg-dragon bg-electr bg-fight bg-fire bg-flying bg-ghost bg-grass bg-ground bg-ice bg-normal bg-poison bg-psychc bg-rock bg-steel bg-water" />
                   {/* <span className="h-7 w-16 text-2xl text-white bg-fire text-shadow-black text-center border-2 border-gray"> */}
                   <TypeCell
-                    type={Data[Names[game][index].toLowerCase()]["type1"]}
+                    type={Data[Names[game][monster].toLowerCase()]["type1"]}
                   />
                   <TypeCell
-                    type={Data[Names[game][index].toLowerCase()]["type2"]}
+                    type={Data[Names[game][monster].toLowerCase()]["type2"]}
                   />
                 </div>
                 <div className="w-full px-2">
@@ -311,14 +340,14 @@ function App() {
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">HT</p>
                     <p className="z-10">
-                      {Data[Names[game][index].toLowerCase()]["height"]} m
+                      {Data[Names[game][monster].toLowerCase()]["height"]} m
                     </p>
                   </div>
                   <div className="relative flex justify-between w-full gap-2">
                     <div className="absolute top-4 w-full h-2 bg-pokegray rounded-full" />
                     <p className="z-10 pl-8">WT</p>
                     <p className="z-10">
-                      {Data[Names[game][index].toLowerCase()]["weight"]} kg
+                      {Data[Names[game][monster].toLowerCase()]["weight"]} kg
                     </p>
                   </div>
                 </div>
@@ -328,7 +357,7 @@ function App() {
               <div className="w-full p-8 bg-slate">
                 <p className="text-light">
                   {
-                    Info[Names[game][index].toLowerCase()][
+                    Info[Names[game][monster].toLowerCase()][
                       gameMap.indexOf(Number(game))
                     ]
                   }
@@ -395,19 +424,19 @@ function App() {
           }
         >
           <button
-            onClick={() => setIndex(index - 1)}
+            onClick={() => setMonster(monster - 1)}
             className={cn(
               "md:hover:brightness-50 transition-filter",
-              index === 0 && "opacity-0 pointer-events-none",
+              monster === 0 && "opacity-0 pointer-events-none",
             )}
           >
             <img className="h-10" src={ArrowUp} alt="" />
           </button>
           <button
-            onClick={() => setIndex(index + 1)}
+            onClick={() => setMonster(monster + 1)}
             className={cn(
               "md:hover:brightness-50 transition-filter",
-              index + 1 === Names[game].length &&
+              monster + 1 === Names[game].length &&
                 "opacity-0 pointer-events-none",
             )}
           >
@@ -430,7 +459,7 @@ function App() {
             } else if (screen === 1) {
               navigate(0);
               setTimeout(() => {
-                setIndex(0);
+                setMonster(0);
               }, 750);
             } else {
               setTimeout(() => {
