@@ -51,6 +51,10 @@ img {
   clip-path: polygon(10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
 }
 
+#hexlist div {
+  clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
+}
+
 ::-webkit-scrollbar {
   width: 20px;
 }

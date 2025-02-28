@@ -20,6 +20,8 @@ module.exports = {
         slateDark: "#272929",
         aquaDark: "#327979",
         aquaLight: "#47CBAA",
+        tealLight: "#C3FBF3",
+        tealDark: "#205961",
         statRed: "#E9423F",
         statOrange: "#F67E00",
         statYellow: "#FBDC4A",
