@@ -74,9 +74,9 @@ const gameMap = [
 const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
 
 const moveCells = {
-  "physical": CellPhysical,
-  "special": CellSpecial,
-  "status": CellStatus
+  physical: CellPhysical,
+  special: CellSpecial,
+  status: CellStatus,
 };
 
 function App() {
@@ -86,11 +86,6 @@ function App() {
   const [move, setMove] = useState("");
   const [moves, setMoves] = useState(MovesList[game]);
   const [position, setPosition] = useState(0);
-  // const [moveData, setMoveData] = useState({});
-
-  // useEffect(() => {
-  //   setMoveData({});
-  // }, []);
 
   const scrollRef = useRef(null);
   const handleScroll = useCallback(() => {
@@ -243,12 +238,33 @@ function App() {
 
   function HexMove({ isButton, name, level, onMoveClick }) {
     return (
-      <div onClick={onMoveClick} className={cn("w-[320px] h-[80px] p-[4px]", isButton ? "bg-gradient-to-b from-aquaLight to-aquaDark md:cursor-pointer" : "bg-tealLight")}>
-        <div className={cn("w-[312px] h-[72px] flex gap-2 py-1 px-6 text-white", isButton ? "bg-slate transition-colors md:hover:bg-slateDark" : "bg-tealDark")}>
-          <TypeCell type={MoveData[name] ? MoveData[name].type : "normal"} isLarge={true} />
+      <div
+        onClick={onMoveClick}
+        className={cn(
+          "w-[320px] h-[80px] p-[4px]",
+          isButton
+            ? "bg-gradient-to-b from-aquaLight to-aquaDark md:cursor-pointer"
+            : "bg-tealLight",
+        )}
+      >
+        <div
+          className={cn(
+            "w-[312px] h-[72px] flex gap-2 py-1 px-6 text-white",
+            isButton
+              ? "bg-slate transition-colors md:hover:bg-slateDark"
+              : "bg-tealDark",
+          )}
+        >
+          <TypeCell
+            type={MoveData[name] ? MoveData[name].type : "normal"}
+            isLarge={true}
+          />
           <span className="flex flex-col h-full justify-between text-3xl">
             <p>{name}</p>
-            <p className="-mt-1">{"Lv."}{level}</p>
+            <p className="-mt-1">
+              {"Lv."}
+              {level}
+            </p>
           </span>
         </div>
       </div>
@@ -288,11 +304,11 @@ function App() {
         );
       case 3:
         return (
-          <div className="flex flex-col items-center w-full gap-8 text-4xl max-h-[calc(100dvh-8rem)] overflow-y-auto overflow-x-hidden z-10">
-            <div className="relative flex flex-col gap-16 px-8 md:flex-row w-full justify-center items-center">
+          <div className="flex flex-col items-center w-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10">
+            <div className="relative flex flex-col gap-16 px-8 md:flex-row size-full justify-center items-center">
               <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
-              <div className="flex flex-col items-center md:h-full">
+              <div className="flex flex-col z-10 items-center overflow-y-auto overflow-x-hidden md:h-full">
                 <img
                   alt=""
                   src={`/sprites/${Mapping[game][monster - 1]}.png`}
@@ -309,7 +325,7 @@ function App() {
                   className="w-72 hidden"
                 />
                 <Window innerClass="!p-0 text-3xl">
-                  {move.length > 0 ?
+                  {move.length > 0 ? (
                     <>
                       <div className="flex justify-between items-center">
                         <div className="flex flex-col justify-center h-48 w-full md:w-40 px-4 bg-gray text-pokewhite">
@@ -319,24 +335,47 @@ function App() {
                           <p>▪ PP</p>
                         </div>
                         <div className="flex flex-col justify-center items-center h-48 w-full md:w-32 px-4">
-                          <img src={moveCells[MoveData[move].category]} className="h-8 py-1" alt="" />
-                          <p>{MoveData[move].power > 0 ? MoveData[move].power : "-" }</p>
-                          <p>{MoveData[move].accuracy > 0 || MoveData[move].accuracy === "∞" ? MoveData[move].accuracy : "-"}</p>
+                          <img
+                            src={moveCells[MoveData[move].category]}
+                            className="h-8 py-1"
+                            alt=""
+                          />
+                          <p>
+                            {MoveData[move].power > 0
+                              ? MoveData[move].power
+                              : "-"}
+                          </p>
+                          <p>
+                            {MoveData[move].accuracy > 0 ||
+                            MoveData[move].accuracy === "∞"
+                              ? MoveData[move].accuracy
+                              : "-"}
+                          </p>
                           <p>{MoveData[move].pp}</p>
                         </div>
                       </div>
-                      <p className={cn("w-72 h-40 overflow-y-auto p-4 border-t-4 border-t-gray", !MoveData[move].text && "text-2xl italic")}>
+                      <p
+                        className={cn(
+                          "w-72 h-40 overflow-y-auto p-4 border-t-4 border-t-gray",
+                          !MoveData[move].text && "text-2xl italic",
+                        )}
+                      >
                         {MoveData[move].text || "No additional effect"}
                       </p>
                     </>
-                  : <div className="flex flex-col items-center w-72 h-[22rem]">
-                    <p className="p-4 text-center">Please select a move to see its details</p>
+                  ) : (
+                    <div className="flex flex-col items-center w-72 h-[22rem]">
+                      <p className="p-4 text-center">
+                        Please select a move to see its details
+                      </p>
                     </div>
-                  }
-                  
+                  )}
                 </Window>
               </div>
-              <div id="hexlist" className="z-10 h-[48rem] overflow-y-auto overflow-x-hidden">
+              <div
+                id="hexlist"
+                className="z-10 h-[48rem] h-full overflow-y-auto overflow-x-hidden"
+              >
                 {moves[Names[game][monster].toLowerCase()]["level"].map(
                   (e, i) => (
                     <HexMove
@@ -376,7 +415,9 @@ function App() {
               <Window className="z-10 w-fit h-96 overflow-y-auto">
                 <div className="w-full flex bg-pokegray">
                   <p>• {String(monster + 1).padStart(3, "0")}</p>
-                  <p className="flex-grow text-center">{Names[game][monster]}</p>
+                  <p className="flex-grow text-center">
+                    {Names[game][monster]}
+                  </p>
                 </div>
                 <StatList
                   stats={Data[Names[game][monster].toLowerCase()]["stats"]}
@@ -410,14 +451,15 @@ function App() {
               <Window className="z-10 w-72">
                 <div className="w-full flex bg-pokegray">
                   <p>• {String(monster + 1).padStart(3, "0")}</p>
-                  <p className="flex-grow text-center">{Names[game][monster]}</p>
+                  <p className="flex-grow text-center">
+                    {Names[game][monster]}
+                  </p>
                 </div>
                 <p className="text-center">
                   {Data[Names[game][monster].toLowerCase()]["species"]} Pokemon
                 </p>
                 <div className="flex justify-center px-12 py-6 gap-2 bg-tilesWhite bg-repeat-x bg-contain">
                   <div className="hidden bg-bug bg-dark bg-dragon bg-electr bg-fight bg-fire bg-flying bg-ghost bg-grass bg-ground bg-ice bg-normal bg-poison bg-psychc bg-rock bg-steel bg-water" />
-                  {/* <span className="h-7 w-16 text-2xl text-white bg-fire text-shadow-black text-center border-2 border-gray"> */}
                   <TypeCell
                     type={Data[Names[game][monster].toLowerCase()]["type1"]}
                   />
@@ -506,7 +548,7 @@ function App() {
       {renderScreen()}
       <div
         id="hexrow"
-        className="flex justify-between gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
+        className="flex justify-between z-50 gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
       >
         <div
           className={
@@ -516,7 +558,7 @@ function App() {
           <button
             onClick={() => {
               setMonster(monster - 1);
-              setMove("")
+              setMove("");
             }}
             className={cn(
               "md:hover:brightness-50 transition-filter",
@@ -528,7 +570,7 @@ function App() {
           <button
             onClick={() => {
               setMonster(monster + 1);
-              setMove("")
+              setMove("");
             }}
             className={cn(
               "md:hover:brightness-50 transition-filter",
