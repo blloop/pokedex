@@ -24,6 +24,7 @@ import Window from "./components/window";
 import Title from "./components/title";
 import TypeCell from "./components/typeCell";
 import StatList from "./components/statList";
+import InfoList from "./components/infoList";
 
 import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
@@ -304,7 +305,7 @@ function App() {
         );
       case 3:
         return (
-          <div className="flex flex-col items-center w-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10">
+          <div className="flex flex-col items-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10">
             <div className="relative flex flex-col gap-16 px-8 md:flex-row size-full justify-center items-center">
               <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
@@ -393,10 +394,10 @@ function App() {
         );
       case 4:
         return (
-          <div className="flex flex-col items-center w-full gap-8 text-4xl overflow-y-auto overflow-x-hidden z-10">
-            <div className="relative flex flex-col gap-16 md:flex-row w-full justify-center items-center">
-              <div className="absolute top-16 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
-              <div className="absolute top-16 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
+          <div className="flex flex-col items-center justify-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] overflow-y-auto overflow-x-hidden z-10">
+            <div className="relative flex flex-col gap-16 md:flex-row size-full justify-center items-start">
+              <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
+              <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
               <img
                 alt=""
                 src={`/sprites/${Mapping[game][monster - 1]}.png`}
@@ -412,17 +413,22 @@ function App() {
                 src={`/sprites/${Mapping[game][monster + 1]}.png`}
                 className="w-72 hidden"
               />
-              <Window className="z-10 w-fit h-96 overflow-y-auto">
-                <div className="w-full flex bg-pokegray">
-                  <p>• {String(monster + 1).padStart(3, "0")}</p>
-                  <p className="flex-grow text-center">
-                    {Names[game][monster]}
-                  </p>
-                </div>
-                <StatList
-                  stats={Data[Names[game][monster].toLowerCase()]["stats"]}
-                />
-              </Window>
+              <div className="flex flex-col justify-between gap-4 h-full overflow-y-auto overflow-x-hidden z-10">
+                <Window>
+                  <div className="w-full flex bg-pokegray">
+                    <p>• {String(monster + 1).padStart(3, "0")}</p>
+                    <p className="flex-grow text-center">
+                      {Names[game][monster]}
+                    </p>
+                  </div>
+                  <StatList
+                    stats={Data[Names[game][monster].toLowerCase()]["stats"]}
+                  />
+                </Window>
+                <Window>
+                  <InfoList info={Data[Names[game][monster].toLowerCase()]} />
+                </Window>
+              </div>
             </div>
           </div>
         );
@@ -536,7 +542,7 @@ function App() {
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
       <div
         id="fade"
-        className="absolute inset-0 z-20 pointer-events-none bg-[#000] opacity-0 transition-opacity duration-500"
+        className="absolute inset-0 z-50 pointer-events-none bg-[#000] opacity-0 transition-opacity duration-500"
       ></div>
       <Title
         game={game}
@@ -548,7 +554,7 @@ function App() {
       {renderScreen()}
       <div
         id="hexrow"
-        className="flex justify-between z-50 gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
+        className="flex justify-between z-30 gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
       >
         <div
           className={

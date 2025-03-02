@@ -28,6 +28,8 @@ module.exports = {
         statLime: "#A6E500",
         statGreen: "#49CD58",
         statAqua: "#40C2B8",
+        genderMale: "#3273DC",
+        genderFemale: "#FF4488",
         bug: "#A9B723",
         dark: "#6F5848",
         dragon: "#6E36F0",
