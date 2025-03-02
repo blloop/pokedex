@@ -38,6 +38,8 @@ import CellStatus from "./assets/cell-status.png";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
+const FADE_MS = 250;
+
 const MovesList = [
   Moves0,
   Moves1,
@@ -134,10 +136,10 @@ function App() {
       document.getElementById("fade").style.opacity = "0";
       document.getElementById("fade").style.pointerEvents = "none";
       setScroll(true);
-    }, 1000);
+    }, FADE_MS * 2);
     setTimeout(() => {
       setScreen(screen);
-    }, 500);
+    }, FADE_MS);
   };
 
   const togglePanel = (open) => {
@@ -413,7 +415,7 @@ function App() {
                 src={`/sprites/${Mapping[game][monster + 1]}.png`}
                 className="w-72 hidden"
               />
-              <div className="flex flex-col justify-between gap-4 h-full overflow-y-auto overflow-x-hidden z-10">
+              <div className="flex flex-col justify-start gap-4 h-full overflow-y-auto overflow-x-hidden z-10">
                 <Window>
                   <div className="w-full flex bg-pokegray">
                     <p>• {String(monster + 1).padStart(3, "0")}</p>
@@ -542,7 +544,10 @@ function App() {
       <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
       <div
         id="fade"
-        className="absolute inset-0 z-50 pointer-events-none bg-[#000] opacity-0 transition-opacity duration-500"
+        className={cn(
+          "absolute inset-0 z-50 pointer-events-none bg-[#000] opacity-0 transition-opacity",
+          "duration-" + FADE_MS * 2,
+        )}
       ></div>
       <Title
         game={game}

@@ -27,6 +27,7 @@ export default function InfoList({ info }) {
       <div className="flex gap-2 items-center">
         <p className="w-32 text-right">Catch Rate</p>
         <p>{info["catch-rate"]}</p>
+        {/* TODO: Add catch rate calculations */}
       </div>
       <div className="flex gap-2 items-center">
         <p className="w-32 text-right">Base Exp.</p>
@@ -44,6 +45,7 @@ export default function InfoList({ info }) {
       <div className="flex gap-2 items-center">
         <p className="w-32 text-right">Egg Cycles</p>
         <p>{info["egg-cycles"]}</p>
+        {/* TODO: Add egg cycle calculations */}
       </div>
       <div className="flex gap-2 items-center">
         <p className="w-32 text-right">Base Friendship</p>
