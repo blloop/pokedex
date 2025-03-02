@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -54,12 +54,12 @@ module.exports = {
         filter: "filter",
       },
       backgroundImage: {
-        tiles: "url('/public/tiles.png')",
-        tilesBlack: "url('/public/tiles-black.png')",
-        tilesWhite: "url('/public/tiles-white.png')",
-        ruler: "url('/public/ruler.png')",
-        rulerHead: "url('/public/ruler-head.png')",
-        stripes: "url('/public/stripe-pattern.png')",
+        tiles: "url('/tiles.png')",
+        tilesBlack: "url('/tiles-black.png')",
+        tilesWhite: "url('/tiles-white.png')",
+        ruler: "url('/ruler.png')",
+        rulerHead: "url('/ruler-head.png')",
+        stripes: "url('/stripe-pattern.png')",
       },
       boxShadow: {
         window: "inset 0px 0px 4px rgb(0, 0, 0)",
