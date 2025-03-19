@@ -223,7 +223,7 @@ function App() {
 
   function HexButton({ isButton, text, toScreen }) {
     return isButton ? (
-      <div className="w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
+      <div className="select-none w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
         <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:hover:bg-gray">
           <button type="button" onClick={() => navigate(toScreen)}>
             {text}
@@ -231,7 +231,7 @@ function App() {
         </div>
       </div>
     ) : (
-      <div className="w-20 h-10 p-[2px] bg-white">
+      <div className="select-none w-20 h-10 p-[2px] bg-white">
         <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
           {text}
         </div>
@@ -307,11 +307,11 @@ function App() {
         );
       case 3:
         return (
-          <div className="flex flex-col items-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10">
-            <div className="relative flex flex-col gap-16 px-8 md:flex-row size-full justify-center items-center">
+          <div className="flex flex-col items-center justify-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10">
+            <div className="relative flex flex-col gap-16 px-8 md:flex-row w-full md:h-[48rem] overflow-y-auto overflow-x-hidden justify-start md:justify-center items-center">
               <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
-              <div className="flex flex-col z-10 items-center overflow-y-auto overflow-x-hidden md:h-full">
+              <div className="flex flex-col z-10 items-center overflow-y-auto h-1/2 md:h-fit">
                 <img
                   alt=""
                   src={`/sprites/${Mapping[game][monster - 1]}.png`}
@@ -377,7 +377,7 @@ function App() {
               </div>
               <div
                 id="hexlist"
-                className="z-10 h-[48rem] h-full overflow-y-auto overflow-x-hidden"
+                className="z-10 h-1/2 md:h-[48rem] h-full overflow-y-auto overflow-x-hidden"
               >
                 {moves[Names[game][monster].toLowerCase()]["level"].map(
                   (e, i) => (
@@ -396,41 +396,39 @@ function App() {
         );
       case 4:
         return (
-          <div className="flex flex-col items-center justify-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] overflow-y-auto overflow-x-hidden z-10">
-            <div className="relative flex flex-col gap-16 md:flex-row size-full justify-center items-start">
-              <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
-              <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
-              <img
-                alt=""
-                src={`/sprites/${Mapping[game][monster - 1]}.png`}
-                className="w-72 hidden"
-              />
-              <img
-                alt={Names[game][monster]}
-                src={`/sprites/${Mapping[game][monster]}.png`}
-                className="w-72 scale-x-[-1]"
-              />
-              <img
-                alt=""
-                src={`/sprites/${Mapping[game][monster + 1]}.png`}
-                className="w-72 hidden"
-              />
-              <div className="flex flex-col justify-start gap-4 h-full overflow-y-auto overflow-x-hidden z-10">
-                <Window>
-                  <div className="w-full flex bg-pokegray">
-                    <p>• {String(monster + 1).padStart(3, "0")}</p>
-                    <p className="flex-grow text-center">
-                      {Names[game][monster]}
-                    </p>
-                  </div>
-                  <StatList
-                    stats={Data[Names[game][monster].toLowerCase()]["stats"]}
-                  />
-                </Window>
-                <Window>
-                  <InfoList info={Data[Names[game][monster].toLowerCase()]} />
-                </Window>
-              </div>
+          <div className="relative flex flex-col gap-16 md:flex-row w-full h-fit text-4xl max-h-[calc(100dvh-9rem)] overflow-y-auto overflow-x-hidden z-10 justify-start md:justify-center items-center md:items-start">
+            <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
+            <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
+            <img
+              alt=""
+              src={`/sprites/${Mapping[game][monster - 1]}.png`}
+              className="w-72 hidden"
+            />
+            <img
+              alt={Names[game][monster]}
+              src={`/sprites/${Mapping[game][monster]}.png`}
+              className="w-72 scale-x-[-1]"
+            />
+            <img
+              alt=""
+              src={`/sprites/${Mapping[game][monster + 1]}.png`}
+              className="w-72 hidden"
+            />
+            <div className="flex flex-col justify-start gap-4 h-full z-10">
+              <Window>
+                <div className="w-full flex bg-pokegray">
+                  <p>• {String(monster + 1).padStart(3, "0")}</p>
+                  <p className="flex-grow text-center">
+                    {Names[game][monster]}
+                  </p>
+                </div>
+                <StatList
+                  stats={Data[Names[game][monster].toLowerCase()]["stats"]}
+                />
+              </Window>
+              <Window>
+                <InfoList info={Data[Names[game][monster].toLowerCase()]} />
+              </Window>
             </div>
           </div>
         );
@@ -546,7 +544,7 @@ function App() {
         id="fade"
         className={cn(
           "absolute inset-0 z-50 pointer-events-none bg-[#000] opacity-0 transition-opacity",
-          "duration-" + FADE_MS * 2,
+          "duration-300",
         )}
       ></div>
       <Title
@@ -572,7 +570,7 @@ function App() {
               setMove("");
             }}
             className={cn(
-              "md:hover:brightness-50 transition-filter",
+              "select-none md:hover:brightness-50 transition-filter",
               monster === 0 && "opacity-0 pointer-events-none",
             )}
           >
@@ -597,7 +595,7 @@ function App() {
             <HexButton isButton={screen !== 2} text={"INFO"} toScreen={2} />
             <HexButton isButton={screen !== 3} text={"MOVES"} toScreen={3} />
             <HexButton isButton={screen !== 4} text={"STATS"} toScreen={4} />
-            <HexButton isButton={screen !== 5} text={"DATA"} toScreen={5} />
+            {/* <HexButton isButton={screen !== 5} text={"DATA"} toScreen={5} /> */}
           </div>
         )}
         <button
@@ -610,11 +608,11 @@ function App() {
               setTimeout(() => {
                 setMonster(0);
                 setMove("");
-              }, 750);
+              }, FADE_MS * 1.5);
             } else {
               setTimeout(() => {
                 scrollRef.current.scrollTop = position;
-              }, 750);
+              }, FADE_MS * 1.5);
               navigate(1);
             }
           }}
