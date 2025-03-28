@@ -14,14 +14,24 @@ export default function InfoList({ info }) {
     <div className="flex flex-col items-start p-4 text-2xl text-shadow-mini">
       <div className="flex gap-2 items-center">
         <p className="w-32 text-right">Gender</p>
-        <p className="pl-2 border-l-2 border-gray text-genderMale">
-          {info.gender.split(":")[0] > 0 &&
-            info.gender.split(":")[0] * 12.5 + "% ♂"}
-        </p>
-        {info.gender.split(":")[0] > 0 && <p>-</p>}
-        <p className="text-genderFemale">
+        <p className="flex gap-2 pl-2 border-l-2 border-gray">
+          {info.gender.split(":")[1] > 0 && (
+            <span className="text-genderMale">
+              {info.gender.split(":")[1] * 12.5 + "% ♂"}
+            </span>
+          )}
           {info.gender.split(":")[1] > 0 &&
-            info.gender.split(":")[1] * 12.5 + "% ♀"}
+            info.gender.split(":")[0] > 0 &&
+            "-"}
+          {info.gender.split(":")[1] < 1 &&
+            info.gender.split(":")[0] < 1 &&
+            "Genderless"}
+          {info.gender.split(":")[0] > 0 && (
+            <span className="text-genderFemale">
+              {info.gender.split(":")[0] > 0 &&
+                info.gender.split(":")[0] * 12.5 + "% ♂"}
+            </span>
+          )}
         </p>
       </div>
       <div className="flex gap-2 items-center">
@@ -53,7 +63,9 @@ export default function InfoList({ info }) {
       </div>
       <div className="flex gap-2 items-center">
         <p className="w-32 text-right">Growth Rate</p>
-        <p className="pl-2 border-l-2 border-gray">{capitalize(info["growth-rate"])}</p>
+        <p className="pl-2 border-l-2 border-gray">
+          {capitalize(info["growth-rate"])}
+        </p>
       </div>
     </div>
   );
