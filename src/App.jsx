@@ -26,6 +26,7 @@ import TypeCell from "./components/typeCell";
 import StatList from "./components/statList";
 import InfoList from "./components/infoList";
 
+import BackButton from "./assets/back.png";
 import CloseButton from "./assets/close.png";
 import ArrowLeft from "./assets/arrow-left.png";
 import ArrowRight from "./assets/arrow-right.png";
@@ -599,27 +600,46 @@ function App() {
             {/* <HexButton isButton={screen !== 5} text={"DATA"} toScreen={5} /> */}
           </div>
         )}
-        <button
-          className="md:hover:brightness-50 transition-filter ml-10"
-          onClick={() => {
-            if (screen === 0) {
-              togglePanel(true);
-            } else if (screen === 1) {
-              navigate(0);
-              setTimeout(() => {
-                setMonster(0);
-                setMove("");
-              }, FADE_MS * 1.5);
-            } else {
-              setTimeout(() => {
-                scrollRef.current.scrollTop = position;
-              }, FADE_MS * 1.5);
-              navigate(1);
-            }
-          }}
-        >
-          <img className="h-10" src={CloseButton} alt="" />
-        </button>
+        <div className="flex items-center gap-4 ml-10">
+          <button
+            className={cn(
+              "md:hover:brightness-50 transition-filter",
+              screen < 2 && "hidden",
+            )}
+            onClick={() => {
+              if (screen === 1) {
+                navigate(0);
+                setTimeout(() => {
+                  setMonster(0);
+                  setMove("");
+                }, FADE_MS * 1.5);
+              } else {
+                setTimeout(() => {
+                  scrollRef.current.scrollTop = position;
+                }, FADE_MS * 1.5);
+                navigate(1);
+              }
+            }}
+          >
+            <img className="h-10" src={BackButton} alt="" />
+          </button>
+          <button
+            className="md:hover:brightness-50 transition-filter"
+            onClick={() => {
+              if (screen === 0) {
+                togglePanel(true);
+              } else {
+                navigate(0);
+                setTimeout(() => {
+                  setMonster(0);
+                  setMove("");
+                }, FADE_MS * 1.5);
+              }
+            }}
+          >
+            <img className="h-10" src={CloseButton} alt="" />
+          </button>
+        </div>
       </div>
     </div>
   );
