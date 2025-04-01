@@ -10,7 +10,7 @@ const barColors = [
 ];
 
 // StatList design inspired by Pokemondb.net
-export default function StatList({ stats }) {
+export default function StatList({ stats, showSpecials }) {
   function RenderBar({ value }) {
     return (
       <div
@@ -42,16 +42,27 @@ export default function StatList({ stats }) {
         <p className="w-8 text-right">{stats.defense}</p>
         <RenderBar value={stats.defense} />
       </div>
-      <div className="flex gap-2 items-center">
-        <p className="w-16 text-right">Sp. Atk</p>
-        <p className="w-8 text-right">{stats.spatk}</p>
-        <RenderBar value={stats.spatk} />
-      </div>
-      <div className="flex gap-2 items-center">
-        <p className="w-16 text-right">Sp. Def</p>
-        <p className="w-8 text-right">{stats.spdef}</p>
-        <RenderBar value={stats.spdef} />
-      </div>
+      {showSpecials && (
+        <div className="flex gap-2 items-center">
+          <p className="w-16 text-right">Sp. Atk</p>
+          <p className="w-8 text-right">{stats.spatk}</p>
+          <RenderBar value={stats.spatk} />
+        </div>
+      )}
+      {showSpecials && (
+        <div className="flex gap-2 items-center">
+          <p className="w-16 text-right">Sp. Def</p>
+          <p className="w-8 text-right">{stats.spdef}</p>
+          <RenderBar value={stats.spdef} />
+        </div>
+      )}
+      {!showSpecials && (
+        <div className="flex gap-2 items-center">
+          <p className="w-16 text-right">Special</p>
+          <p className="w-8 text-right">{stats.spatk}</p>
+          <RenderBar value={stats.spatk} />
+        </div>
+      )}
       <div className="flex gap-2 items-center">
         <p className="w-16 text-right">Speed</p>
         <p className="w-8 text-right">{stats.speed}</p>

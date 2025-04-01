@@ -307,11 +307,11 @@ function App() {
         );
       case 3:
         return (
-          <div className="flex flex-col items-center justify-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10">
+          <div className="flex flex-col items-center justify-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10 overflow-hidden md:overflow-y-auto">
             <div className="relative flex flex-col gap-16 px-8 md:flex-row w-full md:h-[48rem] overflow-y-auto overflow-x-hidden justify-start md:justify-center items-center">
               <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
-              <div className="flex flex-col z-10 items-center overflow-y-auto h-1/2 md:h-fit">
+              <div className="flex flex-col z-10 items-center md:overflow-y-auto md:overflow-x-hidden">
                 <img
                   alt=""
                   src={`/sprites/${Mapping[game][monster - 1]}.png`}
@@ -377,7 +377,7 @@ function App() {
               </div>
               <div
                 id="hexlist"
-                className="z-10 h-1/2 md:h-[48rem] h-full overflow-y-auto overflow-x-hidden"
+                className="z-10 h-full md:overflow-y-auto md:overflow-x-hidden"
               >
                 {moves[Names[game][monster].toLowerCase()]["level"].map(
                   (e, i) => (
@@ -424,6 +424,7 @@ function App() {
                 </div>
                 <StatList
                   stats={Data[Names[game][monster].toLowerCase()]["stats"]}
+                  showSpecials={game > 1}
                 />
               </Window>
               <Window>
