@@ -75,6 +75,10 @@ const gameMap = [
   0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
 ];
 
+const genMap = [
+  0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 
+];
+
 const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
 
 const moveCells = {
@@ -425,11 +429,14 @@ function App() {
                 </div>
                 <StatList
                   stats={Data[Names[game][monster].toLowerCase()]["stats"]}
-                  showSpecials={game > 1}
+                  gen={genMap[game]}
                 />
               </Window>
               <Window>
-                <InfoList info={Data[Names[game][monster].toLowerCase()]} />
+                <InfoList
+                  info={Data[Names[game][monster].toLowerCase()]}
+                  gen={genMap[game]}
+                />
               </Window>
             </div>
           </div>

@@ -10,18 +10,25 @@ const barColors = [
 ];
 
 // StatList design inspired by Pokemondb.net
-export default function StatList({ stats, showSpecials }) {
+export default function StatList({ stats, gen }) {
+  const get = (name) => {
+    return Array.isArray(stats[name]) ? stats[name][gen] : stats[name]
+  }
+
   function RenderBar({ value }) {
     return (
-      <div
-        className={cn(
-          "h-3 border border-gray rounded-md",
-          barColors[Math.min(Math.floor(value / 30), 5)],
-        )}
-        style={{
-          width: `${value / (Object.keys(stats).some((e) => stats[e] > 180) ? 1.5 : 1)}px`,
-        }}
-      />
+      <>
+        <p className="w-8 text-right">{value}</p>
+        <div
+          className={cn(
+            "h-3 border border-gray rounded-md",
+            barColors[Math.min(Math.floor(value / 30), 5)],
+          )}
+          style={{
+            width: `${value / (Object.keys(stats).some((e) => stats[e] > 180) ? 1.5 : 1)}px`,
+          }}
+        />
+      </>
     );
   }
 
@@ -29,49 +36,42 @@ export default function StatList({ stats, showSpecials }) {
     <div className="flex flex-col items-start p-4 text-2xl text-shadow-mini w-80">
       <div className="flex gap-2 items-center">
         <p className="w-16 text-right">HP</p>
-        <p className="w-8 text-right">{stats.hp}</p>
-        <RenderBar value={stats.hp} />
+        <RenderBar value={get("hp")} />
       </div>
       <div className="flex gap-2 items-center">
         <p className="w-16 text-right">Attack</p>
-        <p className="w-8 text-right">{stats.attack}</p>
-        <RenderBar value={stats.attack} />
+        <RenderBar value={get("attack")} />
       </div>
       <div className="flex gap-2 items-center">
         <p className="w-16 text-right">Defense</p>
-        <p className="w-8 text-right">{stats.defense}</p>
-        <RenderBar value={stats.defense} />
+        <RenderBar value={get("defense")} />
       </div>
-      {showSpecials && (
+      {gen > 0 && (
         <div className="flex gap-2 items-center">
           <p className="w-16 text-right">Sp. Atk</p>
-          <p className="w-8 text-right">{stats.spatk}</p>
-          <RenderBar value={stats.spatk} />
+          <RenderBar value={get("spatk")} />
         </div>
       )}
-      {showSpecials && (
+      {gen > 0 && (
         <div className="flex gap-2 items-center">
           <p className="w-16 text-right">Sp. Def</p>
-          <p className="w-8 text-right">{stats.spdef}</p>
-          <RenderBar value={stats.spdef} />
+          <RenderBar value={get("spdef")} />
         </div>
       )}
-      {!showSpecials && (
+      {gen === 0 && (
         <div className="flex gap-2 items-center">
           <p className="w-16 text-right">Special</p>
-          <p className="w-8 text-right">{stats.spatk}</p>
-          <RenderBar value={stats.spatk} />
+          <RenderBar value={get("spatk")} />
         </div>
       )}
       <div className="flex gap-2 items-center">
         <p className="w-16 text-right">Speed</p>
-        <p className="w-8 text-right">{stats.speed}</p>
-        <RenderBar value={stats.speed} />
+        <RenderBar value={get("speed")} />
       </div>
       <div className="flex gap-2 items-center">
         <p className="w-16 text-right tracking-tight">Total</p>
         <p className="w-8 text-right font-bold">
-          {Object.values(stats).reduce((acc, val) => acc + val, 0)}
+          {Object.keys(stats).reduce((acc, val) => acc + get(val), 0)}
         </p>
       </div>
     </div>
