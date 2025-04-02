@@ -228,17 +228,25 @@ function App() {
 
   function HexButton({ isButton, text, toScreen }) {
     return isButton ? (
-      <div className="select-none w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
-        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:hover:bg-gray">
-          <button type="button" onClick={() => navigate(toScreen)}>
-            {text}
-          </button>
-        </div>
+      <div className="group select-none w-10 sm:w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
+        <button type="button" onClick={() => navigate(toScreen)}>
+          <div className="hidden sm:block w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:group-hover:bg-gray">
+          {text}
+          </div>
+        </button>
+        <button type="button" onClick={() => navigate(toScreen)}>
+          <div className="block sm:hidden w-[2.25rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:group-hover:bg-gray">
+          {text.charAt(0)}
+          </div>
+        </button>
       </div>
     ) : (
-      <div className="select-none w-20 h-10 p-[2px] bg-white">
-        <div className="w-[4.75rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
+      <div className="select-none w-10 sm:w-20 h-10 p-[2px] bg-white">
+        <div className="hidden sm:block w-[4.75rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
           {text}
+        </div>
+        <div className="block sm:hidden w-[2.25rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
+          {text.charAt(0)}
         </div>
       </div>
     );
@@ -284,7 +292,7 @@ function App() {
       case 1:
         return (
           <>
-            <div className="z-10 relative flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-auto">
+            <div className="z-10 relative flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-hidden">
               <div className="relative flex flex-col justify-center items-center w-auto sm:w-full h-96 sm:h-auto">
                 <img src={Frame} className="size-full max-w-96" alt="" />
                 {Array.from(Array(Mapping[game].length).keys()).map((e) => (
@@ -300,7 +308,7 @@ function App() {
               </div>
               <div
                 ref={scrollRef}
-                className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden z-10"
+                className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden md:py-[calc(50vh-3.5rem)] z-10"
               >
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
@@ -312,11 +320,11 @@ function App() {
         );
       case 3:
         return (
-          <div className="flex flex-col items-center justify-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10 overflow-hidden md:overflow-y-auto">
-            <div className="relative flex flex-col gap-16 px-8 md:flex-row w-full md:h-[48rem] overflow-y-auto overflow-x-hidden justify-start md:justify-center items-center">
+          <div className="flex flex-col items-center justify-center size-full gap-8 text-4xl max-h-[calc(100dvh-9rem)] z-10 overflow-hidden">
+            <div className="relative flex flex-col gap-8 md:gap-16 px-8 md:flex-row w-full md:h-[48rem] overflow-y-auto overflow-x-hidden md:overflow-y-hidden justify-start md:justify-center items-center">
               <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
-              <div className="flex flex-col z-10 items-center md:overflow-y-auto md:overflow-x-hidden">
+              <div className="flex flex-col z-10 md:h-full items-center md:overflow-y-auto md:overflow-x-hidden">
                 <img
                   alt=""
                   src={`/sprites/${Mapping[game][monster - 1]}.png`}
@@ -401,7 +409,7 @@ function App() {
         );
       case 4:
         return (
-          <div className="relative flex flex-col gap-16 md:flex-row w-full h-fit text-4xl max-h-[calc(100dvh-9rem)] overflow-y-auto overflow-x-hidden z-10 justify-start md:justify-center items-center md:items-start">
+          <div className="relative flex flex-col gap-8 md:gap-16 md:flex-row w-full h-fit text-4xl max-h-[calc(100dvh-9rem)] overflow-y-auto overflow-x-hidden z-10 justify-start md:justify-center items-center md:items-start">
             <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
             <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
             <img
@@ -419,7 +427,7 @@ function App() {
               src={`/sprites/${Mapping[game][monster + 1]}.png`}
               className="w-72 hidden"
             />
-            <div className="flex flex-col justify-start gap-4 h-full z-10">
+            <div className="flex flex-col justify-start gap-4 h-full z-10 md:overflow-y-auto md:overflow-x-hidden">
               <Window>
                 <div className="w-full flex bg-pokegray">
                   <p>• {String(monster + 1).padStart(3, "0")}</p>
@@ -445,7 +453,7 @@ function App() {
       case 5:
         return (
           <div className="flex flex-col items-center w-full gap-8 text-4xl overflow-y-auto overflow-x-hidden z-10">
-            <div className="relative flex flex-col gap-16 md:flex-row w-full justify-center items-center">
+            <div className="relative flex flex-col gap-8 md:gap-16 md:flex-row w-full justify-center items-center">
               <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
               <img
@@ -501,7 +509,7 @@ function App() {
               </Window>
             </div>
             <Window innerClass="!p-0">
-              <div className="w-full p-8 bg-slate">
+              <div className="w-full p-4 md:p-8 bg-slate text-3xl md:text-4xl">
                 <p className="text-light">
                   {
                     Info[Names[game][monster].toLowerCase()][
@@ -583,7 +591,7 @@ function App() {
               monster === 0 && "opacity-0 pointer-events-none",
             )}
           >
-            <img className="h-10" src={ArrowUp} alt="" />
+            <img className="h-8 sm:h-10" src={ArrowUp} alt="" />
           </button>
           <button
             onClick={() => {
@@ -596,7 +604,7 @@ function App() {
                 "opacity-0 pointer-events-none",
             )}
           >
-            <img className="h-10" src={ArrowDown} alt="" />
+            <img className="h-8 sm:h-10" src={ArrowDown} alt="" />
           </button>
         </div>
         {screen > 1 && (
@@ -607,7 +615,7 @@ function App() {
             {/* <HexButton isButton={screen !== 5} text={"DATA"} toScreen={5} /> */}
           </div>
         )}
-        <div className="flex items-center gap-4 ml-10">
+        <div className="flex items-center gap-4">
           <button
             className={cn(
               "md:hover:brightness-50 transition-filter",
@@ -628,7 +636,7 @@ function App() {
               }
             }}
           >
-            <img className="h-10" src={BackButton} alt="" />
+            <img className="h-8 sm:h-10" src={BackButton} alt="" />
           </button>
           <button
             className="md:hover:brightness-50 transition-filter"
@@ -644,7 +652,7 @@ function App() {
               }
             }}
           >
-            <img className="h-10" src={CloseButton} alt="" />
+            <img className="h-8 sm:h-10" src={CloseButton} alt="" />
           </button>
         </div>
       </div>
