@@ -90,6 +90,8 @@ function App() {
   const [move, setMove] = useState("");
   const [moves, setMoves] = useState(MovesList[game]);
   const [position, setPosition] = useState(0);
+  const [settings, setSettings] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
   const scrollRef = useRef(null);
   const handleScroll = useCallback(() => {
@@ -161,6 +163,10 @@ function App() {
   const handleGameChange = (event) => {
     setGame(event.target.value);
     setMoves(MovesList[event.target.value]);
+  };
+
+  const handleAnimChange = (event) => {
+    setAnimate(event.target.checked);
   };
 
   const renderListItem = (name, number) => {
@@ -310,7 +316,12 @@ function App() {
               </div>
             </div>
             <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50dvh-8rem)] overflow-visible items-center">
-              <div className="relative h-36 sm:h-[25vw] max-h-64 w-full bg-stripes bg-fill sm:bg-contain bg-repeat-x"></div>
+              <div
+                className={cn(
+                  "relative h-36 sm:h-[25vw] max-h-64 w-full bg-fill sm:bg-contain bg-repeat-x",
+                  animate ? "bg-stripesMoving" : "bg-stripes",
+                )}
+              ></div>
             </div>
           </>
         );
@@ -519,7 +530,32 @@ function App() {
         );
       default:
         return (
-          <div className="z-10 flex items-center text-4xl">
+          <div className="z-10 flex flex-col items-stretch gap-4 text-4xl">
+            <Window innerClass="align-top">
+              <div className="w-full flex justify-between px-5 py-1 bg-pokegray">
+                <p>Settings</p>
+                <button
+                  type="button"
+                  onClick={() => setSettings(!settings)}
+                  className="p-2 pb-8 cursor-pointer h-4 leading-[0rem]"
+                >
+                  &#8964;
+                </button>
+              </div>
+              {settings && (
+                <div className="flex gap-4 px-4 py-2">
+                  <input
+                    id="anim"
+                    type="checkbox"
+                    onChange={(e) => setAnimate(e.target.checked)}
+                    className="scale-150"
+                  />
+                  <label htmlFor="anim" className="text-3xl text-shadow-none">
+                    Show Animations
+                  </label>
+                </div>
+              )}
+            </Window>
             <Window innerClass="align-top">
               <div className="w-full flex px-5 py-1 bg-pokegray">
                 <p>Select Game:</p>
@@ -550,9 +586,19 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col justify-between items-center w-full h-dvh gap-4 bg-tiles overflow-hidden">
+    <div
+      className={cn(
+        "relative overflow-y-auto overflow-x-hidden flex flex-col justify-between items-center w-full h-dvh gap-4",
+        animate ? "bg-tilesMovingGreen" : "bg-tilesGreen",
+      )}
+    >
       <Panel onClick={togglePanel} />
-      <div className="absolute left-0 right-0 top-16 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
+      <div
+        className={cn(
+          "absolute left-0 right-0 top-16 h-24 overflow-hidden pointer-events-none z-0",
+          animate ? "bg-tilesMovingBlack" : "bg-tilesBlack",
+        )}
+      />
       <div
         id="fade"
         className={cn(
@@ -561,7 +607,12 @@ function App() {
         )}
       ></div>
       <Title game={game} screen={screen} />
-      <div className="absolute left-0 right-0 top-32 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
+      <div
+        className={cn(
+          "absolute left-0 right-0 top-32 h-24 overflow-hidden pointer-events-none z-0",
+          animate ? "bg-tilesMovingBlack" : "bg-tilesBlack",
+        )}
+      />
       {renderScreen()}
       <div
         id="hexrow"

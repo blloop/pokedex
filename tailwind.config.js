@@ -54,12 +54,15 @@ module.exports = {
         filter: "filter",
       },
       backgroundImage: {
-        tiles: "url('/tiles.png')",
+        tilesGreen: "url('/tiles-green.png')",
         tilesBlack: "url('/tiles-black.png')",
         tilesWhite: "url('/tiles-white.png')",
+        tilesMovingGreen: "url('/tiles-green.gif')",
+        tilesMovingBlack: "url('/tiles-black.gif')",
         ruler: "url('/ruler.png')",
         rulerHead: "url('/ruler-head.png')",
         stripes: "url('/stripe-pattern.png')",
+        stripesMoving: "url('/stripe-pattern.gif')",
       },
       boxShadow: {
         window: "inset 0px 0px 4px rgb(0, 0, 0)",
