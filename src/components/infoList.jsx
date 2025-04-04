@@ -11,8 +11,8 @@ function capitalize(word) {
 // InfoList design inspired by Pokemondb.net
 export default function InfoList({ info, gen }) {
   const get = (name) => {
-    return Array.isArray(info[name]) ? info[name][gen] : info[name]
-  }
+    return Array.isArray(info[name]) ? info[name][gen] : info[name];
+  };
 
   return (
     <div className="flex flex-col items-start p-4 text-2xl text-shadow-mini">

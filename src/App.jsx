@@ -75,11 +75,7 @@ const gameMap = [
   0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
 ];
 
-const genMap = [
-  0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 
-];
-
-const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
+const genMap = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4];
 
 const moveCells = {
   physical: CellPhysical,
@@ -151,10 +147,10 @@ function App() {
     document.getElementById("panel-button").style.display = "none";
     document.getElementById("panel-left").style.left = open
       ? ""
-      : "calc(-1*(50vw + 50vh))";
+      : "calc(-1*(50vw + 50dvh))";
     document.getElementById("panel-right").style.right = open
       ? ""
-      : "calc(-1*(100vw + 100vh))";
+      : "calc(-1*(100vw + 100dvh))";
     setTimeout(() => {
       document.getElementById("panel-button").style.display = open
         ? "block"
@@ -231,12 +227,12 @@ function App() {
       <div className="group select-none w-10 sm:w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
         <button type="button" onClick={() => navigate(toScreen)}>
           <div className="hidden sm:block w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:group-hover:bg-gray">
-          {text}
+            {text}
           </div>
         </button>
         <button type="button" onClick={() => navigate(toScreen)}>
           <div className="block sm:hidden w-[2.25rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:group-hover:bg-gray">
-          {text.charAt(0)}
+            {text.slice(0, 2)}
           </div>
         </button>
       </div>
@@ -246,7 +242,7 @@ function App() {
           {text}
         </div>
         <div className="block sm:hidden w-[2.25rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
-          {text.charAt(0)}
+          {text.slice(0, 2)}
         </div>
       </div>
     );
@@ -308,12 +304,12 @@ function App() {
               </div>
               <div
                 ref={scrollRef}
-                className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden md:py-[calc(50vh-3.5rem)] z-10"
+                className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden md:py-[calc(50dvh-3.5rem)] z-10"
               >
                 {Names[game].map((e, i) => renderListItem(e, i))}
               </div>
             </div>
-            <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50vh-8rem)] overflow-visible items-center">
+            <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50dvh-8rem)] overflow-visible items-center">
               <div className="relative h-36 sm:h-[25vw] max-h-64 w-full bg-stripes bg-fill sm:bg-contain bg-repeat-x"></div>
             </div>
           </>
@@ -564,12 +560,7 @@ function App() {
           "duration-300",
         )}
       ></div>
-      <Title
-        game={game}
-        screen={screen}
-        gameList={gameList}
-        screenList={screenList}
-      />
+      <Title game={game} screen={screen} />
       <div className="absolute left-0 right-0 top-32 h-24 bg-tilesBlack overflow-hidden pointer-events-none z-0" />
       {renderScreen()}
       <div

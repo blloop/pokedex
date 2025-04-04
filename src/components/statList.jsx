@@ -12,8 +12,8 @@ const barColors = [
 // StatList design inspired by Pokemondb.net
 export default function StatList({ stats, gen }) {
   const get = (name) => {
-    return Array.isArray(stats[name]) ? stats[name][gen] : stats[name]
-  }
+    return Array.isArray(stats[name]) ? stats[name][gen] : stats[name];
+  };
 
   function RenderBar({ value }) {
     return (
