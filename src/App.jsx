@@ -214,7 +214,11 @@ function App() {
           <div className="w-16 h-full overflow-hidden">
             <img
               className="relative -top-3 h-12 md:h-16 object-cover z-10"
-              src={`/icons/${Mapping[game][number]}.png`}
+              src={
+                monster === number && animate
+                  ? `/icons/${Mapping[game][number]}.gif`
+                  : `/icons/${Mapping[game][number]}.png`
+              }
               alt=""
             />
           </div>
@@ -531,21 +535,14 @@ function App() {
         return (
           <div className="z-10 flex flex-col items-stretch gap-4 text-4xl">
             <Window innerClass="align-top">
-              <div className="w-full flex justify-between px-5 py-1 bg-pokegray">
+              <div className="w-full px-5 py-1 bg-pokegray">
                 <p>Settings</p>
-                <button
-                  type="button"
-                  onClick={() => setSettings(!settings)}
-                  className="p-2 pb-8 cursor-pointer h-4 leading-[0rem]"
-                >
-                  &#8964;
-                </button>
               </div>
-              {settings && (
                 <div className="flex gap-4 px-4 py-2">
                   <input
                     id="anim"
                     type="checkbox"
+                  checked={animate}
                     onChange={(e) => setAnimate(e.target.checked)}
                     className="scale-150"
                   />
@@ -553,7 +550,6 @@ function App() {
                     Show Animations
                   </label>
                 </div>
-              )}
             </Window>
             <Window innerClass="align-top">
               <div className="w-full flex px-5 py-1 bg-pokegray">
