@@ -8,8 +8,8 @@ function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-// InfoList design inspired by Pokemondb.net
-export default function InfoList({ info, gen }) {
+// ListInfo design inspired by Pokemondb.net
+export default function ListInfo({ info, gen }) {
   const get = (name) => {
     return Array.isArray(info[name]) ? info[name][gen] : info[name];
   };

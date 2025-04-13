@@ -1,10 +1,9 @@
 import { useCallback, useRef, useState } from "react";
 import { cn } from "./utils";
 
-import Names from "./data/names.json";
-import Mapping from "./data/mapping.json";
 import Data from "./data/data.json";
 import Info from "./data/info.json";
+import Mapping from "./data/mapping.json";
 import MoveData from "./data/moveData.json";
 import Moves0 from "./data/moves-00.json";
 import Moves1 from "./data/moves-01.json";
@@ -18,23 +17,26 @@ import Moves8 from "./data/moves-08.json";
 import Moves9 from "./data/moves-09.json";
 import Moves10 from "./data/moves-10.json";
 import Moves11 from "./data/moves-11.json";
+import Names from "./data/names.json";
 
+import HexButton from "./components/hexButton";
+import HexMove from "./components/hexMove";
+import ListInfo from "./components/listInfo";
+import ListStat from "./components/listStat";
 import Panel from "./components/panel";
-import Window from "./components/window";
 import Title from "./components/title";
 import TypeCell from "./components/typeCell";
-import StatList from "./components/statList";
-import InfoList from "./components/infoList";
+import Window from "./components/window";
 
-import BackButton from "./assets/back.png";
+import ArrowDown from "./assets/arrow-down.png";
 import ArrowLeft from "./assets/arrow-left.png";
 import ArrowRight from "./assets/arrow-right.png";
 import ArrowUp from "./assets/arrow-up.png";
-import ArrowDown from "./assets/arrow-down.png";
-import Frame from "./assets/frame.png";
+import BackButton from "./assets/back.png";
 import CellPhysical from "./assets/cell-physical.png";
 import CellSpecial from "./assets/cell-special.png";
 import CellStatus from "./assets/cell-status.png";
+import Frame from "./assets/frame.png";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
@@ -231,67 +233,6 @@ function App() {
     );
   };
 
-  function HexButton({ isButton, text, toScreen }) {
-    return isButton ? (
-      <div className="group select-none w-10 sm:w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
-        <button type="button" onClick={() => navigate(toScreen)}>
-          <div className="hidden sm:block w-[4.75rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:group-hover:bg-gray">
-            {text}
-          </div>
-        </button>
-        <button type="button" onClick={() => navigate(toScreen)}>
-          <div className="block sm:hidden w-[2.25rem] h-[2.25rem] pt-0.5 bg-black text-shadow-slate transition-colors md:group-hover:bg-gray">
-            {text.slice(0, 2)}
-          </div>
-        </button>
-      </div>
-    ) : (
-      <div className="select-none w-10 sm:w-20 h-10 p-[2px] bg-white">
-        <div className="hidden sm:block w-[4.75rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
-          {text}
-        </div>
-        <div className="block sm:hidden w-[2.25rem] h-[2.25rem] pt-0.5 bg-gray text-shadow-slate">
-          {text.slice(0, 2)}
-        </div>
-      </div>
-    );
-  }
-
-  function HexMove({ isButton, name, level, onMoveClick }) {
-    return (
-      <div
-        onClick={onMoveClick}
-        className={cn(
-          "w-[320px] h-[80px] p-[4px]",
-          isButton
-            ? "bg-gradient-to-b from-aquaLight to-aquaDark md:cursor-pointer"
-            : "bg-tealLight",
-        )}
-      >
-        <div
-          className={cn(
-            "w-[312px] h-[72px] flex gap-2 py-1 px-6 text-white",
-            isButton
-              ? "bg-slate transition-colors md:hover:bg-slateDark"
-              : "bg-tealDark",
-          )}
-        >
-          <TypeCell
-            type={MoveData[name] ? MoveData[name].type : "normal"}
-            isLarge={true}
-          />
-          <span className="flex flex-col h-full justify-between text-3xl">
-            <p>{name}</p>
-            <p className="-mt-1">
-              {"Lv."}
-              {level}
-            </p>
-          </span>
-        </div>
-      </div>
-    );
-  }
-
   const renderScreen = () => {
     switch (screen) {
       case 1:
@@ -445,13 +386,13 @@ function App() {
                     {Names[game][monster]}
                   </p>
                 </div>
-                <StatList
+                <ListStat
                   stats={Data[Names[game][monster].toLowerCase()]["stats"]}
                   gen={genMap[game]}
                 />
               </Window>
               <Window>
-                <InfoList
+                <ListInfo
                   info={Data[Names[game][monster].toLowerCase()]}
                   gen={genMap[game]}
                 />
@@ -538,18 +479,18 @@ function App() {
               <div className="w-full px-5 py-1 bg-pokegray">
                 <p>Settings</p>
               </div>
-                <div className="flex gap-4 px-4 py-2">
-                  <input
-                    id="anim"
-                    type="checkbox"
+              <div className="flex gap-4 px-4 py-2">
+                <input
+                  id="anim"
+                  type="checkbox"
                   checked={animate}
-                    onChange={(e) => setAnimate(e.target.checked)}
-                    className="scale-150"
-                  />
-                  <label htmlFor="anim" className="text-3xl text-shadow-none">
-                    Show Animations
-                  </label>
-                </div>
+                  onChange={(e) => setAnimate(e.target.checked)}
+                  className="scale-150"
+                />
+                <label htmlFor="anim" className="text-3xl text-shadow-none">
+                  Show Animations
+                </label>
+              </div>
             </Window>
             <Window innerClass="align-top">
               <div className="w-full flex px-5 py-1 bg-pokegray">
@@ -646,10 +587,22 @@ function App() {
         </div>
         {screen > 1 && (
           <div className="flex gap-2">
-            <HexButton isButton={screen !== 2} text={"INFO"} toScreen={2} />
-            <HexButton isButton={screen !== 3} text={"MOVES"} toScreen={3} />
-            <HexButton isButton={screen !== 4} text={"STATS"} toScreen={4} />
-            {/* <HexButton isButton={screen !== 5} text={"DATA"} toScreen={5} /> */}
+            <HexButton
+              isButton={screen !== 2}
+              text={"INFO"}
+              navigate={() => navigate(2)}
+            />
+            <HexButton
+              isButton={screen !== 3}
+              text={"MOVES"}
+              navigate={() => navigate(3)}
+            />
+            <HexButton
+              isButton={screen !== 4}
+              text={"STATS"}
+              navigate={() => navigate(4)}
+            />
+            {/* <HexButton isButton={screen !== 5} text={"DATA"} navigate={() => navigate(5)} /> */}
           </div>
         )}
         <button
