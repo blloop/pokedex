@@ -4,6 +4,7 @@ import Data from "./data/data.json";
 import Info from "./data/info.json";
 import Mapping from "./data/mapping.json";
 import Names from "./data/names.json";
+import { BlackTiles, Fade } from "./components/screen";
 import HexButton from "./components/hexButton";
 import HexEntryList from "./components/hexEntryList";
 import HexMoveList from "./components/hexMoveList";
@@ -40,8 +41,6 @@ const gameMap = [
   0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
 ];
 
-const genMap = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4];
-
 function App() {
   const {
     navigate,
@@ -71,7 +70,7 @@ function App() {
                     data-temp={e}
                     hidden={e !== monster}
                     alt={Names[game][e]}
-                    src={`/sprites/${Mapping[game][e]}.png`}
+                    src={`/sprites/${Mapping[game][e]}.${animate ? "gif" : "png"}`}
                     className="absolute w-full max-w-96 scale-x-[-1]"
                   />
                 ))}
@@ -96,23 +95,13 @@ function App() {
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
               <div className="flex flex-col z-10 md:h-full items-center md:overflow-y-auto md:overflow-x-hidden">
                 <img
-                  alt=""
-                  src={`/sprites/${Mapping[game][monster - 1]}.png`}
-                  className="w-72 hidden"
-                />
-                <img
                   alt={Names[game][monster]}
-                  src={`/sprites/${Mapping[game][monster]}.png`}
+                  src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
                   className="w-72 scale-x-[-1]"
-                />
-                <img
-                  alt=""
-                  src={`/sprites/${Mapping[game][monster + 1]}.png`}
-                  className="w-72 hidden"
                 />
                 <Window innerClass="!p-0 text-3xl">
                   {move.length > 0 ? (
-                    <ListMove move={move} />
+                    <ListMove />
                   ) : (
                     <div className="flex flex-col items-center w-72 h-[22rem]">
                       <p className="p-4 text-center">
@@ -132,19 +121,9 @@ function App() {
             <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
             <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
             <img
-              alt=""
-              src={`/sprites/${Mapping[game][monster - 1]}.png`}
-              className="w-72 hidden"
-            />
-            <img
               alt={Names[game][monster]}
-              src={`/sprites/${Mapping[game][monster]}.png`}
+              src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
               className="w-72 scale-x-[-1]"
-            />
-            <img
-              alt=""
-              src={`/sprites/${Mapping[game][monster + 1]}.png`}
-              className="w-72 hidden"
             />
             <div className="flex flex-col justify-start gap-4 h-full z-10 md:overflow-y-auto md:overflow-x-hidden">
               <Window>
@@ -154,16 +133,10 @@ function App() {
                     {Names[game][monster]}
                   </p>
                 </div>
-                <ListStat
-                  stats={Data[Names[game][monster].toLowerCase()]["stats"]}
-                  gen={genMap[game]}
-                />
+                <ListStat />
               </Window>
               <Window>
-                <ListInfo
-                  info={Data[Names[game][monster].toLowerCase()]}
-                  gen={genMap[game]}
-                />
+                <ListInfo />
               </Window>
             </div>
           </div>
@@ -176,19 +149,9 @@ function App() {
               <div className="absolute top-4 left-0 h-[240px] w-[237px] bg-contain bg-no-repeat bg-rulerHead" />
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
               <img
-                alt=""
-                src={`/sprites/${Mapping[game][monster - 1]}.png`}
-                className="w-72 hidden"
-              />
-              <img
                 alt={Names[game][monster]}
-                src={`/sprites/${Mapping[game][monster]}.png`}
+                src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
                 className="w-72 scale-x-[-1]"
-              />
-              <img
-                alt=""
-                src={`/sprites/${Mapping[game][monster + 1]}.png`}
-                className="w-72 hidden"
               />
               <Window className="z-10 w-72">
                 <div className="w-full flex bg-pokegray">
@@ -297,26 +260,10 @@ function App() {
       )}
     >
       <Panel />
-      <div
-        className={cn(
-          "absolute left-0 right-0 top-16 h-24 overflow-hidden pointer-events-none z-0",
-          animate ? "bg-tilesMovingBlack" : "bg-tilesBlack",
-        )}
-      />
-      <div
-        id="fade"
-        className={cn(
-          "absolute inset-0 z-50 pointer-events-none bg-[#000] opacity-0 transition-opacity",
-          "duration-300",
-        )}
-      ></div>
-      <Title game={game} screen={screen} />
-      <div
-        className={cn(
-          "absolute left-0 right-0 top-32 h-24 overflow-hidden pointer-events-none z-0",
-          animate ? "bg-tilesMovingBlack" : "bg-tilesBlack",
-        )}
-      />
+      <BlackTiles index={0} />
+      <Fade />
+      <Title />
+      <BlackTiles index={1} />
       {renderScreen()}
       <div
         id="hexrow"
@@ -355,21 +302,9 @@ function App() {
         </div>
         {screen > 1 && (
           <div className="flex gap-2">
-            <HexButton
-              isButton={screen !== 2}
-              text={"INFO"}
-              navigate={() => navigate(2)}
-            />
-            <HexButton
-              isButton={screen !== 3}
-              text={"MOVES"}
-              navigate={() => navigate(3)}
-            />
-            <HexButton
-              isButton={screen !== 4}
-              text={"STATS"}
-              navigate={() => navigate(4)}
-            />
+            <HexButton text={"INFO"} index={2} />
+            <HexButton text={"MOVES"} index={3} />
+            <HexButton text={"STATS"} index={4} />
             {/* <HexButton isButton={screen !== 5} text={"DATA"} navigate={() => navigate(5)} /> */}
           </div>
         )}

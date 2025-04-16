@@ -5,14 +5,13 @@ import Names from "../data/names.json";
 import ArrowLeft from "../assets/arrow-left.png";
 import ArrowRight from "../assets/arrow-right.png";
 
-function HexEntry({ name, number, gameMap }) {
-  const { setPosition, scrollRef, monster, animate, navigate, setMonster } =
-    useData();
+function HexEntry({ name, number, gameMap, changeScroll }) {
+  const { monster, animate, navigate, setMonster } = useData();
   return (
     <button
       onClick={() => {
         if (monster === number) {
-          setPosition(scrollRef.current.scrollTop);
+          changeScroll();
           navigate(2);
         } else {
           setMonster(number);
@@ -71,14 +70,20 @@ function HexEntry({ name, number, gameMap }) {
 }
 
 export default function HexEntryList() {
-  const { game, scrollRef } = useData();
+  const { setPosition, game, scrollRef } = useData();
   return (
     <div
       ref={scrollRef}
       className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden md:py-[calc(50dvh-3.5rem)] z-10"
     >
       {Names[game].map((e, i) => (
-        <HexEntry key={i} name={e} number={i} gameMap={Mapping[game]} />
+        <HexEntry
+          key={i}
+          name={e}
+          number={i}
+          gameMap={Mapping[game]}
+          changeScroll={() => setPosition(scrollRef.current.scrollTop)}
+        />
       ))}
     </div>
   );

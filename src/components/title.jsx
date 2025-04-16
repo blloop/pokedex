@@ -1,3 +1,4 @@
+import { useData } from "../context";
 import BigStripes from "../assets/stripes-big.png";
 
 const screenList = ["SETTINGS", "POKEDEX", "INFO", "MOVES", "STATS", "DATA"];
@@ -32,7 +33,8 @@ const gameListShort = [
   "BL2/WH2",
 ];
 
-export default function Title({ game, screen }) {
+export default function Title() {
+  const { game, screen } = useData();
   return (
     <div className="w-full mt-2 border-y-2 border-pokeblack">
       <div className="flex w-full justify-between py-1 bg-pokeblack border-y-4 border-lime-500 text-4xl text-light text-shadow-dark leading-[1.5rem]">

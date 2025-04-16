@@ -14,21 +14,21 @@ const FADE_MS = 250;
 
 // Default context value - can be simplified or expanded based on needs
 const DataContext = createContext({
-  navigate: (screen) => {},
+  navigate: () => {},
   monster: 0,
-  setMonster: (monster) => {},
+  setMonster: () => {},
   game: 0,
   screen: 0,
   move: "",
   moves: [],
-  setMove: (move) => {},
+  setMove: () => {},
   animate: false,
-  setAnimate: (bool) => {},
-  setPosition: (position) => {},
+  setAnimate: () => {},
+  setPosition: () => {},
   scrollRef: null,
   goBack: () => {},
-  handleGameChange: (event) => {},
-  togglePanel: (open) => {},
+  handleGameChange: () => {},
+  togglePanel: () => {},
 });
 
 export const DataProvider = ({ children }) => {

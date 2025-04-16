@@ -1,4 +1,7 @@
 import { cn } from "../utils";
+import { useData } from "../context";
+import Data from "../data/data.json";
+import Names from "../data/names.json";
 
 const barColors = [
   "bg-statRed",
@@ -9,12 +12,15 @@ const barColors = [
   "bg-statAqua",
 ];
 
-// ListStat design inspired by Pokemondb.net
-export default function ListStat({ stats, gen }) {
-  const get = (name) => {
-    return Array.isArray(stats[name]) ? stats[name][gen] : stats[name];
-  };
+const genMap = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4];
 
+// ListStat design inspired by Pokemondb.net
+export default function ListStat() {
+  const { game, monster } = useData();
+  const stats = Data[Names[game][monster].toLowerCase()]["stats"];
+  const get = (name) => {
+    return Array.isArray(stats[name]) ? stats[name][genMap[game]] : stats[name];
+  };
   function RenderBar({ value }) {
     return (
       <>
@@ -46,19 +52,19 @@ export default function ListStat({ stats, gen }) {
         <p className="w-16 text-right">Defense</p>
         <RenderBar value={get("defense")} />
       </div>
-      {gen > 0 && (
+      {genMap[game] > 0 && (
         <div className="flex gap-2 items-center">
           <p className="w-16 text-right">Sp. Atk</p>
           <RenderBar value={get("spatk")} />
         </div>
       )}
-      {gen > 0 && (
+      {genMap[game] > 0 && (
         <div className="flex gap-2 items-center">
           <p className="w-16 text-right">Sp. Def</p>
           <RenderBar value={get("spdef")} />
         </div>
       )}
-      {gen === 0 && (
+      {genMap[game] === 0 && (
         <div className="flex gap-2 items-center">
           <p className="w-16 text-right">Special</p>
           <RenderBar value={get("spatk")} />

@@ -1,8 +1,7 @@
 import { useData } from "../context";
 
-export default function Panel({ onClick }) {
+export default function Panel() {
   const { togglePanel } = useData();
-
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-50">
       <div

@@ -1,6 +1,7 @@
 import { cn } from "../utils";
 import { useData } from "../context";
 import MoveData from "../data/moveData.json";
+import Names from "../data/names.json";
 import TypeCell from "./typeCell";
 
 export function HexMove({ isButton, name, level, onMoveClick }) {

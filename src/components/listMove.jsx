@@ -3,6 +3,7 @@ import MoveData from "../data/moveData.json";
 import CellPhysical from "../assets/cell-physical.png";
 import CellSpecial from "../assets/cell-special.png";
 import CellStatus from "../assets/cell-status.png";
+import { useData } from "../context";
 
 const CategoryStyle = {
   physical: CellPhysical,
@@ -10,7 +11,8 @@ const CategoryStyle = {
   status: CellStatus,
 };
 
-export default function ListMove({ move }) {
+export default function ListMove() {
+  const { move } = useData();
   return (
     <>
       <div className="flex justify-between items-center">

@@ -1,19 +1,26 @@
+import { useData } from "../context";
+import Data from "../data/data.json";
+import Names from "../data/names.json";
+
 const statNames = {
   spatk: "Sp. Atk",
   spdef: "Sp. Def",
   hp: "HP",
 };
 
+const genMap = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4];
+
 function capitalize(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 // ListInfo design inspired by Pokemondb.net
-export default function ListInfo({ info, gen }) {
+export default function ListInfo() {
+  const { game, monster } = useData();
+  const info = Data[Names[game][monster].toLowerCase()];
   const get = (name) => {
-    return Array.isArray(info[name]) ? info[name][gen] : info[name];
+    return Array.isArray(info[name]) ? info[name][genMap[game]] : info[name];
   };
-
   return (
     <div className="flex flex-col items-start p-4 text-2xl text-shadow-mini">
       <div className="flex gap-2 items-center">
