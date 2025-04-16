@@ -4,7 +4,6 @@ import { cn } from "./utils";
 import Data from "./data/data.json";
 import Info from "./data/info.json";
 import Mapping from "./data/mapping.json";
-import MoveData from "./data/moveData.json";
 import Moves0 from "./data/moves-00.json";
 import Moves1 from "./data/moves-01.json";
 import Moves2 from "./data/moves-02.json";
@@ -20,8 +19,10 @@ import Moves11 from "./data/moves-11.json";
 import Names from "./data/names.json";
 
 import HexButton from "./components/hexButton";
+import HexEntry from"./components/hexEntry";
 import HexMove from "./components/hexMove";
 import ListInfo from "./components/listInfo";
+import ListMove from "./components/listMove";
 import ListStat from "./components/listStat";
 import Panel from "./components/panel";
 import Title from "./components/title";
@@ -29,13 +30,8 @@ import TypeCell from "./components/typeCell";
 import Window from "./components/window";
 
 import ArrowDown from "./assets/arrow-down.png";
-import ArrowLeft from "./assets/arrow-left.png";
-import ArrowRight from "./assets/arrow-right.png";
 import ArrowUp from "./assets/arrow-up.png";
 import BackButton from "./assets/back.png";
-import CellPhysical from "./assets/cell-physical.png";
-import CellSpecial from "./assets/cell-special.png";
-import CellStatus from "./assets/cell-status.png";
 import Frame from "./assets/frame.png";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
@@ -78,20 +74,13 @@ const gameMap = [
 
 const genMap = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4];
 
-const moveCells = {
-  physical: CellPhysical,
-  special: CellSpecial,
-  status: CellStatus,
-};
-
 function App() {
   const [monster, setMonster] = useState(0);
   const [game, setGame] = useState(0);
   const [screen, setScreen] = useState(0);
   const [move, setMove] = useState("");
-  const [moves, setMoves] = useState(MovesList[game]);
+  const [moves, setMoves] = useState(MovesList[0]);
   const [position, setPosition] = useState(0);
-  const [settings, setSettings] = useState(false);
   const [animate, setAnimate] = useState(false);
 
   const scrollRef = useRef(null);
@@ -166,70 +155,19 @@ function App() {
     setMoves(MovesList[event.target.value]);
   };
 
-  const handleAnimChange = (event) => {
-    setAnimate(event.target.checked);
-  };
-
   const renderListItem = (name, number) => {
     return (
-      <button
-        onClick={() => {
-          if (monster === number) {
-            setPosition(scrollRef.current.scrollTop);
-            navigate(2);
-          } else {
-            setMonster(number);
-          }
-        }}
-        className={cn(
-          "group relative flex justify-between md:justify-start items-center gap-2 md:gap-4 md:hover:text-lime-300 text-pokegray bg-pokeblack overflow-visible",
-          number === monster
-            ? "bg-lime-700 text-lime-300 text-shadow-slate"
-            : "text-shadow-slate md:hover:bg-lime-900",
-        )}
+      <HexEntry
         key={number}
-      >
-        <div
-          className={cn(
-            "w-0 h-0 border-t-[18px] md:border-t-[24px] border-t-transparent border-r-[12px] md:border-r-[12px] border-r-pokeblack border-b-[18px] md:border-b-[24px] border-b-transparent absolute -left-3",
-            number === monster
-              ? "border-r-lime-700"
-              : "md:group-hover:border-r-lime-900",
-          )}
-        />
-        <div
-          className={cn(
-            "w-0 h-0 border-t-[36px] md:border-t-[48px] border-t-pokeblack border-r-[16px] md:border-r-[25px] border-r-transparent absolute -right-[15px] md:-right-6",
-            number === monster
-              ? "border-t-lime-700"
-              : "md:group-hover:border-t-lime-900",
-          )}
-        />
-        <div
-          className={cn(
-            "relative -left-2 -top-0 shrink-0 h-8 md:h-12 md:group-hover:brightness-125",
-            number === monster ? "brightness-125" : "",
-          )}
-        >
-          <img className="absolute left-0 h-full" src={ArrowLeft} alt="" />
-          <img className="absolute left-12 h-full" src={ArrowRight} alt="" />
-          <div className="w-16 h-full overflow-hidden">
-            <img
-              className="relative -top-3 h-12 md:h-16 object-cover z-10"
-              src={
-                monster === number && animate
-                  ? `/icons/${Mapping[game][number]}.gif`
-                  : `/icons/${Mapping[game][number]}.png`
-              }
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="flex text-pokegray text-3xl md:text-5xl">
-          <p>{(number + 1).toString().padStart(3, "0")}</p>
-          <p className="ml-2 min-w-40 md:min-w-48 text-left">{name}</p>
-        </div>
-      </button>
+        name={name}
+        number={number}
+        selected={monster === number}
+        gameMap={Mapping[game]}
+        animate={animate}
+        navigate={() => navigate(2)}
+        setPosition={() => setPosition(scrollRef.current.scrollTop)}
+        setMonster={setMonster}
+      />
     );
   };
 
@@ -294,41 +232,7 @@ function App() {
                 <Window innerClass="!p-0 text-3xl">
                   {move.length > 0 ? (
                     <>
-                      <div className="flex justify-between items-center">
-                        <div className="flex flex-col justify-center h-48 w-full md:w-40 px-4 bg-gray text-pokewhite">
-                          <p>▪ Category</p>
-                          <p>▪ Power</p>
-                          <p>▪ Accuracy</p>
-                          <p>▪ PP</p>
-                        </div>
-                        <div className="flex flex-col justify-center items-center h-48 w-full md:w-32 px-4">
-                          <img
-                            src={moveCells[MoveData[move].category]}
-                            className="h-8 py-1"
-                            alt=""
-                          />
-                          <p>
-                            {MoveData[move].power > 0
-                              ? MoveData[move].power
-                              : "-"}
-                          </p>
-                          <p>
-                            {MoveData[move].accuracy > 0 ||
-                            MoveData[move].accuracy === "∞"
-                              ? MoveData[move].accuracy
-                              : "-"}
-                          </p>
-                          <p>{MoveData[move].pp}</p>
-                        </div>
-                      </div>
-                      <p
-                        className={cn(
-                          "w-72 h-40 overflow-y-auto p-4 border-t-4 border-t-gray",
-                          !MoveData[move].text && "text-2xl italic",
-                        )}
-                      >
-                        {MoveData[move].text || "No additional effect"}
-                      </p>
+                      <ListMove move={move} />
                     </>
                   ) : (
                     <div className="flex flex-col items-center w-72 h-[22rem]">

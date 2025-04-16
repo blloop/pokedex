@@ -1,6 +1,3 @@
-import { cn } from "../utils";
-import TypeCell from "./typeCell";
-
 export default function HexButton({ isButton, text, navigate }) {
   return isButton ? (
     <div className="group select-none w-10 sm:w-20 h-10 p-[2px] bg-gray md:cursor-pointer transition-colors md:hover:bg-white">
