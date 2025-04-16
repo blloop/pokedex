@@ -20,15 +20,15 @@ const DataContext = createContext({
   game: 0,
   screen: 0,
   move: "",
-  setMove: (move) => {},
   moves: [],
+  setMove: (move) => {},
   animate: false,
   setAnimate: (bool) => {},
   setPosition: (position) => {},
+  scrollRef: null,
   goBack: () => {},
   handleGameChange: (event) => {},
   togglePanel: (open) => {},
-  scrollRef: null,
 });
 
 export const DataProvider = ({ children }) => {
@@ -67,7 +67,6 @@ export const DataProvider = ({ children }) => {
   };
 
   const navigate = (screen) => {
-    console.log("screen is", screen);
     setScroll(false);
     document.getElementById("fade").style.opacity = "1";
     document.getElementById("fade").style.pointerEvents = "auto";
@@ -127,15 +126,15 @@ export const DataProvider = ({ children }) => {
         game,
         screen,
         move,
-        setMove,
         moves,
+        setMove,
         animate,
         setAnimate,
         setPosition,
+        scrollRef,
         goBack,
         handleGameChange,
         togglePanel,
-        scrollRef,
       }}
     >
       {children}

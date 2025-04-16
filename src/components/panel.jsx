@@ -1,4 +1,8 @@
+import { useData } from "../context";
+
 export default function Panel({ onClick }) {
+  const { togglePanel } = useData();
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-50">
       <div
@@ -18,7 +22,7 @@ export default function Panel({ onClick }) {
         <div className="absolute bottom-[calc(50dvh-7rem)] right-[calc(max(50vw,50dvh)-6rem)] w-24 h-48 rotate-45 bg-pokewhite border-[1rem] border-pokeblack border-l-0 rounded-r-full" />
       </div>
       <button
-        onClick={() => onClick()}
+        onClick={() => togglePanel()}
         id="panel-button"
         className="md:cursor-pointer pointer-events-auto absolute top-1/2 right-1/2 -translate-y-[5.5rem] translate-x-[5.5rem] w-36 h-36 rounded-full animate-pulse bg-blue-400 z-40"
       ></button>

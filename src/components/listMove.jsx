@@ -26,14 +26,9 @@ export default function ListMove({ move }) {
             className="h-8 py-1"
             alt=""
           />
+          <p>{MoveData[move].power > 0 ? MoveData[move].power : "-"}</p>
           <p>
-            {MoveData[move].power > 0
-              ? MoveData[move].power
-              : "-"}
-          </p>
-          <p>
-            {MoveData[move].accuracy > 0 ||
-            MoveData[move].accuracy === "∞"
+            {MoveData[move].accuracy > 0 || MoveData[move].accuracy === "∞"
               ? MoveData[move].accuracy
               : "-"}
           </p>
@@ -49,5 +44,5 @@ export default function ListMove({ move }) {
         {MoveData[move].text || "No additional effect"}
       </p>
     </>
-  )
+  );
 }

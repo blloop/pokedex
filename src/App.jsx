@@ -1,14 +1,12 @@
 import { cn } from "./utils";
 import { useData } from "./context";
-
 import Data from "./data/data.json";
 import Info from "./data/info.json";
 import Mapping from "./data/mapping.json";
 import Names from "./data/names.json";
-
 import HexButton from "./components/hexButton";
-import HexEntry from "./components/hexEntry";
-import HexMove from "./components/hexMove";
+import HexEntryList from "./components/hexEntryList";
+import HexMoveList from "./components/hexMoveList";
 import ListInfo from "./components/listInfo";
 import ListMove from "./components/listMove";
 import ListStat from "./components/listStat";
@@ -16,7 +14,6 @@ import Panel from "./components/panel";
 import Title from "./components/title";
 import TypeCell from "./components/typeCell";
 import Window from "./components/window";
-
 import ArrowDown from "./assets/arrow-down.png";
 import ArrowUp from "./assets/arrow-up.png";
 import BackButton from "./assets/back.png";
@@ -54,15 +51,12 @@ function App() {
     screen,
     move,
     setMove,
-    moves,
     animate,
     setAnimate,
-    setPosition,
     goBack,
     handleGameChange,
-    togglePanel,
-    scrollRef,
   } = useData();
+
   const renderScreen = () => {
     switch (screen) {
       case 1:
@@ -82,24 +76,7 @@ function App() {
                   />
                 ))}
               </div>
-              <div
-                ref={scrollRef}
-                className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden md:py-[calc(50dvh-3.5rem)] z-10"
-              >
-                {Names[game].map((e, i) => (
-                  <HexEntry
-                    key={i}
-                    name={e}
-                    number={i}
-                    selected={monster === i}
-                    gameMap={Mapping[game]}
-                    animate={animate}
-                    navigate={() => navigate(2)}
-                    setPosition={() => setPosition(scrollRef.current.scrollTop)}
-                    setMonster={setMonster}
-                  />
-                ))}
-              </div>
+              <HexEntryList />
             </div>
             <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50dvh-8rem)] overflow-visible items-center">
               <div
@@ -135,9 +112,7 @@ function App() {
                 />
                 <Window innerClass="!p-0 text-3xl">
                   {move.length > 0 ? (
-                    <>
-                      <ListMove move={move} />
-                    </>
+                    <ListMove move={move} />
                   ) : (
                     <div className="flex flex-col items-center w-72 h-[22rem]">
                       <p className="p-4 text-center">
@@ -147,22 +122,7 @@ function App() {
                   )}
                 </Window>
               </div>
-              <div
-                id="hexlist"
-                className="z-10 h-full md:overflow-y-auto md:overflow-x-hidden"
-              >
-                {moves[Names[game][monster].toLowerCase()]["level"].map(
-                  (e, i) => (
-                    <HexMove
-                      key={i}
-                      isButton={e.name !== move}
-                      name={e.name}
-                      level={e.num}
-                      onMoveClick={() => setMove(e.name === move ? "" : e.name)}
-                    />
-                  ),
-                )}
-              </div>
+              <HexMoveList />
             </div>
           </div>
         );
@@ -336,7 +296,7 @@ function App() {
         animate ? "bg-tilesMovingGreen" : "bg-tilesGreen",
       )}
     >
-      <Panel onClick={togglePanel} />
+      <Panel />
       <div
         className={cn(
           "absolute left-0 right-0 top-16 h-24 overflow-hidden pointer-events-none z-0",
