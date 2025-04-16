@@ -1,25 +1,13 @@
-import { useCallback, useRef, useState } from "react";
 import { cn } from "./utils";
+import { useData } from "./context";
 
 import Data from "./data/data.json";
 import Info from "./data/info.json";
 import Mapping from "./data/mapping.json";
-import Moves0 from "./data/moves-00.json";
-import Moves1 from "./data/moves-01.json";
-import Moves2 from "./data/moves-02.json";
-import Moves3 from "./data/moves-03.json";
-import Moves4 from "./data/moves-04.json";
-import Moves5 from "./data/moves-05.json";
-import Moves6 from "./data/moves-06.json";
-import Moves7 from "./data/moves-07.json";
-import Moves8 from "./data/moves-08.json";
-import Moves9 from "./data/moves-09.json";
-import Moves10 from "./data/moves-10.json";
-import Moves11 from "./data/moves-11.json";
 import Names from "./data/names.json";
 
 import HexButton from "./components/hexButton";
-import HexEntry from"./components/hexEntry";
+import HexEntry from "./components/hexEntry";
 import HexMove from "./components/hexMove";
 import ListInfo from "./components/listInfo";
 import ListMove from "./components/listMove";
@@ -35,23 +23,6 @@ import BackButton from "./assets/back.png";
 import Frame from "./assets/frame.png";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
-
-const FADE_MS = 250;
-
-const MovesList = [
-  Moves0,
-  Moves1,
-  Moves2,
-  Moves3,
-  Moves4,
-  Moves5,
-  Moves6,
-  Moves7,
-  Moves8,
-  Moves9,
-  Moves10,
-  Moves11,
-];
 
 const gameList = [
   "Red/Blue",
@@ -75,102 +46,23 @@ const gameMap = [
 const genMap = [0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4];
 
 function App() {
-  const [monster, setMonster] = useState(0);
-  const [game, setGame] = useState(0);
-  const [screen, setScreen] = useState(0);
-  const [move, setMove] = useState("");
-  const [moves, setMoves] = useState(MovesList[0]);
-  const [position, setPosition] = useState(0);
-  const [animate, setAnimate] = useState(false);
-
-  const scrollRef = useRef(null);
-  const handleScroll = useCallback(() => {
-    if (!scrollRef.current) return;
-
-    const container = scrollRef.current;
-    const scrollTop = container.scrollTop;
-    const clientHeight = container.clientHeight;
-    const scrollHeight = container.scrollHeight;
-
-    // Calculate the proportional target index based on the current scroll position
-    const proportionalIndex =
-      (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
-    setMonster(Math.ceil(proportionalIndex));
-  }, [game]);
-
-  const setScroll = (create) => {
-    const container = scrollRef.current;
-    if (container) {
-      if (create) {
-        container.addEventListener("scroll", handleScroll);
-      } else {
-        container.removeEventListener("scroll", handleScroll);
-      }
-    }
-  };
-
-  // TODO: Add settings to switch to imperial units
-  // function getImperial(meters) {
-  //   const totalInches = meters * 39.3701;
-  //   const feet = Math.floor(totalInches / 12);
-  //   const inches = Math.round(totalInches % 12).toString().padStart(2, '0');
-  //   return `${feet}'${inches}"`;
-  // }
-  // function getPounds(kg) {
-  //   const pounds = kg * 2.20462;
-  //   return pounds.toFixed(1);
-  // }
-
-  const navigate = (screen) => {
-    setScroll(false);
-    document.getElementById("fade").style.opacity = "1";
-    document.getElementById("fade").style.pointerEvents = "auto";
-    setTimeout(() => {
-      document.getElementById("fade").style.opacity = "0";
-      document.getElementById("fade").style.pointerEvents = "none";
-      setScroll(true);
-    }, FADE_MS * 2);
-    setTimeout(() => {
-      setScreen(screen);
-    }, FADE_MS);
-  };
-
-  const togglePanel = (open) => {
-    document.getElementById("panel-button").style.display = "none";
-    document.getElementById("panel-left").style.left = open
-      ? ""
-      : "calc(-1*(50vw + 50dvh))";
-    document.getElementById("panel-right").style.right = open
-      ? ""
-      : "calc(-1*(100vw + 100dvh))";
-    setTimeout(() => {
-      document.getElementById("panel-button").style.display = open
-        ? "block"
-        : "none";
-    }, 1000);
-  };
-
-  const handleGameChange = (event) => {
-    setGame(event.target.value);
-    setMoves(MovesList[event.target.value]);
-  };
-
-  const renderListItem = (name, number) => {
-    return (
-      <HexEntry
-        key={number}
-        name={name}
-        number={number}
-        selected={monster === number}
-        gameMap={Mapping[game]}
-        animate={animate}
-        navigate={() => navigate(2)}
-        setPosition={() => setPosition(scrollRef.current.scrollTop)}
-        setMonster={setMonster}
-      />
-    );
-  };
-
+  const {
+    navigate,
+    monster,
+    setMonster,
+    game,
+    screen,
+    move,
+    setMove,
+    moves,
+    animate,
+    setAnimate,
+    setPosition,
+    goBack,
+    handleGameChange,
+    togglePanel,
+    scrollRef,
+  } = useData();
   const renderScreen = () => {
     switch (screen) {
       case 1:
@@ -194,7 +86,19 @@ function App() {
                 ref={scrollRef}
                 className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden md:py-[calc(50dvh-3.5rem)] z-10"
               >
-                {Names[game].map((e, i) => renderListItem(e, i))}
+                {Names[game].map((e, i) => (
+                  <HexEntry
+                    key={i}
+                    name={e}
+                    number={i}
+                    selected={monster === i}
+                    gameMap={Mapping[game]}
+                    animate={animate}
+                    navigate={() => navigate(2)}
+                    setPosition={() => setPosition(scrollRef.current.scrollTop)}
+                    setMonster={setMonster}
+                  />
+                ))}
               </div>
             </div>
             <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50dvh-8rem)] overflow-visible items-center">
@@ -511,22 +415,7 @@ function App() {
         )}
         <button
           className="md:hover:brightness-50 transition-filter ml-10"
-          onClick={() => {
-            if (screen === 0) {
-              togglePanel(true);
-            } else if (screen === 1) {
-              navigate(0);
-              setTimeout(() => {
-                setMonster(0);
-                setMove("");
-              }, FADE_MS * 1.5);
-            } else {
-              setTimeout(() => {
-                scrollRef.current.scrollTop = position;
-              }, FADE_MS * 1.5);
-              navigate(1);
-            }
-          }}
+          onClick={goBack}
         >
           <img className="h-8 sm:h-10" src={BackButton} alt="" />
         </button>
