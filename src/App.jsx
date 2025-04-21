@@ -42,21 +42,6 @@ const gameMap = [
   0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
 ];
 
-const isDualGame = [
-  true,
-  false,
-  true,
-  false,
-  true,
-  true,
-  false,
-  true,
-  false,
-  true,
-  true,
-  true,
-];
-
 function App() {
   const {
     navigate,
@@ -193,7 +178,10 @@ function App() {
                     type={Data[Names[game][monster].toLowerCase()]["type1"]}
                   />
                   <TypeCell
-                    type={Data[Names[game][monster].toLowerCase()]["type2"]}
+                    type={
+                      (!Names[game][monster].includes("Magne") || game > 1) &&
+                      Data[Names[game][monster].toLowerCase()]["type2"]
+                    }
                   />
                 </div>
                 <div className="w-full px-2">
@@ -216,7 +204,7 @@ function App() {
             </div>
             <Window innerClass="!p-0">
               <div className="w-full p-4 pt-3 md:p-8 md:pt-6 bg-slate text-3xl md:text-4xl text-light">
-                {isDualGame[game] && (
+                {game > 1 && gameList[game].includes("/") && (
                   <div className="flex gap-1 mb-4 text-3xl font-bold text-lime-300">
                     <button
                       className={
