@@ -5,10 +5,12 @@ import {
   useContext,
   useState,
   useRef,
+  useEffect,
   useCallback,
 } from "react";
 import MovesList from "./moves";
 import Names from "./data/names.json";
+import Mapping from "./data/mapping.json";
 
 const FADE_MS = 250;
 
@@ -29,6 +31,8 @@ const DataContext = createContext({
   goBack: () => {},
   handleGameChange: () => {},
   togglePanel: () => {},
+  isLoading: false,
+  percentage: 0,
 });
 
 export const DataProvider = ({ children }) => {
@@ -39,6 +43,8 @@ export const DataProvider = ({ children }) => {
   const [moves, setMoves] = useState(MovesList[0]);
   const [position, setPosition] = useState(0);
   const [animate, setAnimate] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [percentage, setPercentage] = useState(0);
   const scrollRef = useRef(null);
 
   const handleScroll = useCallback(() => {
@@ -117,6 +123,42 @@ export const DataProvider = ({ children }) => {
     setMoves(MovesList[event.target.value]);
   };
 
+  // Effect for preloading sprites based on game and animate state
+  useEffect(() => {
+    const spritesToLoad = Mapping[game];
+    if (!spritesToLoad || spritesToLoad.length === 0) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    let loadedCount = 0;
+    setPercentage(0);
+
+    spritesToLoad.forEach((spriteId) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedCount++;
+        setPercentage(Math.floor((100 * loadedCount) / spritesToLoad.length));
+        if (loadedCount === spritesToLoad.length) {
+          setIsLoading(false);
+        }
+      };
+      img.onerror = () => {
+        console.error(
+          `Failed to load sprite: /sprites/${spriteId}.${imageFormat}`,
+        );
+        loadedCount++;
+        setPercentage(Math.floor((100 * loadedCount) / spritesToLoad.length));
+        setPercentage(0);
+        if (loadedCount === spritesToLoad.length) {
+          setIsLoading(false);
+        }
+      };
+      img.src = `/sprites/${spriteId}.${animate ? "gif" : "png"}`;
+    });
+  }, [game, animate]);
+
   return (
     <DataContext.Provider
       value={{
@@ -135,6 +177,8 @@ export const DataProvider = ({ children }) => {
         goBack,
         handleGameChange,
         togglePanel,
+        isLoading,
+        percentage,
       }}
     >
       {children}

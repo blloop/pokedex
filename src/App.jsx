@@ -4,7 +4,7 @@ import Data from "./data/data.json";
 import Info from "./data/info.json";
 import Mapping from "./data/mapping.json";
 import Names from "./data/names.json";
-import { BlackTiles, Fade } from "./components/screen";
+import { BlackTiles, Fade, Loader } from "./components/screen";
 import HexButton from "./components/hexButton";
 import HexEntryList from "./components/hexEntryList";
 import HexMoveList from "./components/hexMoveList";
@@ -54,6 +54,7 @@ function App() {
     setAnimate,
     goBack,
     handleGameChange,
+    isLoading,
   } = useData();
 
   const renderScreen = () => {
@@ -62,18 +63,18 @@ function App() {
         return (
           <>
             <div className="z-10 relative flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-hidden">
-              <div className="relative flex flex-col justify-center items-center w-auto sm:w-full h-96 sm:h-auto">
-                <img src={Frame} className="size-full max-w-96" alt="" />
-                {Array.from(Array(Mapping[game].length).keys()).map((e) => (
-                  <img
-                    key={e}
-                    data-temp={e}
-                    hidden={e !== monster}
-                    alt={Names[game][e]}
-                    src={`/sprites/${Mapping[game][e]}.${animate ? "gif" : "png"}`}
-                    className="absolute w-full max-w-96 scale-x-[-1]"
-                  />
-                ))}
+              <div className="relative flex justify-center items-center w-auto sm:w-full h-96 sm:h-auto">
+                <img
+                  src={Frame}
+                  className="absolute inset-0 size-full max-w-96 mx-auto object-contain"
+                  alt=""
+                />
+                <img
+                  key={`current-${monster}-${animate}`}
+                  alt={Names[game][monster]}
+                  src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
+                  className="relative w-full max-w-96 scale-x-[-1] z-10"
+                />
               </div>
               <HexEntryList />
             </div>
@@ -259,62 +260,65 @@ function App() {
         animate ? "bg-tilesMovingGreen" : "bg-tilesGreen",
       )}
     >
-      <Panel />
-      <BlackTiles index={0} />
-      <Fade />
-      <Title />
-      <BlackTiles index={1} />
-      {renderScreen()}
-      <div
-        id="hexrow"
-        className="flex justify-between z-30 gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
-      >
+      <>
+        {isLoading && <Loader />}
+        <Panel />
+        <BlackTiles index={0} />
+        <Fade />
+        <Title />
+        <BlackTiles index={1} />
+        {renderScreen()}
         <div
-          className={
-            screen > 1 ? "flex gap-4" : "opacity-0 pointer-events-none"
-          }
+          id="hexrow"
+          className="flex justify-between z-30 gap-2 w-full px-4 py-2 text-2xl text-white text-center bg-gradient-to-t from-pokeblack to-gray border-t-2 border-pokeblack"
         >
-          <button
-            onClick={() => {
-              setMonster(monster - 1);
-              setMove("");
-            }}
-            className={cn(
-              "select-none md:hover:brightness-50 transition-filter",
-              monster === 0 && "opacity-0 pointer-events-none",
-            )}
+          <div
+            className={
+              screen > 1 ? "flex gap-4" : "opacity-0 pointer-events-none"
+            }
           >
-            <img className="h-8 sm:h-10" src={ArrowUp} alt="" />
-          </button>
+            <button
+              onClick={() => {
+                setMonster(monster - 1);
+                setMove("");
+              }}
+              className={cn(
+                "select-none md:hover:brightness-50 transition-filter",
+                monster === 0 && "opacity-0 pointer-events-none",
+              )}
+            >
+              <img className="h-8 sm:h-10" src={ArrowUp} alt="" />
+            </button>
+            <button
+              onClick={() => {
+                setMonster(monster + 1);
+                setMove("");
+              }}
+              className={cn(
+                "md:hover:brightness-50 transition-filter",
+                monster + 1 === Names[game].length &&
+                  "opacity-0 pointer-events-none",
+              )}
+            >
+              <img className="h-8 sm:h-10" src={ArrowDown} alt="" />
+            </button>
+          </div>
+          {screen > 1 && (
+            <div className="flex gap-2">
+              <HexButton text={"INFO"} index={2} />
+              <HexButton text={"MOVES"} index={3} />
+              <HexButton text={"STATS"} index={4} />
+              {/* <HexButton isButton={screen !== 5} text={"DATA"} navigate={() => navigate(5)} /> */}
+            </div>
+          )}
           <button
-            onClick={() => {
-              setMonster(monster + 1);
-              setMove("");
-            }}
-            className={cn(
-              "md:hover:brightness-50 transition-filter",
-              monster + 1 === Names[game].length &&
-                "opacity-0 pointer-events-none",
-            )}
+            className="md:hover:brightness-50 transition-filter ml-10"
+            onClick={goBack}
           >
-            <img className="h-8 sm:h-10" src={ArrowDown} alt="" />
+            <img className="h-8 sm:h-10" src={BackButton} alt="" />
           </button>
         </div>
-        {screen > 1 && (
-          <div className="flex gap-2">
-            <HexButton text={"INFO"} index={2} />
-            <HexButton text={"MOVES"} index={3} />
-            <HexButton text={"STATS"} index={4} />
-            {/* <HexButton isButton={screen !== 5} text={"DATA"} navigate={() => navigate(5)} /> */}
-          </div>
-        )}
-        <button
-          className="md:hover:brightness-50 transition-filter ml-10"
-          onClick={goBack}
-        >
-          <img className="h-8 sm:h-10" src={BackButton} alt="" />
-        </button>
-      </div>
+      </>
     </div>
   );
 }
