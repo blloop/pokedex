@@ -19,6 +19,7 @@ import ArrowDown from "./assets/arrow-down.png";
 import ArrowUp from "./assets/arrow-up.png";
 import BackButton from "./assets/back.png";
 import Frame from "./assets/frame.png";
+import { useEffect, useState } from "react";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 
@@ -41,6 +42,21 @@ const gameMap = [
   0, 0, 1, 2, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 9, 10, 10, 11, 11,
 ];
 
+const isDualGame = [
+  true,
+  false,
+  true,
+  false,
+  true,
+  true,
+  false,
+  true,
+  false,
+  true,
+  true,
+  true,
+];
+
 function App() {
   const {
     navigate,
@@ -56,6 +72,13 @@ function App() {
     handleGameChange,
     isLoading,
   } = useData();
+
+  const [firstEntry, setFirstEntry] = useState(-1);
+  useEffect(() => {
+    if (screen === 2) {
+      setFirstEntry(0);
+    }
+  }, [screen]);
 
   const renderScreen = () => {
     switch (screen) {
@@ -192,14 +215,49 @@ function App() {
               </Window>
             </div>
             <Window innerClass="!p-0">
-              <div className="w-full p-4 md:p-8 bg-slate text-3xl md:text-4xl">
-                <p className="text-light">
-                  {
-                    Info[Names[game][monster].toLowerCase()][
-                      gameMap.indexOf(Number(game))
-                    ]
-                  }
-                </p>
+              <div className="w-full p-4 pt-3 md:p-8 md:pt-6 bg-slate text-3xl md:text-4xl text-light">
+                {isDualGame[game] && (
+                  <div className="flex gap-1 mb-4 text-3xl font-bold text-lime-300">
+                    <button
+                      className={
+                        firstEntry === 0
+                          ? "bg-lime-500 text-slate px-2"
+                          : "px-2"
+                      }
+                      onClick={() => setFirstEntry(0)}
+                    >
+                      {gameList[game].split("/")[0]}
+                    </button>
+                    <button
+                      className={
+                        firstEntry === 1
+                          ? "bg-lime-500 text-slate px-2"
+                          : "px-2"
+                      }
+                      onClick={() => setFirstEntry(1)}
+                    >
+                      {gameList[game].split("/")[1]}
+                    </button>
+                  </div>
+                )}
+                {firstEntry === 0 && (
+                  <p>
+                    {
+                      Info[Names[game][monster].toLowerCase()][
+                        gameMap.indexOf(Number(game))
+                      ]
+                    }
+                  </p>
+                )}
+                {firstEntry === 1 && (
+                  <p>
+                    {
+                      Info[Names[game][monster].toLowerCase()][
+                        gameMap.indexOf(Number(game)) + 1
+                      ]
+                    }
+                  </p>
+                )}
               </div>
             </Window>
           </div>
