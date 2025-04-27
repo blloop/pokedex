@@ -47,6 +47,20 @@ export const DataProvider = ({ children }) => {
   const [percentage, setPercentage] = useState(0);
   const scrollRef = useRef(null);
 
+  const sounds = {
+    enter: new Audio("/sfx/sfx_enter.mp3"),
+    exit: new Audio("/sfx/sfx_exit.mp3"),
+    open: new Audio("/sfx/sfx_open.mp3"),
+    close: new Audio("/sfx/sfx_close.mp3"),
+    item: new Audio("/sfx/sfx_item.mp3"),
+    mode: new Audio("/sfx/sfx_mode.mp3"),
+  };
+  const playSound = (name) => {
+    if (sounds[name]) {
+      sounds[name].play();
+    }
+  };
+
   const handleScroll = useCallback(() => {
     if (!scrollRef.current) return;
 
@@ -57,8 +71,11 @@ export const DataProvider = ({ children }) => {
 
     // Calculate the proportional target index based on the current scroll position
     const proportionalIndex =
-      (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
-    setMonster(Math.ceil(proportionalIndex));
+        (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
+    if (Math.ceil(proportionalIndex) !== monster) {
+      playSound("item");
+      setMonster(Math.ceil(proportionalIndex));
+    }
   }, [game]);
 
   const setScroll = (create) => {
@@ -72,7 +89,12 @@ export const DataProvider = ({ children }) => {
     }
   };
 
-  const navigate = (screen) => {
+  const navigate = (nextScreen) => {
+    if (screen > 1) {
+      playSound(nextScreen > 1 ? "mode" : "close");
+    } else {
+      playSound(nextScreen > screen ? "open" : "close");
+    }
     setScroll(false);
     document.getElementById("fade").style.opacity = "1";
     document.getElementById("fade").style.pointerEvents = "auto";
@@ -82,11 +104,12 @@ export const DataProvider = ({ children }) => {
       setScroll(true);
     }, FADE_MS * 2);
     setTimeout(() => {
-      setScreen(screen);
+      setScreen(nextScreen);
     }, FADE_MS);
   };
 
   const togglePanel = (open) => {
+    playSound(open ? "exit" : "enter");
     document.getElementById("panel-button").style.display = "none";
     document.getElementById("panel-left").style.left = open
       ? ""
@@ -104,7 +127,9 @@ export const DataProvider = ({ children }) => {
   const goBack = () => {
     if (screen === 0) {
       togglePanel(true);
-    } else if (screen === 1) {
+      return;
+    }
+    if (screen === 1) {
       navigate(0);
       setTimeout(() => {
         setMonster(0);
@@ -164,7 +189,10 @@ export const DataProvider = ({ children }) => {
       value={{
         navigate,
         monster,
-        setMonster,
+        setMonster: (idx) => {
+          playSound("item");
+          setMonster(idx);
+        },
         game,
         screen,
         move,
