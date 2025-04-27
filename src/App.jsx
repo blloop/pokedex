@@ -51,6 +51,8 @@ function App() {
     screen,
     move,
     setMove,
+    audio,
+    setAudio,
     animate,
     setAnimate,
     goBack,
@@ -267,6 +269,18 @@ function App() {
                 />
                 <label htmlFor="anim" className="text-3xl text-shadow-none">
                   Show Animations
+                </label>
+              </div>
+              <div className="flex gap-4 px-4 py-2">
+                <input
+                  id="anim"
+                  type="checkbox"
+                  checked={audio}
+                  onChange={(e) => setAudio(e.target.checked)}
+                  className="scale-150"
+                />
+                <label htmlFor="anim" className="text-3xl text-shadow-none">
+                  Play Sound Effects
                 </label>
               </div>
             </Window>

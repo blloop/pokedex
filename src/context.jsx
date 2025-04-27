@@ -24,6 +24,8 @@ const DataContext = createContext({
   move: "",
   moves: [],
   setMove: () => {},
+  audio: false,
+  setAudio: () => {},
   animate: false,
   setAnimate: () => {},
   setPosition: () => {},
@@ -42,10 +44,20 @@ export const DataProvider = ({ children }) => {
   const [move, setMove] = useState("");
   const [moves, setMoves] = useState(MovesList[0]);
   const [position, setPosition] = useState(0);
+  const [audio, setAudio] = useState(false);
   const [animate, setAnimate] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [percentage, setPercentage] = useState(0);
   const scrollRef = useRef(null);
+
+  const soundList = {
+    enter: "/sfx/sfx_enter.mp3",
+    exit: "/sfx/sfx_exit.mp3",
+    open: "/sfx/sfx_open.mp3",
+    close: "/sfx/sfx_close.mp3",
+    item: "/sfx/sfx_item.mp3",
+    mode: "/sfx/sfx_mode.mp3",
+  };
 
   const sounds = {
     enter: new Audio("/sfx/sfx_enter.mp3"),
@@ -55,6 +67,7 @@ export const DataProvider = ({ children }) => {
     item: new Audio("/sfx/sfx_item.mp3"),
     mode: new Audio("/sfx/sfx_mode.mp3"),
   };
+
   const playSound = (name) => {
     if (sounds[name]) {
       sounds[name].play();
@@ -71,7 +84,7 @@ export const DataProvider = ({ children }) => {
 
     // Calculate the proportional target index based on the current scroll position
     const proportionalIndex =
-        (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
+      (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
     if (Math.ceil(proportionalIndex) !== monster) {
       playSound("item");
       setMonster(Math.ceil(proportionalIndex));
@@ -184,6 +197,41 @@ export const DataProvider = ({ children }) => {
     });
   }, [game, animate]);
 
+  // Effect for preloading sprites based on game and animate state
+  useEffect(() => {
+    if (!audio) return;
+
+    setPercentage(0);
+    setIsLoading(true);
+    const soundNames = Object.keys(soundList);
+    let loadedCount = 0;
+
+    Object.keys(soundList).forEach((soundId) => {
+      const sound = new Audio();
+      sound.preload = "auto";
+
+      sound.oncanplaythrough = () => {
+        loadedCount++;
+        setPercentage(Math.floor((100 * loadedCount) / soundNames.length));
+        if (loadedCount === soundNames.length) {
+          setIsLoading(false);
+        }
+      };
+
+      sound.onerror = () => {
+        console.error(`Failed to load audio: ${soundId}`);
+        loadedCount++;
+        setPercentage(Math.floor((100 * loadedCount) / soundNames.length));
+        if (loadedCount === soundNames.length) {
+          setIsLoading(false);
+        }
+      };
+
+      sounds[soundId].source = soundList[soundId];
+      sound.src = soundList[soundId];
+    });
+  }, [audio]);
+
   return (
     <DataContext.Provider
       value={{
@@ -198,6 +246,8 @@ export const DataProvider = ({ children }) => {
         move,
         moves,
         setMove,
+        audio,
+        setAudio,
         animate,
         setAnimate,
         setPosition,
