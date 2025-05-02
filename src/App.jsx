@@ -57,7 +57,6 @@ function App() {
     setAnimate,
     goBack,
     handleGameChange,
-    isLoading,
   } = useData();
 
   const [firstEntry, setFirstEntry] = useState(-1);
@@ -273,13 +272,13 @@ function App() {
               </div>
               <div className="flex gap-4 px-4 py-2">
                 <input
-                  id="anim"
+                  id="audio"
                   type="checkbox"
                   checked={audio}
                   onChange={(e) => setAudio(e.target.checked)}
                   className="scale-150"
                 />
-                <label htmlFor="anim" className="text-3xl text-shadow-none">
+                <label htmlFor="audio" className="text-3xl text-shadow-none">
                   Play Sound Effects
                 </label>
               </div>
@@ -321,7 +320,7 @@ function App() {
       )}
     >
       <>
-        {isLoading && <Loader />}
+        <Loader />
         <Panel />
         <BlackTiles index={0} />
         <Fade />

@@ -28,13 +28,15 @@ export function Fade() {
 }
 
 export function Loader() {
-  const { percentage } = useData();
+  const { percentage, loadContent } = useData();
+  if (!loadContent) return;
+
   return (
     <div className="fixed inset-0 z-50 pointer-events-auto bg-[#0008]">
       <div className="flex flex-col justify-center items-center gap-2 h-full text-white text-4xl">
         <Spinner />
         <div />
-        <p>Loading Sprites...</p>
+        <p>Loading {loadContent}...</p>
         <p>{`${percentage}%`}</p>
       </div>
     </div>

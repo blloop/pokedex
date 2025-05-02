@@ -11,6 +11,7 @@ import {
 import MovesList from "./moves";
 import Names from "./data/names.json";
 import Mapping from "./data/mapping.json";
+import audioManager from "./audioManager";
 
 const FADE_MS = 250;
 
@@ -33,7 +34,7 @@ const DataContext = createContext({
   goBack: () => {},
   handleGameChange: () => {},
   togglePanel: () => {},
-  isLoading: false,
+  loadContent: false,
   percentage: 0,
 });
 
@@ -46,9 +47,14 @@ export const DataProvider = ({ children }) => {
   const [position, setPosition] = useState(0);
   const [audio, setAudio] = useState(false);
   const [animate, setAnimate] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadContent, setLoadContent] = useState(null);
   const [percentage, setPercentage] = useState(0);
   const scrollRef = useRef(null);
+  const monsterRef = useRef(monster);
+
+  useEffect(() => {
+    monsterRef.current = monster;
+  }, [monster]);
 
   const soundList = {
     enter: "/sfx/sfx_enter.mp3",
@@ -59,18 +65,9 @@ export const DataProvider = ({ children }) => {
     mode: "/sfx/sfx_mode.mp3",
   };
 
-  const sounds = {
-    enter: new Audio("/sfx/sfx_enter.mp3"),
-    exit: new Audio("/sfx/sfx_exit.mp3"),
-    open: new Audio("/sfx/sfx_open.mp3"),
-    close: new Audio("/sfx/sfx_close.mp3"),
-    item: new Audio("/sfx/sfx_item.mp3"),
-    mode: new Audio("/sfx/sfx_mode.mp3"),
-  };
-
   const playSound = (name) => {
-    if (sounds[name]) {
-      sounds[name].play();
+    if (audio) {
+      audioManager.playSound(name);
     }
   };
 
@@ -85,11 +82,12 @@ export const DataProvider = ({ children }) => {
     // Calculate the proportional target index based on the current scroll position
     const proportionalIndex =
       (scrollTop / (scrollHeight - clientHeight)) * (Names[game].length - 1);
-    if (Math.ceil(proportionalIndex) !== monster) {
+    const newMonster = Math.ceil(proportionalIndex);
+    if (newMonster !== monsterRef.current) {
       playSound("item");
-      setMonster(Math.ceil(proportionalIndex));
+      setMonster(newMonster);
     }
-  }, [game]);
+  }, [game, setMonster, playSound]);
 
   const setScroll = (create) => {
     const container = scrollRef.current;
@@ -164,13 +162,9 @@ export const DataProvider = ({ children }) => {
   // Effect for preloading sprites based on game and animate state
   useEffect(() => {
     const spritesToLoad = Mapping[game];
-    if (!spritesToLoad || spritesToLoad.length === 0) {
-      setIsLoading(false);
-      return;
-    }
-
-    setIsLoading(true);
+    if (!spritesToLoad || spritesToLoad.length == 0) return;
     let loadedCount = 0;
+    setLoadContent("Sprites");
     setPercentage(0);
 
     spritesToLoad.forEach((spriteId) => {
@@ -179,7 +173,7 @@ export const DataProvider = ({ children }) => {
         loadedCount++;
         setPercentage(Math.floor((100 * loadedCount) / spritesToLoad.length));
         if (loadedCount === spritesToLoad.length) {
-          setIsLoading(false);
+          setLoadContent(null);
         }
       };
       img.onerror = () => {
@@ -190,46 +184,38 @@ export const DataProvider = ({ children }) => {
         setPercentage(Math.floor((100 * loadedCount) / spritesToLoad.length));
         setPercentage(0);
         if (loadedCount === spritesToLoad.length) {
-          setIsLoading(false);
+          setLoadContent(null);
         }
       };
       img.src = `/sprites/${spriteId}.${animate ? "gif" : "png"}`;
     });
   }, [game, animate]);
 
-  // Effect for preloading sprites based on game and animate state
+  // Effect for preloading sounds based on game and audio state
   useEffect(() => {
     if (!audio) return;
 
     setPercentage(0);
-    setIsLoading(true);
+    setLoadContent("Sounds");
     const soundNames = Object.keys(soundList);
     let loadedCount = 0;
 
-    Object.keys(soundList).forEach((soundId) => {
-      const sound = new Audio();
-      sound.preload = "auto";
-
-      sound.oncanplaythrough = () => {
+    async function loadSounds() {
+      for (const sound of Object.keys(soundList)) {
+        try {
+          await audioManager.loadSound(sound, soundList[sound]);
+        } catch (error) {
+          console.error(`Failed to load audio: ${soundId}`);
+        }
         loadedCount++;
         setPercentage(Math.floor((100 * loadedCount) / soundNames.length));
         if (loadedCount === soundNames.length) {
-          setIsLoading(false);
+          setLoadContent(null);
         }
-      };
+      }
+    }
 
-      sound.onerror = () => {
-        console.error(`Failed to load audio: ${soundId}`);
-        loadedCount++;
-        setPercentage(Math.floor((100 * loadedCount) / soundNames.length));
-        if (loadedCount === soundNames.length) {
-          setIsLoading(false);
-        }
-      };
-
-      sounds[soundId].source = soundList[soundId];
-      sound.src = soundList[soundId];
-    });
+    loadSounds();
   }, [audio]);
 
   return (
@@ -255,7 +241,7 @@ export const DataProvider = ({ children }) => {
         goBack,
         handleGameChange,
         togglePanel,
-        isLoading,
+        loadContent,
         percentage,
       }}
     >
