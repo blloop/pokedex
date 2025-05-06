@@ -33,7 +33,7 @@ const gameList = [
   "Emerald",
   "Diamond/Pearl",
   "Platinum",
-  "Heartgold/Soulsilver",
+  "HeartGold/SoulSilver",
   "Black/White",
   "Black2/White2",
 ];
@@ -58,13 +58,6 @@ function App() {
     goBack,
     handleGameChange,
   } = useData();
-
-  const [firstEntry, setFirstEntry] = useState(-1);
-  useEffect(() => {
-    if (screen === 2) {
-      setFirstEntry(0);
-    }
-  }, [screen]);
 
   const renderScreen = () => {
     switch (screen) {
@@ -203,42 +196,30 @@ function App() {
                 </div>
               </Window>
             </div>
-            <Window innerClass="!p-0">
+            <Window innerClass="!p-0 max-w-[56rem]">
               <div className="w-full p-4 pt-3 md:p-8 md:pt-6 bg-slate text-3xl md:text-4xl text-light">
-                {game > 1 && gameList[game].includes("/") && (
-                  <div className="flex gap-1 mb-4 text-3xl font-bold text-lime-300">
-                    <button
-                      className={
-                        firstEntry === 0
-                          ? "bg-lime-500 text-slate px-2"
-                          : "px-2"
-                      }
-                      onClick={() => setFirstEntry(0)}
-                    >
-                      {gameList[game].split("/")[0]}
-                    </button>
-                    <button
-                      className={
-                        firstEntry === 1
-                          ? "bg-lime-500 text-slate px-2"
-                          : "px-2"
-                      }
-                      onClick={() => setFirstEntry(1)}
-                    >
-                      {gameList[game].split("/")[1]}
-                    </button>
-                  </div>
-                )}
-                {firstEntry === 0 && (
-                  <p>
-                    {
-                      Info[Names[game][monster].toLowerCase()][
-                        gameMap.indexOf(Number(game))
-                      ]
-                    }
+                {game > 1 && gameList[game].includes("/") &&
+                  <p className="pb-2 underline">
+                    {gameList[game].split("/")[0]}{" Version"}
                   </p>
-                )}
-                {firstEntry === 1 && (
+                }
+                <p>
+                  {
+                    Info[Names[game][monster].toLowerCase()][
+                      gameMap.indexOf(Number(game))
+                    ]
+                  }
+                </p>
+              </div>
+            </Window>
+            {game > 1 && gameList[game].includes("/") && (
+              <Window innerClass="!p-0 max-w-[56rem]">
+                <div className="w-full p-4 pt-3 md:p-8 md:pt-6 bg-slate text-3xl md:text-4xl text-light">
+                  {game > 1 && gameList[game].includes("/") && (
+                    <p className="pb-2 underline">
+                      {gameList[game].split("/")[1]}{" Version"}
+                    </p>
+                  )}
                   <p>
                     {
                       Info[Names[game][monster].toLowerCase()][
@@ -246,9 +227,9 @@ function App() {
                       ]
                     }
                   </p>
-                )}
-              </div>
-            </Window>
+                </div>
+              </Window>
+            )}
           </div>
         );
       default:
