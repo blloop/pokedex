@@ -3,7 +3,7 @@ import { useData } from "../context";
 export default function Panel() {
   const { togglePanel } = useData();
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-50">
+    <div id="panel" className="absolute inset-0 overflow-hidden pointer-events-none z-50">
       <div
         id="panel-left"
         className="relative top-0 left-0 h-full w-[calc((100vw-100dvh)/2)] bg-pokered transition-left duration-1000 pointer-events-auto"

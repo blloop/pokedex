@@ -85,7 +85,7 @@ export const DataProvider = ({ children }) => {
     const newMonster = Math.ceil(proportionalIndex);
     if (newMonster !== monsterRef.current) {
       playSound("item");
-      setMonster(newMonster);
+      setMonster(Math.max(0, newMonster));
     }
   }, [game, setMonster, playSound]);
 
@@ -107,6 +107,8 @@ export const DataProvider = ({ children }) => {
       playSound(nextScreen > screen ? "open" : "close");
     }
     setScroll(false);
+    document.getElementById("panel").style.zIndex = "50";
+    document.getElementById("fade").style.zIndex = "50";
     document.getElementById("fade").style.opacity = "1";
     document.getElementById("fade").style.pointerEvents = "auto";
     setTimeout(() => {
@@ -114,6 +116,10 @@ export const DataProvider = ({ children }) => {
       document.getElementById("fade").style.pointerEvents = "none";
       setScroll(true);
     }, FADE_MS * 2);
+    setTimeout(() => {
+      document.getElementById("panel").style.zIndex = "0";
+      document.getElementById("fade").style.zIndex = "0";
+    }, FADE_MS * 3);
     setTimeout(() => {
       setScreen(nextScreen);
     }, FADE_MS);
