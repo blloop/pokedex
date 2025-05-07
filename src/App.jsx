@@ -65,22 +65,22 @@ function App() {
         return (
           <>
             <div className="z-10 relative flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-8 px-4 md:px-8 size-full overflow-y-hidden">
-              <div className="relative flex justify-center items-center w-auto sm:w-full h-96 sm:h-auto">
+              <div className="relative flex justify-center items-center w-full sm:w-64 lg:w-full h-64 max-h-[30dvh] sm:h-64 lg:h-96 sm:max-h-none">
                 <img
                   src={Frame}
-                  className="absolute inset-0 size-full max-w-96 mx-auto object-contain"
+                  className="absolute inset-0 size-full max-h-[100%] mx-auto object-contain"
                   alt=""
                 />
                 <img
                   key={`current-${monster}-${animate}`}
                   alt={Names[game][monster]}
                   src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
-                  className="relative w-full max-w-96 scale-x-[-1] z-10"
+                  className="relative w-auto h-full max-h-[100%] scale-x-[-1] z-10"
                 />
               </div>
               <HexEntryList />
             </div>
-            <div className="flex z-0 absolute top-16 sm:top-1/2 h-64 w-full sm:top-[calc(50dvh-8rem)] overflow-visible items-center">
+            <div className="flex z-0 absolute top-16 sm:top-1/2 h-56 sm:h-64 w-full sm:top-[calc(50dvh-8rem)] overflow-visible items-center">
               <div
                 className={cn(
                   "relative h-36 sm:h-[25vw] max-h-64 w-full bg-fill sm:bg-contain bg-repeat-x",
@@ -198,11 +198,12 @@ function App() {
             </div>
             <Window innerClass="!p-0 max-w-[56rem]">
               <div className="w-full p-4 pt-3 md:p-8 md:pt-6 bg-slate text-3xl md:text-4xl text-light">
-                {game > 1 && gameList[game].includes("/") &&
-                  <p className="pb-2 underline">
-                    {gameList[game].split("/")[0]}{" Version"}
+                {game > 1 && gameList[game].includes("/") && (
+                  <p className="pb-2 underline underline-offset-6">
+                    {gameList[game].split("/")[0]}
+                    {" Version"}
                   </p>
-                }
+                )}
                 <p>
                   {
                     Info[Names[game][monster].toLowerCase()][
@@ -217,7 +218,8 @@ function App() {
                 <div className="w-full p-4 pt-3 md:p-8 md:pt-6 bg-slate text-3xl md:text-4xl text-light">
                   {game > 1 && gameList[game].includes("/") && (
                     <p className="pb-2 underline">
-                      {gameList[game].split("/")[1]}{" Version"}
+                      {gameList[game].split("/")[1]}
+                      {" Version"}
                     </p>
                   )}
                   <p>
@@ -234,7 +236,7 @@ function App() {
         );
       default:
         return (
-          <div className="z-10 flex flex-col items-stretch gap-4 text-4xl">
+          <div className="max-w-[90vw] z-10 flex flex-col items-stretch gap-4 text-4xl">
             <Window innerClass="align-top">
               <div className="w-full px-5 py-1 bg-pokegray">
                 <p>Settings</p>

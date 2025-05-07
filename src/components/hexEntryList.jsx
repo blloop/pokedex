@@ -74,7 +74,7 @@ export default function HexEntryList() {
   return (
     <div
       ref={scrollRef}
-      className="size-full sm:shrink-0 sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden md:py-[calc(50dvh-3.5rem)] z-10"
+      className="sm:shrink-0 size-full sm:w-3/5 lg:w-1/2 flex flex-col gap-2 pl-4 pr-6 md:pr-8 overflow-y-auto overflow-x-hidden sm:py-[calc(50dvh-3.5rem)] z-10"
     >
       {Names[game].map((e, i) => (
         <HexEntry

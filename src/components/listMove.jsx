@@ -17,10 +17,10 @@ export default function ListMove() {
     <>
       <div className="flex justify-between items-center">
         <div className="flex flex-col justify-center h-48 w-full md:w-40 px-4 bg-gray text-pokewhite">
-          <p>▪ Category</p>
-          <p>▪ Power</p>
-          <p>▪ Accuracy</p>
-          <p>▪ PP</p>
+          <p>• Category</p>
+          <p>• Power</p>
+          <p>• Accuracy</p>
+          <p>• PP</p>
         </div>
         <div className="flex flex-col justify-center items-center h-48 w-full md:w-32 px-4">
           <img
