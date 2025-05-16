@@ -68,10 +68,12 @@ export default function ListInfo() {
         <p className="pl-2 border-l-2 border-gray">{get("egg-cycles")}</p>
         {/* TODO: Add egg cycle calculations */}
       </div>
-      <div className="flex gap-2 items-center">
-        <p className="w-32 text-right">Base Friendship</p>
-        <p className="pl-2 border-l-2 border-gray">{get("friendship")}</p>
-      </div>
+      {genMap[game] > 0 && (
+        <div className="flex gap-2 items-center">
+          <p className="w-32 text-right">Base Friendship</p>
+          <p className="pl-2 border-l-2 border-gray">{get("friendship")}</p>
+        </div>
+      )}
       <div className="flex gap-2 items-center">
         <p className="w-32 text-right">Growth Rate</p>
         <p className="pl-2 border-l-2 border-gray">
