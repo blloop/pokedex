@@ -19,7 +19,6 @@ import ArrowDown from "./assets/arrow-down.png";
 import ArrowUp from "./assets/arrow-up.png";
 import BackButton from "./assets/back.png";
 import Frame from "./assets/frame.png";
-import { useEffect, useState } from "react";
 
 // Sprites and icons credit: https://veekun.com/dex/downloads
 

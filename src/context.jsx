@@ -56,6 +56,10 @@ export const DataProvider = ({ children }) => {
     monsterRef.current = monster;
   }, [monster]);
 
+  useEffect(() => {
+    playSound("item");
+  }, [move]);
+
   const soundList = {
     enter: "/sfx/sfx_enter.mp3",
     exit: "/sfx/sfx_exit.mp3",
