@@ -111,7 +111,6 @@ export const DataProvider = ({ children }) => {
       playSound(nextScreen > screen ? "open" : "close");
     }
     setScroll(false);
-    document.getElementById("panel").style.zIndex = "50";
     document.getElementById("fade").style.zIndex = "50";
     document.getElementById("fade").style.opacity = "1";
     document.getElementById("fade").style.pointerEvents = "auto";
@@ -121,7 +120,6 @@ export const DataProvider = ({ children }) => {
       setScroll(true);
     }, FADE_MS * 2);
     setTimeout(() => {
-      document.getElementById("panel").style.zIndex = "0";
       document.getElementById("fade").style.zIndex = "0";
     }, FADE_MS * 3);
     setTimeout(() => {
