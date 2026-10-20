@@ -41,6 +41,7 @@ export function HexMove({ isButton, name, level, onMoveClick }) {
 
 export default function HexMoveList() {
   const { monster, game, move, moves, setMove } = useData();
+  if (!moves) return null;
   return (
     <div
       id="hexlist"

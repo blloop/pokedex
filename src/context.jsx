@@ -8,7 +8,7 @@ import {
   useEffect,
   useCallback,
 } from "react";
-import MovesList from "./moves";
+import { loadMoves } from "./moves";
 import Names from "./data/names.json";
 import Mapping from "./data/mapping.json";
 import audioManager from "./audioManager";
@@ -43,7 +43,8 @@ export const DataProvider = ({ children }) => {
   const [game, setGame] = useState(0);
   const [screen, setScreen] = useState(0);
   const [move, setMove] = useState("");
-  const [moves, setMoves] = useState(MovesList[0]);
+  const [movesByGame, setMovesByGame] = useState({});
+  const moves = movesByGame[game];
   const [position, setPosition] = useState(0);
   const [audio, setAudio] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -164,8 +165,15 @@ export const DataProvider = ({ children }) => {
 
   const handleGameChange = (event) => {
     setGame(event.target.value);
-    setMoves(MovesList[event.target.value]);
   };
+
+  // Effect for loading the selected game's move set, cached per game
+  useEffect(() => {
+    if (movesByGame[game]) return;
+    loadMoves(game)
+      .then((data) => setMovesByGame((prev) => ({ ...prev, [game]: data })))
+      .catch(() => console.error(`Failed to load moves for game: ${game}`));
+  }, [game]);
 
   // Effect for preloading sprites based on game and animate state
   useEffect(() => {
