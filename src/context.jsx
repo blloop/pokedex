@@ -61,12 +61,12 @@ export const DataProvider = ({ children }) => {
   }, [move]);
 
   const soundList = {
-    enter: "/sfx/sfx_enter.mp3",
-    exit: "/sfx/sfx_exit.mp3",
-    open: "/sfx/sfx_open.mp3",
-    close: "/sfx/sfx_close.mp3",
-    item: "/sfx/sfx_item.mp3",
-    mode: "/sfx/sfx_mode.mp3",
+    enter: `${import.meta.env.BASE_URL}sfx/sfx_enter.mp3`,
+    exit: `${import.meta.env.BASE_URL}sfx/sfx_exit.mp3`,
+    open: `${import.meta.env.BASE_URL}sfx/sfx_open.mp3`,
+    close: `${import.meta.env.BASE_URL}sfx/sfx_close.mp3`,
+    item: `${import.meta.env.BASE_URL}sfx/sfx_item.mp3`,
+    mode: `${import.meta.env.BASE_URL}sfx/sfx_mode.mp3`,
   };
 
   const playSound = (name) => {
@@ -176,6 +176,7 @@ export const DataProvider = ({ children }) => {
     setPercentage(0);
 
     spritesToLoad.forEach((spriteId) => {
+      const src = `${import.meta.env.BASE_URL}sprites/${spriteId}.${animate ? "gif" : "png"}`;
       const img = new Image();
       img.onload = () => {
         loadedCount++;
@@ -185,17 +186,14 @@ export const DataProvider = ({ children }) => {
         }
       };
       img.onerror = () => {
-        console.error(
-          `Failed to load sprite: /sprites/${spriteId}.${imageFormat}`,
-        );
+        console.error(`Failed to load sprite: ${src}`);
         loadedCount++;
         setPercentage(Math.floor((100 * loadedCount) / spritesToLoad.length));
-        setPercentage(0);
         if (loadedCount === spritesToLoad.length) {
           setLoadContent(null);
         }
       };
-      img.src = `/sprites/${spriteId}.${animate ? "gif" : "png"}`;
+      img.src = src;
     });
   }, [game, animate]);
 
@@ -213,7 +211,7 @@ export const DataProvider = ({ children }) => {
         try {
           await audioManager.loadSound(sound, soundList[sound]);
         } catch (error) {
-          console.error(`Failed to load audio: ${soundId}`);
+          console.error(`Failed to load audio: ${sound}`);
         }
         loadedCount++;
         setPercentage(Math.floor((100 * loadedCount) / soundNames.length));

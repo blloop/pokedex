@@ -54,8 +54,8 @@ function HexEntry({ name, number, gameMap, changeScroll }) {
             className="relative -top-3 h-12 md:h-16 mx-auto object-cover z-10"
             src={
               monster === number && animate
-                ? `/icons/${gameMap[number]}.gif`
-                : `/icons/${gameMap[number]}.png`
+                ? `${import.meta.env.BASE_URL}icons/${gameMap[number]}.gif`
+                : `${import.meta.env.BASE_URL}icons/${gameMap[number]}.png`
             }
             alt=""
           />

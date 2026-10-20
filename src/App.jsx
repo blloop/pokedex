@@ -73,7 +73,7 @@ function App() {
                 <img
                   key={`current-${monster}-${animate}`}
                   alt={Names[game][monster]}
-                  src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
+                  src={`${import.meta.env.BASE_URL}sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
                   className="relative w-auto h-full max-h-[100%] scale-x-[-1] z-10"
                 />
               </div>
@@ -98,7 +98,7 @@ function App() {
               <div className="flex flex-col z-10 md:h-full items-center md:overflow-y-auto md:overflow-x-hidden">
                 <img
                   alt={Names[game][monster]}
-                  src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
+                  src={`${import.meta.env.BASE_URL}sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
                   className="w-72 scale-x-[-1]"
                 />
                 <Window innerClass="!p-0 text-3xl">
@@ -124,7 +124,7 @@ function App() {
             <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
             <img
               alt={Names[game][monster]}
-              src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
+              src={`${import.meta.env.BASE_URL}sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
               className="w-72 scale-x-[-1]"
             />
             <div className="flex flex-col justify-start gap-4 h-full z-10 md:overflow-y-auto md:overflow-x-hidden">
@@ -152,7 +152,7 @@ function App() {
               <div className="absolute top-4 left-[237px] h-[240px] w-full bg-contain bg-ruler" />
               <img
                 alt={Names[game][monster]}
-                src={`/sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
+                src={`${import.meta.env.BASE_URL}sprites/${Mapping[game][monster]}.${animate ? "gif" : "png"}`}
                 className="w-72 scale-x-[-1]"
               />
               <Window className="z-10 w-72">
